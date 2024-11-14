@@ -72,43 +72,67 @@ export class GameScene extends BaseScene {
         highlightGraphics.lineStyle(2, 0x06ff01, 1);
         highlightGraphics.setDepth(0);
 
-        // Создаем область, через которую игрок не может пройти
-        // const bodyBookshellMiddle = this.matter.add.fromVertices(706 + 319.5, 1435 + 173.5, '1 1 1 254.121 230.5 346 419 346 638 254.121 638 1 1 1', { label: '1', isStatic: true })
-
-        const bodyDoor = this.matter.add.fromVertices(937 + 84, 400, '1 0.5 7.5 151.5 161.5 151.5 166.5 0.5 ', {
+        const bodyDoor = this.matter.add.fromVertices(899.5 + 115.5, 117 + 78, '1.5 1 19 155.5 216 155.5 230 1', {
             label: `${LABEL_ID.DOOR_FORWARD_ID}`,
             isStatic: true,
         })
 
-        const firstKey = this.matter.add.fromVertices(509 + 192.5, 1657 + 71.5, '1 116 374.5 141.5 384 1 28.5 1 1 31 1 116', {
-            label: `${LABEL_ID.FIRST_KEY}`,
-            isStatic: true,
-        })
-
-        const secondkey = this.matter.add.fromVertices(1722.5 + 89, 582.5 + 408.5, '37.5 768 177 816 177 1.5 0.5 85 0.5 697 37.5 768', {
-            label: `${LABEL_ID.SECOND_KEY}`,
-            isStatic: true,
-        })
-
-        const shellLeft = this.matter.add.fromVertices(549.5 + 161, 151.5 + 65.5, '1.5 0.5 48.5 130.5 321 130.5 293 0.5', {
-            label: `${LABEL_ID.EMPTY_KEY}`,
-            isStatic: true,
-        })
-        const shellRight = this.matter.add.fromVertices(1170 + 141, 148.5 + 63.5, '14 0.5 1.5 126 228.5 126 280.5 0.5', {
-            label: `${LABEL_ID.EMPTY_KEY}`,
-            isStatic: true,
-        })
-        const table = this.matter.add.fromVertices(289.5 + 47, 639 + 342.5, '93 684 0.5 684 0.5 1 93 1', {
+        const box1 = this.matter.add.fromVertices(1648.5 + 109, 848 + 165.5, '0.5 330 0.5 1 217 1 217 330', {
             label: `${LABEL_ID.EMPTY_KEY}`,
             isStatic: true,
         })
 
-        const tableRight = this.matter.add.fromVertices(1113 + 230.5, 413 + 198, '1 144 120 1 459.5 240 359 394.5', {
+        const box2 = this.matter.add.fromVertices(113.5 + 68.5, 1531 + 140.5, '107 279.5 1.5 259 32 1 136 14.5', {
             label: `${LABEL_ID.EMPTY_KEY}`,
             isStatic: true,
         })
 
-        const arrBodies = [bodyDoor, firstKey, secondkey, shellLeft, shellRight, table, tableRight];
+        const box3 = this.matter.add.fromVertices(1128 + 167, 1466 + 149.5, '184.5 184 17 184 1 202 1 273.5 11.5 298 327.5 298 333 13.5 309.5 0.5 184.5 0.5', {
+            label: `${LABEL_ID.EMPTY_KEY}`,
+            isStatic: true,
+        })
+
+        const box4 = this.matter.add.fromVertices(1436 + 58.5, 1852 + 51.5, '12 101.5 1 12 100.5 1.5 115.5 90', {
+            label: `${LABEL_ID.EMPTY_KEY}`,
+            isStatic: true,
+        })
+
+        const box5 = this.matter.add.fromVertices(1708 + 86.5, 1266 + 87.5, '27 39.5 69 1.5 172 81 104 174 1 81', {
+            label: `${LABEL_ID.EMPTY_KEY}`,
+            isStatic: true,
+        })
+
+        const box6 = this.matter.add.fromVertices(1195.5 + 177, 216.5 + 122, '1.5 237.5 9 0.5 353.5 6 353.5 211.5 341 243', {
+            label: `${LABEL_ID.EMPTY_KEY}`,
+            isStatic: true,
+        })
+
+        const box7 = this.matter.add.fromVertices(552 + 122.5, 244.5 + 135.5, '91.5 270 1 23 170.5 1.5 243.5 212.5', {
+            label: `${LABEL_ID.EMPTY_KEY}`,
+            isStatic: true,
+        })
+
+        const box8 = this.matter.add.fromVertices(153 + 89, 265 + 165, '1 329 1 0.5 176.5 0.5 170 329', {
+            label: `${LABEL_ID.EMPTY_KEY}`,
+            isStatic: true,
+        })
+
+        const box9 = this.matter.add.fromVertices(182 + 99.5, 875.5 + 131, '1 258 198 258 198 0.5 1 4', {
+            label: `${LABEL_ID.EMPTY_KEY}`,
+            isStatic: true,
+        })
+
+        const box10 = this.matter.add.fromVertices(1685 + 115, 374 + 95, '1 189 1 19 26 1 228.5 4.5 223 189', {
+            label: `${LABEL_ID.EMPTY_KEY}`,
+            isStatic: true,
+        })
+
+        const box11 = this.matter.add.fromVertices(1866.5 + 65, 1576.5 + 161.5, '129.5 0.5 0.5 0.5 0.5 306 30 317 129.5 322', {
+            label: `${LABEL_ID.EMPTY_KEY}`,
+            isStatic: true,
+        })
+
+        const arrBodies = [bodyDoor, box1, box2, box3, box4, box5, box6, box7, box8, box9, box10, box11];
 
 
         this.matterCollision.addOnCollideStart({
