@@ -87,15 +87,15 @@ export class PlayersController {
 
 
     createOtherPlayer(self, playerInfo, otherPlayers) {
-        const otherPlayer = self.add.sprite(playerInfo.x, playerInfo.y, `character${playerInfo.character}`);
+        const otherPlayer = self.add.sprite(playerInfo.x, playerInfo.y - 20, `character${playerInfo.character}`);
         otherPlayer.setScale(1.3);
-        otherPlayer.setOrigin(0.5, 0.7);
+        otherPlayer.setOrigin(0.5, 0.5);
 
         otherPlayer.character = playerInfo.character;
         otherPlayer.name = playerInfo.name;
 
         // Добавляем текст с именем игрока
-        otherPlayer.nameText = self.add.text(otherPlayer.x, otherPlayer.y - PlayersController.HEIGHT_NAME, otherPlayer.name, { fontSize: '16px', fill: '#fff' }).setOrigin(0.5);
+        otherPlayer.nameText = self.add.text(otherPlayer.x, otherPlayer.y - PlayersController.HEIGHT_NAME_OTHER, otherPlayer.name, { fontSize: '16px', fill: '#fff' }).setOrigin(0.5);
 
         otherPlayers[playerInfo.id] = otherPlayer;
     }
@@ -133,9 +133,10 @@ export class PlayersController {
         }
 
         // Обновляем позицию текста с именем
-        playerSprite.nameText.setPosition(playerSprite.x, playerSprite.y - PlayersController.HEIGHT_NAME);
+        playerSprite.nameText.setPosition(playerSprite.x, playerSprite.y - PlayersController.HEIGHT_NAME_OTHER);
     }
 
     static HEIGHT_NAME = 56;
+    static HEIGHT_NAME_OTHER = 36;
 }
 

@@ -15,7 +15,6 @@ export const socket = io();
 
 export const LABEL_ID = {
     DOOR_FORWARD_ID: 11111111,
-    DOOR_FORWARD2_ID: 11111112,
     DOOR_LEFT_ID: 111143444,
     DOOR_RIGHT_ID: 222143454,
     DOOR_BACK_ID: 22222222,

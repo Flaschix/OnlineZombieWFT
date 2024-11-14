@@ -1,7 +1,7 @@
-import { CST, LABEL_ID } from "../CST.mjs";
+import { LABEL_ID } from "../CST.mjs";
 import { socket } from "../CST.mjs";
 import { SocketWorker } from "../share/SocketWorker.mjs";
-import { createUIBottom, createUITop, createUIRight, createUILeftMobile, createUI, createExitMenu, createAvatarDialog, isMobile, createJoystick, createMobileXButton, HEIGHT_PRESS_X, MAP_SETTINGS, CAMERA_MARGIN, CAMERA_MARGIN_MOBILE } from "../share/UICreator.mjs";
+import { createUIBottom, createUITop, createUIRight, createExitMenu, isMobile, HEIGHT_PRESS_X, CAMERA_MARGIN, CAMERA_MARGIN_MOBILE } from "../share/UICreator.mjs";
 import { AnimationControl } from "../share/AnimationControl.mjs";
 import { PlayersController } from "../share/PlayerController.mjs";
 
@@ -41,17 +41,17 @@ export class BaseScene extends Phaser.Scene {
     create(data) {
         this.mySocket = new SocketWorker(socket);
         const { players } = data;
+
         this.loding.deleteLoadFromScreen(this);
         this.playersController = new PlayersController();
         this.mobileFlag = isMobile();
         this.cursors = this.input.keyboard.createCursorKeys();
         this.createUnWalkedObjects();
-        // this.createCollision();
-        // this.createOverlays();
-        // this.createFold();
-        // this.createInputHandlers();
         this.createUIElements();
         this.setupSocketListeners();
+
+
+
     }
 
     createUIElements() {
@@ -68,19 +68,34 @@ export class BaseScene extends Phaser.Scene {
         this.mySocket.subscribeNewPlayer(this, this.scene.key, this.otherPlayers, this.playersController.createOtherPlayer);
         this.mySocket.subscribePlayerMoved(this, this.scene.key, this.checkOtherPlayer);
         this.mySocket.subscribePlayerDisconected(this, this.deletePlayer);
+        this.mySocket.subscribePlayerRecconected(this, this.scene.key, this.onReconnect);
         this.mySocket.subscribeSceneSwitched(this, this.scene.key, sceneSwitched)
 
         this.mySocket.emitGetPlayers();
         this.mySocket.emitGetFold();
     }
 
-    createMap(map, mapFull) {
+    createMap(map) {
+        this.map = this.add.image(0, 0, map).setOrigin(0, 0);
+        this.matter.world.setBounds(0, 0, this.map.width, this.map.height);
     }
 
     createUnWalkedObjects() {
     }
 
     createPlayers(players, cameraMargin) {
+        Object.keys(players).forEach((id) => {
+            if (id === socket.id) {
+                //добовляем игрока
+                this.player = this.playersController.createMainPlayer(this, players[id]);
+
+                //настраиваем камеру игрока
+                this.cameras.main.startFollow(this.player);
+                this.cameras.main.setBounds(cameraMargin.left, cameraMargin.top, 2048 + cameraMargin.right, 2048 + cameraMargin.bottom);
+            } else {
+                this.playersController.createOtherPlayer(this, players[id], this.otherPlayers);
+            }
+        });
     }
 
     createOtherPlayersTest(context, players) {
@@ -93,39 +108,56 @@ export class BaseScene extends Phaser.Scene {
 
     checkOtherPlayer(self, playerInfo) {
         if (self.otherPlayers[playerInfo.id]) {
-            const player = self.otherPlayers[playerInfo.id];
-
+            const info = { ...playerInfo };
+            const player = self.otherPlayers[info.id];
             // Обновляем целевые координаты и скорость
-            player.targetX = playerInfo.x;
-            player.targetY = playerInfo.y;
-            player.velocityX = playerInfo.velocityX;
-            player.velocityY = playerInfo.velocityY;
-            player.isMoving = playerInfo.isMoving;
-            player.direction = playerInfo.direction;
+            player.targetX = info.x;
+            player.targetY = info.y;
+            player.velocityX = info.velocityX;
+            player.velocityY = info.velocityY;
+            player.isMoving = info.isMoving;
+            player.direction = info.direction;
+
 
             // Интерполяция движения
-            self.tweens.add({
-                targets: player,
-                x: playerInfo.x,
-                y: playerInfo.y,
-                duration: 200,
-                onUpdate: function () {
-                    // Обновление анимации на основе данных о движении
-                    self.playersController.updateAnimOtherPlayer(player, {
-                        ...playerInfo,
-                        velocityX: player.targetX - player.x,
-                        velocityY: player.targetY - player.y
-                    });
-                },
-                onComplete: function () {
-                    // Проверяем, нужно ли остановить анимацию
-                    try {
-                        if (!player.isMoving) {
-                            player.anims.stop();
-                        }
-                    } catch (e) { };
-                }
-            });
+            try {
+                self.tweens.add({
+                    targets: player,
+                    x: player.targetX,
+                    y: player.targetY,
+                    duration: 200,
+                    onUpdate: function () {
+                        // Обновление анимации на основе данных о движении
+                        self.playersController.updateAnimOtherPlayer(player, {
+                            ...info,
+                            velocityX: player.targetX - player.x,
+                            velocityY: player.targetY - player.y
+                        });
+                    },
+                    onComplete: function () {
+                        // Проверяем, нужно ли остановить анимацию
+                        try {
+                            if (!player.isMoving) {
+                                player.anims.stop();
+                            }
+                        } catch (e) { };
+                    }
+                });
+            } catch (error) {
+
+            }
+
+        }
+    }
+
+    onReconnect(playerInfo) {
+        if (this.otherPlayers[playerInfo.id]) {
+            this.otherPlayers[playerInfo.id].setTexture(`character${playerInfo.character}`);
+            this.otherPlayers[playerInfo.id].character = playerInfo.character
+            this.otherPlayers[playerInfo.id].name = playerInfo.name;
+            this.otherPlayers[playerInfo.id].nameText.setText(playerInfo.name);
+        } else {
+            this.playersController.createOtherPlayer(this, playerInfo, this.otherPlayers);
         }
     }
 
@@ -142,9 +174,92 @@ export class BaseScene extends Phaser.Scene {
     }
 
     createOverlays() {
+        this.pressX = this.add.image(this.player.x, this.player.y - 50, 'pressX');
+        this.pressX.setDisplaySize(this.pressX.width, this.pressX.height);
+        this.pressX.setVisible(false);
+
+        //задний фон оверлея
+        this.overlayBackground = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, 'overlayBackground');
+        this.overlayBackground.setOrigin(0.5, 0.5);
+        this.overlayBackground.setDisplaySize(this.cameras.main.width - 300, this.cameras.main.height - 100);
+        this.overlayBackground.setVisible(false);
+        this.overlayBackground.setDepth(2);
+        this.overlayBackground.setScrollFactor(0);
+        this.overlayBackground.setAlpha(0); // Начальное значение прозрачности
+
+        //Первый ключ
+        this.imgKey = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2 + 30, '');
+        this.imgKey.setScale(0.5);
+        this.imgKey.setVisible(false);
+        this.imgKey.setDepth(2);
+        this.imgKey.setScrollFactor(0);
+        this.imgKey.setAlpha(0);
+
+        this.closeButton = this.add.image(this.cameras.main.width - 200, 85, 'closeIcon');
+        this.closeButton.setDisplaySize(50, 50);
+        this.closeButton.setInteractive();
+        this.closeButton.setVisible(false);
+        this.closeButton.setDepth(2);
+        this.closeButton.setScrollFactor(0);
+        this.closeButton.setAlpha(0); // Начальное значение прозрачности
+
+        this.closeButton.on('pointerdown', () => {
+            this.isOverlayVisible = false;
+            this.tweens.add({
+                targets: [this.closeButton, this.overlayBackground, this.imgKey],
+                alpha: 0,
+                duration: 500,
+                onComplete: () => {
+                    try {
+                        this.hideOverlay();
+                    }
+                    catch (e) { }
+                }
+            });
+        });
     }
 
     createInputHandlers() {
+        this.input.keyboard.on('keydown-X', () => {
+            this.itemInteract();
+        });
+    }
+
+    itemInteract() {
+        console.log('daw');
+        if (this.foldKeys.visible) return;
+        if (this.isInZone) {
+            this.player.setVelocity(0);
+
+            if (this.eventZone == LABEL_ID.DOOR_FORWARD_ID) {
+                this.moveForwardRoom();
+                return;
+            }
+
+            if (!this.isOverlayVisible) {
+
+                this.showOverlay();
+
+                this.tweens.add({
+                    targets: [this.overlayBackground, this.closeButton, this.imgKey],
+                    alpha: 1,
+                    duration: 500
+                });
+            }
+            else {
+                this.tweens.add({
+                    targets: [this.overlayBackground, this.closeButton, this.imgKey],
+                    alpha: 0,
+                    duration: 500,
+                    onComplete: () => {
+                        try {
+                            this.hideOverlay();
+                        } catch (e) { }
+
+                    }
+                });
+            }
+        }
     }
 
     showOverlay() {
@@ -345,9 +460,6 @@ export class BaseScene extends Phaser.Scene {
         this.load.start();
     }
 
-    itemInteract(context) {
-    }
-
     update() {
         if (!this.player || this.isOverlayVisible) return;
 
@@ -375,7 +487,7 @@ export class BaseScene extends Phaser.Scene {
         const isMoving = this.player.body.velocity.x !== 0 || this.player.body.velocity.y !== 0;
         const movementData = {
             x: this.player.x,
-            y: this.player.y,
+            y: this.player.y - 20,
             velocityX: this.player.body.velocity.x,
             velocityY: this.player.body.velocity.y,
             isMoving: isMoving,
@@ -386,7 +498,7 @@ export class BaseScene extends Phaser.Scene {
             this.mySocket.emitPlayerMovement(this.scene.key, movementData);
             this.moved = true;
         } else if (this.moved) {
-            this.mySocket.emitPlayerMovement(this.scene.key, movementData);
+            this.mySocket.emitPlayerMovementLast(this.scene.key, movementData);
             this.moved = false;
         }
     }
