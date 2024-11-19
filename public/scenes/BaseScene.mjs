@@ -226,7 +226,6 @@ export class BaseScene extends Phaser.Scene {
     }
 
     itemInteract() {
-        console.log('daw');
         if (this.foldKeys.visible) return;
         if (this.isInZone) {
             this.player.setVelocity(0);

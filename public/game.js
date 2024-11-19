@@ -4,6 +4,7 @@
 import { LoadingScene } from "./scenes/LoadingScene.mjs"
 import { LobbyScene } from "./scenes/LobbyScene.mjs";
 import { GameScene } from "./scenes/GameScene.mjs";
+import { GameScene2 } from "./scenes/GameScene2.mjs";
 
 let game;
 
@@ -23,7 +24,7 @@ const config = {
             gravity: { y: 0 }
         }
     },
-    scene: [LoadingScene, LobbyScene, GameScene],
+    scene: [LoadingScene, LobbyScene, GameScene, GameScene2],
     dom: {
         createContainer: true
     },
