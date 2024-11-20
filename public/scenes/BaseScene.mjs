@@ -226,7 +226,6 @@ export class BaseScene extends Phaser.Scene {
     }
 
     itemInteract() {
-        console.log('daw');
         if (this.foldKeys.visible) return;
         if (this.isInZone) {
             this.player.setVelocity(0);
@@ -522,6 +521,118 @@ export class BaseScene extends Phaser.Scene {
                 this.pressX.setVisible(false);
             }
         }
+    }
+
+    createSimpleCollision(arr, arrDiff) {
+        const highlightGraphics = this.add.graphics();
+        highlightGraphics.lineStyle(2, 0x06ff01, 1);
+        highlightGraphics.setDepth(0);
+
+        const arrBodies = arr;
+
+        this.matterCollision.addOnCollideStart({
+            objectA: this.player,
+            objectB: arrBodies,
+            callback: function (eventData) {
+                this.isInZone = true;
+                this.eventZone = Number(eventData.bodyB.label);
+
+                // Подсвечиваем границы зоны
+                const vertices = eventData.bodyB.vertices;
+                highlightGraphics.clear();
+
+                highlightGraphics.lineStyle(2, 0x06ff01, 1);
+                highlightGraphics.setDepth(0);
+
+                highlightGraphics.beginPath();
+                highlightGraphics.moveTo(vertices[0].x, vertices[0].y);
+                for (let i = 1; i < vertices.length; i++) {
+                    highlightGraphics.lineTo(vertices[i].x, vertices[i].y);
+                }
+                highlightGraphics.closePath();
+                highlightGraphics.strokePath();
+            },
+            context: this
+        });
+
+        this.matterCollision.addOnCollideEnd({
+            objectA: this.player,
+            objectB: arrBodies,
+            callback: function (eventData) {
+                this.isInZone = false;
+                this.eventZone = null;
+
+                highlightGraphics.clear();
+            },
+            context: this
+        });
+
+        const arrBodiesDiff = arrDiff;
+
+        arrBodiesDiff.forEach(body => {
+            this.matter.world.on('collisionstart', (event) => {
+                event.pairs.forEach(pair => {
+                    const { bodyA, bodyB } = pair;
+
+                    // Проверяем столкновение с родительским телом
+                    if ((bodyA.parent === this.player.body && bodyB.parent === body) ||
+                        (bodyB.parent === this.player.body && bodyA.parent === body)) {
+
+                        this.isInZone = true;
+                        this.eventZone = Number(body.label);
+
+                        // Очищаем предыдущую графику
+                        highlightGraphics.clear();
+
+                        highlightGraphics.lineStyle(2, 0x06ff01, 1);
+                        highlightGraphics.setDepth(0);
+
+                        highlightGraphics.beginPath();
+
+                        // Если у объекта есть свойство form, используем его для рисования
+                        if (body.form) {
+                            const vertices = body.form.split(' ').map(Number);
+                            for (let i = 0; i < vertices.length; i += 2) {
+                                const x = vertices[i] + body.position.x - body.centerOffset.x;
+                                const y = vertices[i + 1] + body.position.y - body.centerOffset.y;
+                                if (i === 0) {
+                                    highlightGraphics.moveTo(x, y);
+                                } else {
+                                    highlightGraphics.lineTo(x, y);
+                                }
+                            }
+                        } else {
+                            body.vertices.forEach((vertex, index) => {
+                                if (index === 0) {
+                                    highlightGraphics.moveTo(vertex.x, vertex.y);
+                                } else {
+                                    highlightGraphics.lineTo(vertex.x, vertex.y);
+                                }
+                            });
+                        }
+
+                        highlightGraphics.closePath();
+                        highlightGraphics.strokePath();
+                    }
+                });
+            });
+
+            this.matter.world.on('collisionend', (event) => {
+                event.pairs.forEach(pair => {
+                    const { bodyA, bodyB } = pair;
+
+                    // Проверяем столкновение с родительским телом
+                    if ((bodyA.parent === this.player.body && bodyB.parent === body) ||
+                        (bodyB.parent === this.player.body && bodyA.parent === body)) {
+                        this.isInZone = false;
+                        this.eventZone = null;
+
+                        // Очищаем графику при окончании столкновения
+                        highlightGraphics.clear();
+                    }
+                });
+            });
+        });
     }
 }
 
