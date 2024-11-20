@@ -1,6 +1,5 @@
 import { CST, LABEL_ID } from "../CST.mjs";
 
-
 import { createUILeftMobile } from "../share/UICreator.mjs";
 import { createUI } from "../share/UICreator.mjs";
 import { createAvatarDialog } from "../share/UICreator.mjs";
@@ -66,13 +65,7 @@ export class GameScene2 extends BaseScene {
         // this.matter.add.fromVertices(0, 0, '', { isStatic: true }, true)
     }
 
-
     createCollision() {
-        // Создаем графику для подсветки
-        const highlightGraphics = this.add.graphics();
-        highlightGraphics.lineStyle(2, 0x06ff01, 1);
-        highlightGraphics.setDepth(0);
-
         const bodyDoor = this.matter.add.fromVertices(960 + 95, 103 + 88.5, '1 1 8.5 176 189.5 176 189.5 1', {
             label: `${LABEL_ID.DOOR_FORWARD_ID}`,
             isStatic: true,
@@ -104,11 +97,6 @@ export class GameScene2 extends BaseScene {
             isStatic: true,
         })
 
-        // const box6 = this.matter.add.fromVertices(261.5 + 207, 225.5 + 90.5, '412 180.5 11 180.5 0.5 145.5 0.5 0.5 395 0.5 395 145.5', {
-        //     label: `${LABEL_ID.EMPTY_KEY}`,
-        //     isStatic: true,
-        // })
-
         const box7 = this.matter.add.fromVertices(564 + 87.5, 1135 + 120.5, '1 240 1 1 174.5 1 174.5 240', {
             label: `${LABEL_ID.EMPTY_KEY}`,
             isStatic: true,
@@ -136,46 +124,6 @@ export class GameScene2 extends BaseScene {
 
         const arrBodies = [bodyDoorBack, bodyDoor, box1, box2, box4, box5, box7, box8, box9, box10, box11];
 
-
-        this.matterCollision.addOnCollideStart({
-            objectA: this.player,
-            objectB: arrBodies,
-            callback: function (eventData) {
-                this.isInZone = true;
-                this.eventZone = Number(eventData.bodyB.label);
-
-                // Подсвечиваем границы зоны
-                const vertices = eventData.bodyB.vertices;
-                highlightGraphics.clear();
-
-                highlightGraphics.lineStyle(2, 0x06ff01, 1);
-                highlightGraphics.setDepth(0);
-
-                highlightGraphics.beginPath();
-                highlightGraphics.moveTo(vertices[0].x, vertices[0].y);
-                for (let i = 1; i < vertices.length; i++) {
-                    highlightGraphics.lineTo(vertices[i].x, vertices[i].y);
-                }
-                highlightGraphics.closePath();
-                highlightGraphics.strokePath();
-            },
-            context: this
-        });
-
-        this.matterCollision.addOnCollideEnd({
-            objectA: this.player,
-            objectB: arrBodies,
-            callback: function (eventData) {
-                this.isInZone = false;
-                this.eventZone = null;
-
-                highlightGraphics.clear();
-            },
-            context: this
-        });
-
-
-
         const box3 = this.matter.add.fromVertices(285 + 207, 261 + 90.5, '412 180.5 11 180.5 0.5 145.5 0.5 0.5 395 0.5 395 145.5', {
             label: `${LABEL_ID.EMPTY_KEY}`,
             isStatic: true,
@@ -190,76 +138,19 @@ export class GameScene2 extends BaseScene {
 
         const arrBodiesDiff = [box3, box6];
 
-        arrBodiesDiff.forEach(body => {
-            this.matter.world.on('collisionstart', (event) => {
-                event.pairs.forEach(pair => {
-                    const { bodyA, bodyB } = pair;
-
-                    // Проверяем столкновение с родительским телом
-                    if ((bodyA.parent === this.player.body && bodyB.parent === body) ||
-                        (bodyB.parent === this.player.body && bodyA.parent === body)) {
-
-                        this.isInZone = true;
-                        this.eventZone = Number(body.label);
-
-                        // Очищаем предыдущую графику
-                        highlightGraphics.clear();
-
-                        highlightGraphics.lineStyle(2, 0x06ff01, 1);
-                        highlightGraphics.setDepth(0);
-
-                        highlightGraphics.beginPath();
-
-                        // Если у объекта есть свойство form, используем его для рисования
-                        if (body.form) {
-                            const vertices = body.form.split(' ').map(Number);
-                            for (let i = 0; i < vertices.length; i += 2) {
-                                const x = vertices[i] + body.position.x - body.centerOffset.x;
-                                const y = vertices[i + 1] + body.position.y - body.centerOffset.y;
-                                if (i === 0) {
-                                    highlightGraphics.moveTo(x, y);
-                                } else {
-                                    highlightGraphics.lineTo(x, y);
-                                }
-                            }
-                        } else {
-                            body.vertices.forEach((vertex, index) => {
-                                if (index === 0) {
-                                    highlightGraphics.moveTo(vertex.x, vertex.y);
-                                } else {
-                                    highlightGraphics.lineTo(vertex.x, vertex.y);
-                                }
-                            });
-                        }
-
-                        highlightGraphics.closePath();
-                        highlightGraphics.strokePath();
-                    }
-                });
-            });
-
-            this.matter.world.on('collisionend', (event) => {
-                event.pairs.forEach(pair => {
-                    const { bodyA, bodyB } = pair;
-
-                    // Проверяем столкновение с родительским телом
-                    if ((bodyA.parent === this.player.body && bodyB.parent === body) ||
-                        (bodyB.parent === this.player.body && bodyA.parent === body)) {
-                        this.isInZone = false;
-                        this.eventZone = null;
-
-                        // Очищаем графику при окончании столкновения
-                        highlightGraphics.clear();
-                    }
-                });
-            });
-        });
+        this.createSimpleCollision(arrBodies, arrBodiesDiff);
     }
 
     moveForwardRoom() {
         this.isInZone = false;
         this.eventZone = null;
-        this.mySocket.emitSwitchScene(CST.SCENE.GAMESCENE2, 1024, 1800);
+        this.mySocket.emitSwitchScene(CST.SCENE.GAMESCENE3, 1024, 1800);
+    }
+
+    moveBackRoom() {
+        this.isInZone = false;
+        this.eventZone = null;
+        this.mySocket.emitSwitchScene(CST.SCENE.GAMESCENE, 1024, 1800);
     }
 
     showOverlay() {
@@ -271,17 +162,13 @@ export class GameScene2 extends BaseScene {
             if (this.fold.indexOf(this.imgKey.texture.key) == -1) {
                 this.mySocket.emitAddNewImg(this.imgKey.texture.key);
             }
-        }
-
-        if (this.eventZone == LABEL_ID.SECOND_KEY) {
+        } else if (this.eventZone == LABEL_ID.SECOND_KEY) {
             this.imgKey.setVisible(true);
             this.imgKey.setTexture('secondKey')
             if (this.fold.indexOf(this.imgKey.texture.key) == -1) {
                 this.mySocket.emitAddNewImg(this.imgKey.texture.key);
             }
-        }
-
-        if (this.eventZone == LABEL_ID.EMPTY_KEY) {
+        } else if (this.eventZone == LABEL_ID.EMPTY_KEY) {
             this.imgKey.setVisible(true);
             this.imgKey.setTexture('emptyKey')
         }
