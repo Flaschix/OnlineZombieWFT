@@ -24,9 +24,6 @@ export class BaseScene extends Phaser.Scene {
 
         this.isDragging = false;
 
-        this.foldImgNumber = 0;
-        this.fold = [];
-
         this.fullMap = true;
         this.moved = false;
 
@@ -64,7 +61,6 @@ export class BaseScene extends Phaser.Scene {
     setupSocketListeners() {
         //Подключение слушателей
         this.mySocket.subscribeExistedPlayers(this, this.createOtherPlayersTest);
-        this.mySocket.subscribeTakeFold(this, this.updateFold);
         this.mySocket.subscribeNewPlayer(this, this.scene.key, this.otherPlayers, this.playersController.createOtherPlayer);
         this.mySocket.subscribePlayerMoved(this, this.scene.key, this.checkOtherPlayer);
         this.mySocket.subscribePlayerDisconected(this, this.deletePlayer);
@@ -72,7 +68,6 @@ export class BaseScene extends Phaser.Scene {
         this.mySocket.subscribeSceneSwitched(this, this.scene.key, sceneSwitched)
 
         this.mySocket.emitGetPlayers();
-        this.mySocket.emitGetFold();
     }
 
     createMap(map) {
@@ -226,12 +221,16 @@ export class BaseScene extends Phaser.Scene {
     }
 
     itemInteract() {
-        if (this.foldKeys.visible) return;
         if (this.isInZone) {
             this.player.setVelocity(0);
 
             if (this.eventZone == LABEL_ID.DOOR_FORWARD_ID) {
                 this.moveForwardRoom();
+                return;
+            }
+
+            if (this.eventZone == LABEL_ID.DOOR_BACK_ID) {
+                this.moveBackRoom();
                 return;
             }
 
@@ -267,148 +266,9 @@ export class BaseScene extends Phaser.Scene {
     hideOverlay() {
     }
 
-    createFold() {
-        this.foldKeys = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2 + 30, 'disk');
-        this.foldKeys.setScale(0.5);
-        this.foldKeys.setDepth(2);
-        this.foldKeys.setScrollFactor(0);
-        this.foldKeys.setVisible(false);
-        this.foldKeys.setAlpha(1);
-
-
-        this.leftArrow = this.add.image(0, 0, 'leftArrow');
-        this.rightArrow = this.add.image(0, 0, 'rightArrow');
-
-        this.rightArrow.setPosition(
-            this.cameras.main.width - 210,
-            this.cameras.main.height / 2 - 10,
-        )
-        this.rightArrow.setScrollFactor(0);
-        this.rightArrow.setDepth(2);
-
-        this.leftArrow.setPosition(
-            210,
-            this.cameras.main.height / 2 - 10,
-        )
-        this.leftArrow.setScrollFactor(0);
-        this.leftArrow.setDepth(2);
-
-        this.leftArrow.setInteractive();
-        this.rightArrow.setInteractive();
-        this.leftArrow.setVisible(false);
-        this.rightArrow.setVisible(false);
-
-        this.rightArrow.on('pointerdown', () => {
-            this.moveRightKeys();
-        });
-
-        this.leftArrow.on('pointerdown', () => {
-            this.moveLeftKeys();
-        });
-
-        this.foldColseBtn = this.add.image(this.cameras.main.width - 200, 90, 'closeIcon');
-        this.foldColseBtn.setDisplaySize(50, 50);
-        this.foldColseBtn.setInteractive();
-        this.foldColseBtn.setVisible(false);
-        this.foldColseBtn.setDepth(2);
-        this.foldColseBtn.setScrollFactor(0);
-        this.foldColseBtn.setAlpha(0); // Начальное значение прозрачности
-
-        this.foldColseBtn.on('pointerdown', () => {
-            this.isOverlayVisible = false;
-
-            this.foldKeys.setVisible(false);
-            this.foldColseBtn.setVisible(false);
-            this.overlayBackground.setVisible(false);
-            this.leftArrow.setVisible(false);
-            this.rightArrow.setVisible(false);
-        });
-    }
-
-    showFold(context) {
-        if (context.isOverlayVisible) return;
-        context.player.setVelocity(0);
-        context.isOverlayVisible = true
-        context.overlayBackground.setAlpha(1);
-        context.foldColseBtn.setAlpha(1);
-
-
-        if (context.fold == null || context.fold.length < 1) {
-
-        } else if (context.fold.length > 1) {
-            context.foldImgNumber = 0;
-            context.leftArrow.setVisible(false);
-            context.rightArrow.setVisible(true);
-
-            context.foldKeys.setTexture(context.fold[0]);
-            context.foldKeys.setVisible(true);
-        } else {
-            context.foldImgNumber = 0;
-            context.foldKeys.setTexture(context.fold[0]);
-            context.foldKeys.setVisible(true);
-        }
-
-
-        context.overlayBackground.setVisible(true);
-        context.foldColseBtn.setVisible(true);
-    }
-
-    moveRightKeys() {
-        if (this.foldImgNumber < this.fold.length - 1) {
-            this.foldImgNumber += 1;
-            if (this.foldImgNumber == this.fold.length - 1) this.rightArrow.setVisible(false);
-            this.leftArrow.setVisible(true);
-
-            this.tweens.add({
-                targets: [this.foldKeys],
-                alpha: 0,
-                duration: 250,
-                onComplete: () => {
-                    try {
-                        this.foldKeys.setTexture(this.fold[this.foldImgNumber]);
-                        this.tweens.add({
-                            targets: [this.foldKeys],
-                            alpha: 1,
-                            duration: 250,
-                        });
-                    }
-                    catch (e) { }
-                }
-            });
-        }
-    }
-
-    moveLeftKeys() {
-        if (this.foldImgNumber > 0) {
-            this.foldImgNumber -= 1;
-            if (this.foldImgNumber == 0) this.leftArrow.setVisible(false);
-            this.rightArrow.setVisible(true);
-
-            this.tweens.add({
-                targets: [this.foldKeys],
-                alpha: 0,
-                duration: 250,
-                onComplete: () => {
-                    try {
-                        this.foldKeys.setTexture(this.fold[this.foldImgNumber]);
-                        this.tweens.add({
-                            targets: [this.foldKeys],
-                            alpha: 1,
-                            duration: 250,
-                        });
-                    }
-                    catch (e) { }
-                }
-            });
-        }
-    }
-
-    updateFold(context, arr) {
-        context.fold = arr
-    }
 
     showSettings(self) {
-        if (self.foldKeys.visible || self.overlayBackground.visible) return;
+        if (self.overlayBackground.visible) return;
         self.avatarDialog.setPosition(self.cameras.main.scrollX + 640, self.cameras.main.scrollY + 360);
         self.avatarDialog.setVisible(true);
         self.isOverlayVisible = true
@@ -417,7 +277,7 @@ export class BaseScene extends Phaser.Scene {
     }
 
     showExitMenu(self) {
-        if (self.foldKeys.visible || self.overlayBackground.visible) return;
+        if (self.overlayBackground.visible) return;
         self.exitContainer.setPosition(self.cameras.main.scrollX + 640, self.cameras.main.scrollY + 360);
         self.exitContainer.setVisible(true);
         self.isOverlayVisible = true
