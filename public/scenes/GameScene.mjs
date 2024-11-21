@@ -1,4 +1,5 @@
 import { CST, LABEL_ID } from "../CST.mjs";
+import { BoxesController } from "../share/BoxesController.mjs";
 
 import { createUILeftMobile } from "../share/UICreator.mjs";
 import { createUI } from "../share/UICreator.mjs";
@@ -45,10 +46,18 @@ export class GameScene extends BaseScene {
         this.createInputHandlers();
 
         createAvatarDialog(this, this.enterNewSettingsInAvatarDialog, this.closeAvatarDialog, this.player.room, isMobile());
+
+        this.boxesController = new BoxesController(this, this.player); // Передаем сцену
+        this.mySocket.subscribeTakeBoxes(this, this.boxesController.createBoxes.bind(this.boxesController));
+        this.boxesController.createPlace(703 + 25, 550 + 25, LABEL_ID.PLACE_KEY_1);
+        this.boxesController.createPlace(1359 + 25, 567 + 25, LABEL_ID.PLACE_KEY_2);
+        this.mySocket.emitGetBoxes([0, 1, 2]);
     }
 
     update() {
         super.update();
+
+        this.boxesController.update();
     }
 
     createUnWalkedObjects() {
@@ -85,20 +94,53 @@ export class GameScene extends BaseScene {
     showOverlay() {
         this.isOverlayVisible = true
 
-        if (this.eventZone == LABEL_ID.EMPTY_KEY) {
-            this.imgKey.setVisible(true);
-            this.imgKey.setTexture('emptyKey')
+        if (this.eventZone == LABEL_ID.DOOR_FORWARD_ID) {
+            this.imgKey.setTexture('paperDoor');
         }
 
+        if (this.eventZone == LABEL_ID.PLACE_KEY_1) {
+            this.imgKey.setTexture('paperPlace');
+        }
+
+        this.imgKey.setVisible(true);
         this.overlayBackground.setVisible(true);
         this.closeButton.setVisible(true);
     }
 
     hideOverlay() {
         this.isOverlayVisible = false
-        if (this.imgKey.visible) this.imgKey.setVisible(false);
+        // if (this.imgKey.visible) 
 
+        this.imgKey.setVisible(false);
         this.overlayBackground.setVisible(false);
         this.closeButton.setVisible(false);
+    }
+
+    boxeEvent() {
+        if (this.boxesController.isHoldingObject) {
+            if (this.eventZone == LABEL_ID.PLACE_KEY_1 && this.boxesController.places[0].box == null) {
+                this.boxesController.putBox(0)
+                return true;
+            }
+            if (this.eventZone == LABEL_ID.PLACE_KEY_2 && this.boxesController.places[1].box == null) {
+                this.boxesController.putBox(1)
+                return true;
+            }
+            this.boxesController.releaseObject(this.boxesController.isHoldingObject);
+            return true;
+        } else if (this.boxesController.isNearObject) {
+            this.boxesController.holdObject(this.boxesController.isNearObject);
+            return true;
+        }
+    }
+
+    doorEvent() {
+        if (this.eventZone == LABEL_ID.DOOR_FORWARD_ID && this.boxesController.places[1].box == '2' && this.boxesController.places[0].box == '1') {
+            this.moveForwardRoom();
+            return true;
+        }
+
+
+        return false;
     }
 }

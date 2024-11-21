@@ -30,6 +30,8 @@ export class LobbyScene extends Phaser.Scene {
         this.load.image('backgroundMenu', './assets/background/background-menu.jpg');
 
         this.load.image('pressX', 'assets/icon/pressX.png');
+        this.load.image('dropX', 'assets/icon/dropX.png');
+        this.load.image('takeX', 'assets/icon/takeX.png');
         this.load.image('closeIcon', 'assets/icon/closeIcon.png');
 
         this.load.image('overlayBackground', 'assets/overlay/overlayBackground.png');
@@ -37,6 +39,9 @@ export class LobbyScene extends Phaser.Scene {
         this.load.image('joystickBase', 'assets/joystick/joystick-back.png');
         this.load.image('joystickThumb', 'assets/joystick/thrumb-btn.png');
         this.load.image('touchButton', 'assets/joystick/touch-button.png');
+        this.load.image('dropMobile', 'assets/joystick/dropMobile.png');
+        this.load.image('takeMobile', 'assets/joystick/takeMobile.png');
+
         this.load.image('exitMobile', 'assets/button/exitMobile.png');
         this.load.image('settingsMobile', 'assets/button/settingsMobile.png');
 
@@ -48,14 +53,15 @@ export class LobbyScene extends Phaser.Scene {
         this.load.spritesheet('character5', './assets/characterMap/character5.png', { frameWidth: 48, frameHeight: 64 });
         this.load.spritesheet('character6', './assets/characterMap/character6.png', { frameWidth: 48, frameHeight: 64 });
 
-        // this.load.image('answer', 'assets/keyFrame/answer.png');
+        this.load.image('box1', 'assets/boxes/box1.png');
+        this.load.image('box2', 'assets/boxes/box2.png');
+        this.load.image('box3', 'assets/boxes/box3.png');
+
+
+
+        this.load.image('paperPlace', 'assets/keyFrame/paperPlace.png');
+        this.load.image('paperDoor', 'assets/keyFrame/paperDoor.png');
         // this.load.image('emptyKey', 'assets/keyFrame/emptyKey.png');
-
-        this.load.image('rightArrow', 'assets/button/rightArrow.png');
-        this.load.image('leftArrow', 'assets/button/leftArrow.png');
-
-        this.load.image('fold', 'assets/icon/foldMobile.png')
-
     }
 
     createWelcomeContainer() {
@@ -272,7 +278,7 @@ export class LobbyScene extends Phaser.Scene {
             this.joinRoomContainer.destroy();
             this.newSpaceContainer.destroy();
             this.exitContainer.destroy();
-            this.scene.start(CST.SCENE.GAMESCENE6, { players });
+            this.scene.start(CST.SCENE.GAMESCENE, { players });
         });
 
         socket.on('roomCreated', (roomCode) => {

@@ -114,4 +114,19 @@ export class GameScene2 extends BaseScene {
         this.overlayBackground.setVisible(false);
         this.closeButton.setVisible(false);
     }
+
+    doorEvent() {
+        if (this.eventZone == LABEL_ID.DOOR_FORWARD_ID && this.boxesController.places[1].box == '2') {
+            this.moveForwardRoom();
+            return true;
+        }
+
+        if (this.eventZone == LABEL_ID.DOOR_BACK_ID) {
+            this.moveBackRoom();
+            return true;
+        }
+
+
+        return false;
+    }
 }

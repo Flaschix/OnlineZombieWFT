@@ -28,6 +28,8 @@ export class BaseScene extends Phaser.Scene {
         this.moved = false;
 
         this.otherPlayers = {};
+
+        this.boxesController = null;
     }
 
     preload() {
@@ -183,8 +185,8 @@ export class BaseScene extends Phaser.Scene {
         this.overlayBackground.setAlpha(0); // Начальное значение прозрачности
 
         //Первый ключ
-        this.imgKey = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2 + 30, '');
-        this.imgKey.setScale(0.5);
+        this.imgKey = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, 'paperPlace');
+        this.imgKey.setScale(0.8);
         this.imgKey.setVisible(false);
         this.imgKey.setDepth(2);
         this.imgKey.setScrollFactor(0);
@@ -220,19 +222,36 @@ export class BaseScene extends Phaser.Scene {
         });
     }
 
+    boxeEvent() {
+
+    }
+
+    doorEvent() {
+
+    }
+
     itemInteract() {
+        if (this.avatarDialog.visible || this.exitContainer.visible) return;
+
+        if (this.boxeEvent()) {
+            return;
+        }
+
         if (this.isInZone) {
             this.player.setVelocity(0);
 
-            if (this.eventZone == LABEL_ID.DOOR_FORWARD_ID) {
-                this.moveForwardRoom();
-                return;
+            if (this.doorEvent()) {
+                return
             }
+            // if (this.eventZone == LABEL_ID.DOOR_FORWARD_ID) {
+            //     this.moveForwardRoom();
+            //     return;
+            // }
 
-            if (this.eventZone == LABEL_ID.DOOR_BACK_ID) {
-                this.moveBackRoom();
-                return;
-            }
+            // if (this.eventZone == LABEL_ID.DOOR_BACK_ID) {
+            //     this.moveBackRoom();
+            //     return;
+            // }
 
             if (!this.isOverlayVisible) {
 
@@ -363,16 +382,39 @@ export class BaseScene extends Phaser.Scene {
     }
 
     updatePressXVisibility() {
-        if (this.isInZone) {
+        if (this.boxesController != null && this.boxesController.flagPressC && this.boxesController.isHoldingObject != null) {
             if (this.mobileFlag) {
+                if (this.mobileXButton.texture.key != 'dropMobile') this.mobileXButton.setTexture('dropMobile');
+                this.mobileXButton.setVisible(true);
+                this.buttonBackground.setVisible(true);
+            } else {
+                this.pressX.setPosition(this.player.x, this.player.y - HEIGHT_PRESS_X);
+                if (this.pressX.texture.key != 'dropX') this.pressX.setTexture('dropX');
+                this.pressX.setVisible(true);
+            }
+        } else if (this.boxesController != null && this.boxesController.flagPressC && this.boxesController.isHoldingObject == null) {
+            if (this.mobileFlag) {
+                if (this.mobileXButton.texture.key != 'takeMobile') this.mobileXButton.setTexture('takeMobile');
+                this.mobileXButton.setVisible(true);
+                this.buttonBackground.setVisible(true);
+            } else {
+                this.pressX.setPosition(this.player.x, this.player.y - HEIGHT_PRESS_X);
+                if (this.pressX.texture.key != 'takeX') this.pressX.setTexture('takeX');
+                this.pressX.setVisible(true);
+            }
+        } else if (this.isInZone) {
+            if (this.mobileFlag) {
+                if (this.mobileXButton.texture.key != 'touchButton') this.mobileXButton.setTexture('touchButton');
                 this.mobileXButton.setVisible(true);
                 this.buttonBackground.setVisible(true);
             }
             else {
                 this.pressX.setPosition(this.player.x, this.player.y - HEIGHT_PRESS_X);
+                if (this.pressX.texture.key != 'pressX') this.pressX.setTexture('pressX');
                 this.pressX.setVisible(true);
             }
-        } else {
+        }
+        else {
             if (this.mobileFlag) {
                 this.mobileXButton.setVisible(false);
                 this.buttonBackground.setVisible(false);

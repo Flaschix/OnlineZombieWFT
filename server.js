@@ -92,20 +92,42 @@ io.on('connection', (socket) => {
             }
 
             if (!rooms[roomId]) {
-                rooms[roomId] = { levels: {}, fold: [] };
+                rooms[roomId] = {
+                    levels: {},
+                    boxes: [
+                        { x: 632, y: 1212, catch: null },
+                        { x: 1372, y: 1808, catch: null },
+                        { x: 1596, y: 1176, catch: null },
+                        { x: 630, y: 1581, catch: null },
+                        { x: 1320, y: 1836, catch: null },
+                        { x: 1138, y: 737, catch: null },
+                        { x: 654, y: 851, catch: null },
+                        { x: 1469, y: 1399, catch: null },
+                    ]
+                };
             }
 
             if (!rooms[roomId].levels['GameScene']) {
                 rooms[roomId].levels['GameScene'] = {};
             }
 
-            if (!rooms[roomId].fold) {
-                rooms[roomId].fold = [];
+            if (!rooms[roomId].boxes) {
+                rooms[roomId].boxes = [
+                    { x: 632, y: 1212, catch: null },
+                    { x: 1372, y: 1808, catch: null },
+                    { x: 1596, y: 1176, catch: null },
+                    { x: 630, y: 1581, catch: null },
+                    { x: 1320, y: 1836, catch: null },
+                    { x: 1138, y: 737, catch: null },
+                    { x: 654, y: 851, catch: null },
+                    { x: 1469, y: 1399, catch: null },
+                ]
             }
 
             socket.join(roomId);
             socket.roomId = roomId;
             socket.currentLevel = 'GameScene';
+            socket.box = null;
 
             socket.join(`${roomId}:${socket.currentLevel}`);
 
@@ -121,6 +143,11 @@ io.on('connection', (socket) => {
             socket.on(`disconnect`, () => {
                 console.log('Client disconnected');
                 if (rooms[roomId]) {
+
+                    if (socket.box != null) {
+                        rooms[roomId].boxes[socket.box].catch = null;
+                        socket.box = null;
+                    }
 
                     delete rooms[roomId].levels[socket.currentLevel][socket.id];
                     io.to(`${roomId}:${socket.currentLevel}`).emit('playerDisconnected', socket.id);
@@ -141,15 +168,6 @@ io.on('connection', (socket) => {
 
             socket.on(`getPlayers`, () => {
                 socket.emit('exitstedPlayers', rooms[roomId].levels[socket.currentLevel]);
-            });
-
-            socket.on(`getFold`, () => {
-                socket.emit('takeFold', rooms[roomId].fold);
-            });
-
-            socket.on(`emitAddNewImg`, (img) => {
-                rooms[roomId].fold.push(img)
-                io.to(`${roomId}`).emit('takeFold', rooms[roomId].fold);
             });
 
             socket.on('switchScene', (newScene, posX, posY) => {
@@ -197,6 +215,36 @@ io.on('connection', (socket) => {
                     rooms[roomId].levels[socket.currentLevel][socket.id] = { id: socket.id, x: newSettings.x, y: newSettings.y, character: newSettings.avatar, name: newSettings.name, room: roomCode };
                     socket.to(`${roomId}:${socket.currentLevel}`).emit(`playerReconected:${socket.currentLevel}`, rooms[roomId].levels[socket.currentLevel][socket.id]);
                 }
+            });
+
+
+
+            socket.on('catchBox', (boxId) => {
+                if (!rooms[roomId].boxes[boxId].catch) {
+                    //Добавить ещё кто именно взял коробку чтобы при вылете могли эту коробку отпустить
+                    rooms[roomId].boxes[boxId].catch = socket.id;
+                    socket.box = boxId;
+                    socket.emit('catchedBox', boxId);
+                }
+            })
+
+            socket.on('releaseBox', (boxId) => {
+                rooms[roomId].boxes[boxId].catch = null;
+                socket.box = null;
+            })
+
+            socket.on(`getBoxes`, (arr) => {
+                const data = {};
+                arr.forEach((id) => {
+                    data[id] = rooms[roomId].boxes[id];
+                })
+                socket.emit('takeBoxes', data);
+            });
+
+            socket.on('boxMovement', (movementData) => {
+                rooms[roomId].boxes[movementData.id].x = movementData.x;
+                rooms[roomId].boxes[movementData.id].y = movementData.y;
+                socket.to(`${roomId}:${socket.currentLevel}`).emit('boxMovement', movementData);
             });
         } catch (err) {
             console.error('Error joining room:', err);
