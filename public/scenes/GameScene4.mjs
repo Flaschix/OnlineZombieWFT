@@ -138,13 +138,13 @@ export class GameScene4 extends BaseScene {
     moveForwardRoom() {
         this.isInZone = false;
         this.eventZone = null;
-        this.mySocket.emitSwitchScene(CST.SCENE.GAMESCENE5, 1024, 1800);
+        this.mySocket.emitSwitchScene(CST.SCENE.GAMESCENE5, 1024, 1930);
     }
 
     moveBackRoom() {
         this.isInZone = false;
         this.eventZone = null;
-        this.mySocket.emitSwitchScene(CST.SCENE.GAMESCENE3, 1024, 1800);
+        this.mySocket.emitSwitchScene(CST.SCENE.GAMESCENE3, 1050, 260);
     }
 
     showOverlay() {

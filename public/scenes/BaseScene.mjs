@@ -189,7 +189,7 @@ export class BaseScene extends Phaser.Scene {
 
         //Первый ключ
         this.imgKey = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2 + 30, '');
-        this.imgKey.setScale(0.5);
+        // this.imgKey.setScale(0.5);
         this.imgKey.setVisible(false);
         this.imgKey.setDepth(2);
         this.imgKey.setScrollFactor(0);
