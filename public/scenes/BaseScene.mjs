@@ -243,15 +243,6 @@ export class BaseScene extends Phaser.Scene {
             if (this.doorEvent()) {
                 return
             }
-            // if (this.eventZone == LABEL_ID.DOOR_FORWARD_ID) {
-            //     this.moveForwardRoom();
-            //     return;
-            // }
-
-            // if (this.eventZone == LABEL_ID.DOOR_BACK_ID) {
-            //     this.moveBackRoom();
-            //     return;
-            // }
 
             if (!this.isOverlayVisible) {
 

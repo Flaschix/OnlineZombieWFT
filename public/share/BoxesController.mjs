@@ -36,7 +36,6 @@ export class BoxesController {
             objectA: this.scene.player,
             objectB: place,
             callback: function (eventData) {
-                console.log(this.places);
                 if (eventData.bodyB.box != null) return;
                 this.scene.isInZone = true;
                 this.scene.eventZone = Number(eventData.bodyB.label);
@@ -161,7 +160,6 @@ export class BoxesController {
 
     putBox(place) {
         const placeCur = this.places[place]
-        console.log(placeCur);
         this.boxes[`${this.isHoldingObject}`].setPosition(placeCur.position.x, placeCur.position.y);
         this.fillPlace(place, this.isHoldingObject);
         this.releaseObject(this.isHoldingObject, place);
@@ -187,7 +185,7 @@ export class BoxesController {
 
             // box.setPosition(box.x + deltaX, box.y + deltaY);
             box.setVelocity(deltaX, deltaY);
-            // console.log(box.x + " " + box.y);
+            // console.log(box.x + " " + box.y + " boxId: " + this.isHoldingObject);
 
             // Проверка и корректировка минимального расстояния
             const distance = Phaser.Math.Distance.Between(this.player.x, this.player.y, box.x, box.y);

@@ -1,4 +1,5 @@
 import { CST, LABEL_ID } from "../CST.mjs";
+import { BoxesController } from "../share/BoxesController.mjs";
 
 import { createUILeftMobile } from "../share/UICreator.mjs";
 import { createUI } from "../share/UICreator.mjs";
@@ -45,10 +46,21 @@ export class GameScene6 extends BaseScene {
         this.createInputHandlers();
 
         createAvatarDialog(this, this.enterNewSettingsInAvatarDialog, this.closeAvatarDialog, this.player.room, isMobile());
+
+        this.boxesController = new BoxesController(this, this.player); // Передаем сцену
+        this.mySocket.subscribeTakeBoxes(this, this.boxesController.createBoxes.bind(this.boxesController));
+        this.boxesController.createPlace(546 + 25, 532 + 25, LABEL_ID.PLACE_KEY_1);
+        this.boxesController.createPlace(1274 + 25, 517 + 25, LABEL_ID.PLACE_KEY_2);
+        this.boxesController.createPlace(1494 + 25, 1002 + 25, LABEL_ID.PLACE_KEY_3);
+        this.boxesController.createPlace(1478 + 25, 1635 + 25, LABEL_ID.PLACE_KEY_4);
+        this.boxesController.createPlace(546 + 25, 1547 + 25, LABEL_ID.PLACE_KEY_5);
+        this.mySocket.emitGetBoxes([18, 19, 20, 21, 22]);
     }
 
     update() {
         super.update();
+
+        this.boxesController.update();
     }
 
     createUnWalkedObjects() {
@@ -83,32 +95,78 @@ export class GameScene6 extends BaseScene {
     }
 
     moveForwardRoom() {
-
+        console.log('win');
     }
 
     moveBackRoom() {
         this.isInZone = false;
         this.eventZone = null;
-        this.mySocket.emitSwitchScene(CST.SCENE.GAMESCENE5, 1024, 1800);
+        this.mySocket.emitSwitchScene(CST.SCENE.GAMESCENE5, 1024, 400);
     }
 
     showOverlay() {
         this.isOverlayVisible = true
 
-        if (this.eventZone == LABEL_ID.EMPTY_KEY) {
-            this.imgKey.setVisible(true);
-            this.imgKey.setTexture('emptyKey')
+        if (this.eventZone == LABEL_ID.DOOR_FORWARD_ID) {
+            this.imgKey.setTexture('paperDoor');
+        } else {
+            this.imgKey.setTexture('paperPlace');
         }
 
+        this.imgKey.setVisible(true);
         this.overlayBackground.setVisible(true);
         this.closeButton.setVisible(true);
     }
 
     hideOverlay() {
         this.isOverlayVisible = false
-        if (this.imgKey.visible) this.imgKey.setVisible(false);
 
+        this.imgKey.setVisible(false);
         this.overlayBackground.setVisible(false);
         this.closeButton.setVisible(false);
+    }
+
+    boxeEvent() {
+        if (this.boxesController.isHoldingObject) {
+            if (this.eventZone == LABEL_ID.PLACE_KEY_1 && this.boxesController.places[0].box == null) {
+                this.boxesController.putBox(0)
+                return true;
+            }
+            if (this.eventZone == LABEL_ID.PLACE_KEY_2 && this.boxesController.places[1].box == null) {
+                this.boxesController.putBox(1)
+                return true;
+            }
+            if (this.eventZone == LABEL_ID.PLACE_KEY_3 && this.boxesController.places[2].box == null) {
+                this.boxesController.putBox(2)
+                return true;
+            }
+            if (this.eventZone == LABEL_ID.PLACE_KEY_4 && this.boxesController.places[3].box == null) {
+                this.boxesController.putBox(3)
+                return true;
+            }
+            if (this.eventZone == LABEL_ID.PLACE_KEY_5 && this.boxesController.places[4].box == null) {
+                this.boxesController.putBox(4)
+                return true;
+            }
+            this.boxesController.releaseObject(this.boxesController.isHoldingObject);
+            return true;
+        } else if (this.boxesController.isNearObject) {
+            this.boxesController.holdObject(this.boxesController.isNearObject);
+            return true;
+        }
+    }
+
+    doorEvent() {
+        if (this.eventZone == LABEL_ID.DOOR_FORWARD_ID && this.boxesController.places[0].box == '20' && this.boxesController.places[1].box == '18' && this.boxesController.places[2].box == '22' && this.boxesController.places[3].box == '19' && this.boxesController.places[4].box == '21') {
+            this.moveForwardRoom();
+            return true;
+        }
+
+        if (this.eventZone == LABEL_ID.DOOR_BACK_ID) {
+            this.moveBackRoom();
+            return true;
+        }
+
+        return false;
     }
 }

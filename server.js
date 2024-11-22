@@ -57,7 +57,7 @@ io.on('connection', (socket) => {
         const roomId = uuidv4();
 
         try {
-            await redisClient.set(roomCode, roomId, { EX: 200 }); // Устанавливаем срок действия 24 часа 86400
+            await redisClient.set(roomCode, roomId, { EX: 1000 }); // Устанавливаем срок действия 24 часа 86400
             rooms[roomId] = { levels: {} };
             // socket.join(roomId);
             socket.emit('roomCreated', roomCode);
@@ -95,6 +95,22 @@ io.on('connection', (socket) => {
                 rooms[roomId] = {
                     levels: {},
                     boxes: [
+                        { x: 1355, y: 1330, catch: null },
+                        { x: 1566, y: 925, catch: null },
+                        { x: 500, y: 1167, catch: null },
+                        { x: 1527, y: 1536, catch: null },
+                        { x: 440, y: 735, catch: null },
+                        { x: 1516, y: 734, catch: null },
+                        { x: 1478, y: 1137, catch: null },
+                        { x: 671, y: 1090, catch: null },
+                        { x: 660, y: 1614, catch: null },
+                        { x: 1272, y: 1587, catch: null },
+                        { x: 1596, y: 1176, catch: null },
+                        { x: 630, y: 1581, catch: null },
+                        { x: 1320, y: 1836, catch: null },
+                        { x: 1138, y: 737, catch: null },
+                        { x: 654, y: 851, catch: null },
+                        { x: 1469, y: 1399, catch: null },
                         { x: 632, y: 1212, catch: null },
                         { x: 1372, y: 1808, catch: null },
                         { x: 1596, y: 1176, catch: null },
@@ -102,7 +118,6 @@ io.on('connection', (socket) => {
                         { x: 1320, y: 1836, catch: null },
                         { x: 1138, y: 737, catch: null },
                         { x: 654, y: 851, catch: null },
-                        { x: 1469, y: 1399, catch: null },
                     ]
                 };
             }
@@ -113,14 +128,29 @@ io.on('connection', (socket) => {
 
             if (!rooms[roomId].boxes) {
                 rooms[roomId].boxes = [
-                    { x: 632, y: 1212, catch: null },
-                    { x: 1372, y: 1808, catch: null },
-                    { x: 1596, y: 1176, catch: null },
-                    { x: 630, y: 1581, catch: null },
-                    { x: 1320, y: 1836, catch: null },
-                    { x: 1138, y: 737, catch: null },
-                    { x: 654, y: 851, catch: null },
-                    { x: 1469, y: 1399, catch: null },
+                    { x: 1355, y: 1330, catch: null },
+                    { x: 1566, y: 925, catch: null },
+                    { x: 500, y: 1167, catch: null },
+                    { x: 1527, y: 1536, catch: null },
+                    { x: 440, y: 735, catch: null },
+                    { x: 1516, y: 734, catch: null },
+                    { x: 1478, y: 1137, catch: null },
+                    { x: 671, y: 1090, catch: null },
+                    { x: 660, y: 1614, catch: null },
+                    { x: 1272, y: 1587, catch: null },
+                    { x: 998, y: 1388, catch: null },
+                    { x: 502, y: 1256, catch: null },
+                    { x: 1442, y: 1604, catch: null },
+                    { x: 1200, y: 850, catch: null },
+                    { x: 1430, y: 804, catch: null },
+                    { x: 1380, y: 1436, catch: null },
+                    { x: 1245, y: 644, catch: null },
+                    { x: 602, y: 1708, catch: null },
+                    { x: 1478, y: 1345, catch: null },
+                    { x: 760, y: 678, catch: null },
+                    { x: 1277, y: 1564, catch: null },
+                    { x: 482, y: 999, catch: null },
+                    { x: 855, y: 1711, catch: null },
                 ]
             }
 

@@ -88,7 +88,7 @@ export class GameScene extends BaseScene {
     moveForwardRoom() {
         this.isInZone = false;
         this.eventZone = null;
-        this.mySocket.emitSwitchScene(CST.SCENE.GAMESCENE2, 1024, 1800);
+        this.mySocket.emitSwitchScene(CST.SCENE.GAMESCENE2, 1024, 1900);
     }
 
     showOverlay() {
@@ -96,9 +96,7 @@ export class GameScene extends BaseScene {
 
         if (this.eventZone == LABEL_ID.DOOR_FORWARD_ID) {
             this.imgKey.setTexture('paperDoor');
-        }
-
-        if (this.eventZone == LABEL_ID.PLACE_KEY_1) {
+        } else {
             this.imgKey.setTexture('paperPlace');
         }
 
@@ -109,7 +107,6 @@ export class GameScene extends BaseScene {
 
     hideOverlay() {
         this.isOverlayVisible = false
-        // if (this.imgKey.visible) 
 
         this.imgKey.setVisible(false);
         this.overlayBackground.setVisible(false);

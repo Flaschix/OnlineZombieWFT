@@ -56,6 +56,26 @@ export class LobbyScene extends Phaser.Scene {
         this.load.image('box1', 'assets/boxes/box1.png');
         this.load.image('box2', 'assets/boxes/box2.png');
         this.load.image('box3', 'assets/boxes/box3.png');
+        this.load.image('box4', 'assets/boxes/box4.png');
+        this.load.image('box5', 'assets/boxes/box5.png');
+        this.load.image('box6', 'assets/boxes/box6.png');
+        this.load.image('box7', 'assets/boxes/box7.png');
+        this.load.image('box8', 'assets/boxes/box8.png');
+        this.load.image('box9', 'assets/boxes/box9.png');
+        this.load.image('box10', 'assets/boxes/box10.png');
+        this.load.image('box11', 'assets/boxes/box11.png');
+        this.load.image('box12', 'assets/boxes/box12.png');
+        this.load.image('box13', 'assets/boxes/box13.png');
+        this.load.image('box14', 'assets/boxes/box14.png');
+        this.load.image('box15', 'assets/boxes/box15.png');
+        this.load.image('box16', 'assets/boxes/box16.png');
+        this.load.image('box17', 'assets/boxes/box17.png');
+        this.load.image('box18', 'assets/boxes/box18.png');
+        this.load.image('box19', 'assets/boxes/box19.png');
+        this.load.image('box20', 'assets/boxes/box20.png');
+        this.load.image('box21', 'assets/boxes/box21.png');
+        this.load.image('box22', 'assets/boxes/box22.png');
+        this.load.image('box23', 'assets/boxes/box23.png');
 
 
 
