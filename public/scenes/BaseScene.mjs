@@ -1,7 +1,7 @@
-import { LABEL_ID } from "../CST.mjs";
+import { LABEL_ID, myMap } from "../CST.mjs";
 import { socket } from "../CST.mjs";
 import { SocketWorker } from "../share/SocketWorker.mjs";
-import { createUIBottom, createUITop, createUIRight, createExitMenu, isMobile, HEIGHT_PRESS_X, CAMERA_MARGIN, CAMERA_MARGIN_MOBILE } from "../share/UICreator.mjs";
+import { createUIBottom, createUITop, createUIRight, createExitMenu, isMobile, HEIGHT_PRESS_X, CAMERA_MARGIN, CAMERA_MARGIN_MOBILE, decrypt } from "../share/UICreator.mjs";
 import { AnimationControl } from "../share/AnimationControl.mjs";
 import { PlayersController } from "../share/PlayerController.mjs";
 
@@ -189,11 +189,23 @@ export class BaseScene extends Phaser.Scene {
 
         //Первый ключ
         this.imgKey = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2 + 30, '');
-        // this.imgKey.setScale(0.5);
+        this.imgKey.setScale(0.7);
         this.imgKey.setVisible(false);
         this.imgKey.setDepth(2);
         this.imgKey.setScrollFactor(0);
         this.imgKey.setAlpha(0);
+
+        this.imgTitle = this.add.text(490, 200, ``, { font: "bold 26px MyCustomFont", fill: '#000000', align: 'center' }).setScrollFactor(0).setDepth(2);
+        this.imgTitle.setVisible(false);
+        this.imgTitle.setAlpha(0);
+
+        this.imgText = this.add.text(0, 0, ``, { font: "italic 26px MyCustomFont", fill: '#000000' }).setScrollFactor(0).setDepth(2);
+        this.imgText.setVisible(false);
+        this.imgText.setAlpha(0);
+
+        this.imgTextKey = this.add.text(0, 0, ``, { font: "italic 26px MyCustomFont", fill: '#2800F1', align: 'center' }).setScrollFactor(0).setDepth(2);
+        this.imgTextKey.setVisible(false);
+        this.imgTextKey.setAlpha(0);
 
         this.closeButton = this.add.image(this.cameras.main.width - 200, 85, 'closeIcon');
         this.closeButton.setDisplaySize(50, 50);
@@ -206,7 +218,7 @@ export class BaseScene extends Phaser.Scene {
         this.closeButton.on('pointerdown', () => {
             this.isOverlayVisible = false;
             this.tweens.add({
-                targets: [this.closeButton, this.overlayBackground, this.imgKey],
+                targets: [this.closeButton, this.overlayBackground, this.imgKey, this.imgTitle, this.imgText, this.imgTextKey],
                 alpha: 0,
                 duration: 500,
                 onComplete: () => {
@@ -226,7 +238,7 @@ export class BaseScene extends Phaser.Scene {
     }
 
     itemInteract() {
-        if (this.foldKeys.visible) return;
+        if (this.foldColseBtn.visible) return;
         if (this.isInZone) {
             this.player.setVelocity(0);
 
@@ -245,14 +257,14 @@ export class BaseScene extends Phaser.Scene {
                 this.showOverlay();
 
                 this.tweens.add({
-                    targets: [this.overlayBackground, this.closeButton, this.imgKey],
+                    targets: [this.overlayBackground, this.closeButton, this.imgKey, this.imgTitle, this.imgText, this.imgTextKey],
                     alpha: 1,
                     duration: 500
                 });
             }
             else {
                 this.tweens.add({
-                    targets: [this.overlayBackground, this.closeButton, this.imgKey],
+                    targets: [this.overlayBackground, this.closeButton, this.imgKey, this.imgTitle, this.imgText, this.imgTextKey],
                     alpha: 0,
                     duration: 500,
                     onComplete: () => {
@@ -266,6 +278,26 @@ export class BaseScene extends Phaser.Scene {
         }
     }
 
+    showImg(key) {
+        const keyObj = myMap.get(key);
+
+        this.imgKey.setTexture(keyObj.img);
+        this.imgTitle.setText(`Стр ${key}`);
+        this.imgText.setText(decrypt(keyObj.text));
+        this.imgTextKey.setText(decrypt(keyObj.key));
+
+        this.imgText.setPosition(keyObj.x, keyObj.y);
+        this.imgTextKey.setPosition(keyObj.xk, keyObj.yk);
+
+        this.imgKey.setVisible(true);
+        this.imgTitle.setVisible(true);
+        this.imgText.setVisible(true);
+        this.imgTextKey.setVisible(true);
+        if (this.fold.indexOf(key) == -1) {
+            this.mySocket.emitAddNewImg(key);
+        }
+    }
+
     showOverlay() {
     }
 
@@ -273,14 +305,6 @@ export class BaseScene extends Phaser.Scene {
     }
 
     createFold() {
-        this.foldKeys = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2 + 30, 'disk');
-        this.foldKeys.setScale(0.5);
-        this.foldKeys.setDepth(2);
-        this.foldKeys.setScrollFactor(0);
-        this.foldKeys.setVisible(false);
-        this.foldKeys.setAlpha(1);
-
-
         this.leftArrow = this.add.image(0, 0, 'leftArrow');
         this.rightArrow = this.add.image(0, 0, 'rightArrow');
 
@@ -320,13 +344,22 @@ export class BaseScene extends Phaser.Scene {
         this.foldColseBtn.setAlpha(0); // Начальное значение прозрачности
 
         this.foldColseBtn.on('pointerdown', () => {
-            this.isOverlayVisible = false;
+            this.tweens.add({
+                targets: [this.foldColseBtn, this.overlayBackground, this.imgKey, this.imgTitle, this.imgText, this.imgTextKey],
+                alpha: 0,
+                duration: 500,
+                onComplete: () => {
+                    try {
+                        this.isOverlayVisible = false;
 
-            this.foldKeys.setVisible(false);
-            this.foldColseBtn.setVisible(false);
-            this.overlayBackground.setVisible(false);
-            this.leftArrow.setVisible(false);
-            this.rightArrow.setVisible(false);
+                        this.hideOverlay();
+                        this.foldColseBtn.setVisible(false);
+                        this.leftArrow.setVisible(false);
+                        this.rightArrow.setVisible(false);
+                    }
+                    catch (e) { }
+                }
+            });
         });
     }
 
@@ -334,9 +367,12 @@ export class BaseScene extends Phaser.Scene {
         if (context.isOverlayVisible) return;
         context.player.setVelocity(0);
         context.isOverlayVisible = true
-        context.overlayBackground.setAlpha(1);
-        context.foldColseBtn.setAlpha(1);
 
+        context.tweens.add({
+            targets: [context.overlayBackground, context.foldColseBtn, context.imgKey, context.imgTitle, context.imgText, context.imgTextKey],
+            alpha: 1,
+            duration: 500
+        });
 
         if (context.fold == null || context.fold.length < 1) {
 
@@ -345,12 +381,11 @@ export class BaseScene extends Phaser.Scene {
             context.leftArrow.setVisible(false);
             context.rightArrow.setVisible(true);
 
-            context.foldKeys.setTexture(context.fold[0]);
-            context.foldKeys.setVisible(true);
+            context.showImg(context.fold[0]);
         } else {
             context.foldImgNumber = 0;
-            context.foldKeys.setTexture(context.fold[0]);
-            context.foldKeys.setVisible(true);
+
+            context.showImg(context.fold[0]);
         }
 
 
@@ -365,17 +400,18 @@ export class BaseScene extends Phaser.Scene {
             this.leftArrow.setVisible(true);
 
             this.tweens.add({
-                targets: [this.foldKeys],
+                targets: [this.imgKey, this.imgTitle, this.imgText, this.imgTextKey],
                 alpha: 0,
                 duration: 250,
                 onComplete: () => {
                     try {
-                        this.foldKeys.setTexture(this.fold[this.foldImgNumber]);
                         this.tweens.add({
-                            targets: [this.foldKeys],
+                            targets: [this.imgKey, this.imgTitle, this.imgText, this.imgTextKey],
                             alpha: 1,
                             duration: 250,
                         });
+
+                        this.showImg(this.fold[this.foldImgNumber]);
                     }
                     catch (e) { }
                 }
@@ -390,17 +426,18 @@ export class BaseScene extends Phaser.Scene {
             this.rightArrow.setVisible(true);
 
             this.tweens.add({
-                targets: [this.foldKeys],
+                targets: [this.imgKey, this.imgTitle, this.imgText, this.imgTextKey],
                 alpha: 0,
                 duration: 250,
                 onComplete: () => {
                     try {
-                        this.foldKeys.setTexture(this.fold[this.foldImgNumber]);
                         this.tweens.add({
-                            targets: [this.foldKeys],
+                            targets: [this.imgKey, this.imgTitle, this.imgText, this.imgTextKey],
                             alpha: 1,
                             duration: 250,
                         });
+
+                        this.showImg(this.fold[this.foldImgNumber]);
                     }
                     catch (e) { }
                 }
@@ -413,7 +450,7 @@ export class BaseScene extends Phaser.Scene {
     }
 
     showSettings(self) {
-        if (self.foldKeys.visible || self.overlayBackground.visible) return;
+        if (self.foldColseBtn.visible || self.overlayBackground.visible) return;
         self.avatarDialog.setPosition(self.cameras.main.scrollX + 640, self.cameras.main.scrollY + 360);
         self.avatarDialog.setVisible(true);
         self.isOverlayVisible = true
@@ -422,7 +459,7 @@ export class BaseScene extends Phaser.Scene {
     }
 
     showExitMenu(self) {
-        if (self.foldKeys.visible || self.overlayBackground.visible) return;
+        if (self.foldColseBtn.visible || self.overlayBackground.visible) return;
         self.exitContainer.setPosition(self.cameras.main.scrollX + 640, self.cameras.main.scrollY + 360);
         self.exitContainer.setVisible(true);
         self.isOverlayVisible = true

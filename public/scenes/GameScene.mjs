@@ -1,4 +1,4 @@
-import { CST, LABEL_ID } from "../CST.mjs";
+import { CST, LABEL_ID, myMap } from "../CST.mjs";
 
 
 import { createUILeftMobile } from "../share/UICreator.mjs";
@@ -22,6 +22,7 @@ export class GameScene extends BaseScene {
 
         //map
         this.load.image('map', './assets/map/map1.jpg');
+
     }
 
     create(data) {
@@ -73,7 +74,7 @@ export class GameScene extends BaseScene {
         })
 
         const box1 = this.matter.add.fromVertices(1648.5 + 109, 848 + 165.5, '0.5 330 0.5 1 217 1 217 330', {
-            label: `${LABEL_ID.EMPTY_KEY}`,
+            label: `${LABEL_ID.SECOND_KEY}`,
             isStatic: true,
         })
 
@@ -126,7 +127,7 @@ export class GameScene extends BaseScene {
 
 
         const box3 = this.matter.add.fromVertices(1128 + 167, 1466 + 149.5, '184.5 184 17 184 1 202 1 273.5 11.5 298 327.5 298 333 13.5 309.5 0.5 184.5 0.5', {
-            label: `${LABEL_ID.EMPTY_KEY}`,
+            label: `${LABEL_ID.FIRST_KEY}`,
             isStatic: true,
         })
         box3.form = '184.5 184 17 184 1 202 1 273.5 11.5 298 327.5 298 333 13.5 309.5 0.5 184.5 0.5';
@@ -146,20 +147,14 @@ export class GameScene extends BaseScene {
         this.isOverlayVisible = true
 
         if (this.eventZone == LABEL_ID.FIRST_KEY) {
-            this.imgKey.setVisible(true);
-            this.imgKey.setTexture('firstKey')
-            if (this.fold.indexOf(this.imgKey.texture.key) == -1) {
-                this.mySocket.emitAddNewImg(this.imgKey.texture.key);
-            }
+            const key = '4';
+            this.showImg(key);
         } else if (this.eventZone == LABEL_ID.SECOND_KEY) {
-            this.imgKey.setVisible(true);
-            this.imgKey.setTexture('secondKey')
-            if (this.fold.indexOf(this.imgKey.texture.key) == -1) {
-                this.mySocket.emitAddNewImg(this.imgKey.texture.key);
-            }
+            const key = '2';
+            this.showImg(key);
         } else if (this.eventZone == LABEL_ID.EMPTY_KEY) {
-            this.imgKey.setVisible(true);
             this.imgKey.setTexture('emptyKey')
+            this.imgKey.setVisible(true);
         }
 
         this.overlayBackground.setVisible(true);
@@ -168,8 +163,11 @@ export class GameScene extends BaseScene {
 
     hideOverlay() {
         this.isOverlayVisible = false
-        if (this.imgKey.visible) this.imgKey.setVisible(false);
 
+        this.imgKey.setVisible(false);
+        this.imgTitle.setVisible(false);
+        this.imgText.setVisible(false);
+        this.imgTextKey.setVisible(false);
         this.overlayBackground.setVisible(false);
         this.closeButton.setVisible(false);
     }

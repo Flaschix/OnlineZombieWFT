@@ -48,21 +48,19 @@ export class LobbyScene extends Phaser.Scene {
         this.load.spritesheet('character5', './assets/characterMap/character5.png', { frameWidth: 48, frameHeight: 64 });
         this.load.spritesheet('character6', './assets/characterMap/character6.png', { frameWidth: 48, frameHeight: 64 });
 
-
-        this.load.image('firstKey', 'assets/keyFrame/firstKey.png');
-        this.load.image('secondKey', 'assets/keyFrame/secondKey.png');
-        this.load.image('thirdKey', 'assets/keyFrame/thirdKey.png');
-        this.load.image('fourthKey', 'assets/keyFrame/fourthKey.png');
-        this.load.image('fivethKey', 'assets/keyFrame/fivethKey.png');
-        this.load.image('sixethKey', 'assets/keyFrame/sixethKey.png');
         this.load.image('answer', 'assets/keyFrame/answer.png');
         this.load.image('emptyKey', 'assets/keyFrame/emptyKey.png');
+        this.load.image('paper1', 'assets/keyFrame/1.png');
+        this.load.image('paper3', 'assets/keyFrame/3.png');
+        this.load.image('paper4', 'assets/keyFrame/4.png');
+        this.load.image('paper6', 'assets/keyFrame/6.png');
+        this.load.image('paper7', 'assets/keyFrame/7.png');
+        this.load.image('paper9', 'assets/keyFrame/9.png');
 
         this.load.image('rightArrow', 'assets/button/rightArrow.png');
         this.load.image('leftArrow', 'assets/button/leftArrow.png');
 
         this.load.image('fold', 'assets/icon/foldMobile.png')
-
     }
 
     createWelcomeContainer() {
