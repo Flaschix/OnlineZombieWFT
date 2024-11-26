@@ -15,7 +15,7 @@ export const socket = io();
 
 export const LABEL_ID = {
     DOOR_FORWARD_ID: 11111111,
-    DOOR_LEFT_ID: 111143444,
+    DOOR_BACK_ID: 111143444,
 
     FIRST_KEY: 33333333,
     SECOND_KEY: 44444444,
@@ -28,6 +28,8 @@ export const LABEL_ID = {
     NINETH_KEY: 82342424,
 
     EMPTY_KEY: 2312525,
+
+    BOARD_KEY: 624234252,
 }
 
 export const myMap = new Map([

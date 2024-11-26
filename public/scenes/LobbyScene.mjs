@@ -60,6 +60,39 @@ export class LobbyScene extends Phaser.Scene {
         this.load.image('leftArrow', 'assets/button/leftArrow.png');
 
         this.load.image('fold', 'assets/icon/foldMobile.png')
+
+
+        this.load.image('red', './assets/collbs/red.png');
+        this.load.image('yellow', './assets/collbs/yellow.png');
+        this.load.image('green', './assets/collbs/green.png');
+        this.load.image('blue', './assets/collbs/blue.png');
+        this.load.image('purple', './assets/collbs/purple.png');
+        this.load.image('pink', './assets/collbs/pink.png');
+        this.load.image('glass', './assets/collbs/glass.png');
+
+        this.load.image('fill1', './assets/collbsFill/fill1.png');
+        this.load.image('fill2', './assets/collbsFill/fill2.png');
+        this.load.image('fill3', './assets/collbsFill/fill3.png');
+        this.load.image('fill4', './assets/collbsFill/fill4.png');
+
+        this.load.image('cursorBack', './assets/cursors/cursorBack.png');
+        this.load.image('cursorStoke', './assets/cursors/cursorStoke.png');
+        this.load.image('otherPlayerCursor', './assets/joystick/joystick-back.png');
+
+        this.load.image('reset', 'assets/button/reset.png');
+        this.load.image('try-again', 'assets/button/try-again.png');
+        this.load.image('cancel', 'assets/button/cancel.png');
+        this.load.image('board', 'assets/board/board.png');
+        this.load.image('generate', 'assets/button/generate.png');
+        this.load.image('collbsBack', './assets/board/collbsBack.png');
+        this.load.image('boardBack', './assets/board/boardBack.png');
+
+        this.load.image('char1', './assets/character/man1Noback.png');
+        this.load.image('char2', './assets/character/man2Noback.png');
+        this.load.image('char3', './assets/character/man3Noback.png');
+        this.load.image('char4', './assets/character/woman1Noback.png');
+        this.load.image('char5', './assets/character/woman2Noback.png');
+        this.load.image('char6', './assets/character/woman3Noback.png');
     }
 
     createWelcomeContainer() {

@@ -506,7 +506,7 @@ export class GameScene extends BaseScene {
 
 
         const box3 = this.matter.add.fromVertices(1128 + 167, 1466 + 149.5, '184.5 184 17 184 1 202 1 273.5 11.5 298 327.5 298 333 13.5 309.5 0.5 184.5 0.5', {
-            label: `${LABEL_ID.FIRST_KEY}`,
+            label: `${LABEL_ID.BOARD_KEY}`,
             isStatic: true,
         })
         box3.form = '184.5 184 17 184 1 202 1 273.5 11.5 298 327.5 298 333 13.5 309.5 0.5 184.5 0.5';

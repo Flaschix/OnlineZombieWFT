@@ -249,6 +249,11 @@ export class BaseScene extends Phaser.Scene {
                 return;
             }
 
+            if (this.eventZone == LABEL_ID.BOARD_KEY) {
+                this.openBoard();
+                return;
+            }
+
             if (!this.isOverlayVisible) {
 
                 this.showOverlay();
