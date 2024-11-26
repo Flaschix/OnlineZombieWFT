@@ -3,6 +3,7 @@ export class SocketWorker {
     constructor(socket) {
         this.socket = socket;
         this.lastSentTime = 0;
+        this.lastSentTimeCursor = 0;
         this.sendInterval = 75;
     }
 
@@ -100,5 +101,74 @@ export class SocketWorker {
 
     unSubscribeTakeFold() {
         this.socket.removeAllListeners('takeFold');
+    }
+
+
+
+    unSubscribeBoard() {
+        this.socket.removeAllListeners('exitstedGlasses');
+        this.socket.removeAllListeners('coloredGlass');
+        this.socket.removeAllListeners('resetedGlasses');
+        this.socket.removeAllListeners('playerClosedBoard');
+        this.socket.removeAllListeners('cursorMove');
+        this.socket.removeAllListeners('answer');
+    }
+
+    subscribeExistedGlasses(context, event) {
+        this.socket.on('exitstedGlasses', (glasses) => {
+            event.call(context, glasses);
+        });
+    }
+
+    subscribeColoredGlass(context, event) {
+        this.socket.on('coloredGlass', (data) => {
+            event.call(context, data);
+        });
+    }
+
+    subscribeResetedGlasses(context, event) {
+        this.socket.on('resetedGlasses', (glasses) => {
+            event.call(context, glasses);
+        });
+    }
+
+    subscribePlayerClosedBoard(context, event) {
+        this.socket.on('playerClosedBoard', (id) => {
+            event.call(context, id);
+        });
+    }
+
+    subscribeAnswer(context, event) {
+        this.socket.on('answer', (data) => {
+            event.call(context, data);
+        });
+    }
+
+    emitColorGlass(data) {
+        this.socket.emit('colorGlass', data);
+    }
+
+    emitGetGlasses() {
+        this.socket.emit('getGlasses');
+    }
+
+    emitResetGlasses() {
+        this.socket.emit('resetGlasses');
+    }
+
+    emitCursorMove(data) {
+        const currentTime = Date.now();
+        if (currentTime - this.lastSentTimeCursor > this.sendInterval) {
+            this.socket.emit('cursorMove', data);
+            this.lastSentTimeCursor = currentTime;
+        }
+    }
+
+    emitCloseBoard() {
+        this.socket.emit('closeBoard', this.socket.id);
+    }
+
+    emitAnswer() {
+        this.socket.emit('answer');
     }
 }

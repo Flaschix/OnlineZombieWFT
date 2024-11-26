@@ -92,7 +92,7 @@ io.on('connection', (socket) => {
             }
 
             if (!rooms[roomId]) {
-                rooms[roomId] = { levels: {}, fold: [] };
+                rooms[roomId] = { levels: {}, fold: [], glasses: [[null, null, null, null], [null, null, null, null], [null, null, null, null], [null, null, null, null]] };
             }
 
             if (!rooms[roomId].levels['GameScene']) {
@@ -101,6 +101,10 @@ io.on('connection', (socket) => {
 
             if (!rooms[roomId].fold) {
                 rooms[roomId].fold = [];
+            }
+
+            if (!rooms[roomId].glasses) {
+                rooms[roomId].glasses = [[null, null, null, null], [null, null, null, null], [null, null, null, null], [null, null, null, null]];
             }
 
             socket.join(roomId);
@@ -122,6 +126,7 @@ io.on('connection', (socket) => {
                 console.log('Client disconnected');
                 if (rooms[roomId]) {
 
+                    socket.to(`${roomId}:${socket.currentLevel}`).emit('playerClosedBoard', socket.id);
                     delete rooms[roomId].levels[socket.currentLevel][socket.id];
                     io.to(`${roomId}:${socket.currentLevel}`).emit('playerDisconnected', socket.id);
                 }
@@ -196,6 +201,44 @@ io.on('connection', (socket) => {
 
                     rooms[roomId].levels[socket.currentLevel][socket.id] = { id: socket.id, x: newSettings.x, y: newSettings.y, character: newSettings.avatar, name: newSettings.name, room: roomCode };
                     socket.to(`${roomId}:${socket.currentLevel}`).emit(`playerReconected:${socket.currentLevel}`, rooms[roomId].levels[socket.currentLevel][socket.id]);
+                }
+            });
+
+            socket.on('colorGlass', (data) => {
+                let glass = data.glass;
+                let fill = data.fill;
+
+                if (rooms[roomId].glasses[glass][fill] == null) {
+                    rooms[roomId].glasses[glass][fill] = data.color;
+                    io.to(`${roomId}:${socket.currentLevel}`).emit('coloredGlass', data);
+                }
+            });
+
+            socket.on(`getGlasses`, () => {
+                socket.emit('exitstedGlasses', rooms[roomId].glasses);
+            });
+
+            socket.on('resetGlasses', () => {
+                rooms[roomId].glasses = [[null, null, null, null], [null, null, null, null], [null, null, null, null], [null, null, null, null]];
+
+                io.to(`${roomId}:${socket.currentLevel}`).emit('resetedGlasses', rooms[roomId].glasses);
+            });
+
+            socket.on('cursorMove', (data) => {
+                // Рассылаем остальным игрокам положение курсора
+                socket.to(`${roomId}:${socket.currentLevel}`).emit('cursorMove', data);
+            });
+
+            socket.on('closeBoard', (data) => {
+                // Уведомляем других игроков о закрытии доски
+                socket.to(`${roomId}:${socket.currentLevel}`).emit('playerClosedBoard', data);
+            });
+
+            socket.on(`answer`, () => {
+                if (rooms[roomId].glasses[0][0] == null) {
+                    io.to(`${roomId}:${socket.currentLevel}`).emit('answer', true);
+                } else {
+                    io.to(`${roomId}:${socket.currentLevel}`).emit('answer', false);
                 }
             });
         } catch (err) {
