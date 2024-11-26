@@ -195,17 +195,13 @@ export class BaseScene extends Phaser.Scene {
         this.imgKey.setScrollFactor(0);
         this.imgKey.setAlpha(0);
 
-        this.imgTitle = this.add.text(490, 200, ``, { font: "bold 26px MyCustomFont", fill: '#000000', align: 'center' }).setScrollFactor(0).setDepth(2);
+        this.imgTitle = this.add.text(0, 0, ``, { font: "bold 26px MyCustomFont", fill: '#000000', align: 'center' }).setScrollFactor(0).setDepth(2);
         this.imgTitle.setVisible(false);
         this.imgTitle.setAlpha(0);
 
-        this.imgText = this.add.text(0, 0, ``, { font: "italic 26px MyCustomFont", fill: '#000000' }).setScrollFactor(0).setDepth(2);
+        this.imgText = this.add.text(0, 0, ``, { font: "normal 26px MyCustomFont", fill: '#000000' }).setScrollFactor(0).setDepth(2);
         this.imgText.setVisible(false);
         this.imgText.setAlpha(0);
-
-        this.imgTextKey = this.add.text(0, 0, ``, { font: "italic 26px MyCustomFont", fill: '#2800F1', align: 'center' }).setScrollFactor(0).setDepth(2);
-        this.imgTextKey.setVisible(false);
-        this.imgTextKey.setAlpha(0);
 
         this.closeButton = this.add.image(this.cameras.main.width - 200, 85, 'closeIcon');
         this.closeButton.setDisplaySize(50, 50);
@@ -218,7 +214,7 @@ export class BaseScene extends Phaser.Scene {
         this.closeButton.on('pointerdown', () => {
             this.isOverlayVisible = false;
             this.tweens.add({
-                targets: [this.closeButton, this.overlayBackground, this.imgKey, this.imgTitle, this.imgText, this.imgTextKey],
+                targets: [this.closeButton, this.overlayBackground, this.imgKey, this.imgTitle, this.imgText],
                 alpha: 0,
                 duration: 500,
                 onComplete: () => {
@@ -239,6 +235,7 @@ export class BaseScene extends Phaser.Scene {
 
     itemInteract() {
         if (this.foldColseBtn.visible) return;
+        console.log('test');
         if (this.isInZone) {
             this.player.setVelocity(0);
 
@@ -257,14 +254,14 @@ export class BaseScene extends Phaser.Scene {
                 this.showOverlay();
 
                 this.tweens.add({
-                    targets: [this.overlayBackground, this.closeButton, this.imgKey, this.imgTitle, this.imgText, this.imgTextKey],
+                    targets: [this.overlayBackground, this.closeButton, this.imgKey, this.imgTitle, this.imgText],
                     alpha: 1,
                     duration: 500
                 });
             }
             else {
                 this.tweens.add({
-                    targets: [this.overlayBackground, this.closeButton, this.imgKey, this.imgTitle, this.imgText, this.imgTextKey],
+                    targets: [this.overlayBackground, this.closeButton, this.imgKey, this.imgTitle, this.imgText],
                     alpha: 0,
                     duration: 500,
                     onComplete: () => {
@@ -279,20 +276,24 @@ export class BaseScene extends Phaser.Scene {
     }
 
     showImg(key) {
+        console.log(key);
+
         const keyObj = myMap.get(key);
 
         this.imgKey.setTexture(keyObj.img);
-        this.imgTitle.setText(`Стр ${key}`);
+        this.imgTitle.setText(decrypt(keyObj.title));
         this.imgText.setText(decrypt(keyObj.text));
-        this.imgTextKey.setText(decrypt(keyObj.key));
 
+        this.imgTitle.setPosition(keyObj.xt, keyObj.yt);
         this.imgText.setPosition(keyObj.x, keyObj.y);
-        this.imgTextKey.setPosition(keyObj.xk, keyObj.yk);
+
+        if (keyObj.title == '') this.imgText.setStyle({ font: "italic 32px MyCustomFont", align: 'center' });
+        else this.imgText.setStyle({ font: "26px MyCustomFont", align: 'left' });
 
         this.imgKey.setVisible(true);
         this.imgTitle.setVisible(true);
         this.imgText.setVisible(true);
-        this.imgTextKey.setVisible(true);
+
         if (this.fold.indexOf(key) == -1) {
             this.mySocket.emitAddNewImg(key);
         }
@@ -345,17 +346,15 @@ export class BaseScene extends Phaser.Scene {
 
         this.foldColseBtn.on('pointerdown', () => {
             this.tweens.add({
-                targets: [this.foldColseBtn, this.overlayBackground, this.imgKey, this.imgTitle, this.imgText, this.imgTextKey],
+                targets: [this.foldColseBtn, this.overlayBackground, this.imgKey, this.imgTitle, this.imgText, this.leftArrow, this.rightArrow],
                 alpha: 0,
                 duration: 500,
                 onComplete: () => {
                     try {
-                        this.isOverlayVisible = false;
-
-                        this.hideOverlay();
                         this.foldColseBtn.setVisible(false);
                         this.leftArrow.setVisible(false);
                         this.rightArrow.setVisible(false);
+                        this.hideOverlay();
                     }
                     catch (e) { }
                 }
@@ -369,7 +368,7 @@ export class BaseScene extends Phaser.Scene {
         context.isOverlayVisible = true
 
         context.tweens.add({
-            targets: [context.overlayBackground, context.foldColseBtn, context.imgKey, context.imgTitle, context.imgText, context.imgTextKey],
+            targets: [context.overlayBackground, context.foldColseBtn, context.imgKey, context.imgTitle, context.imgText, context.leftArrow, context.rightArrow],
             alpha: 1,
             duration: 500
         });
@@ -400,13 +399,13 @@ export class BaseScene extends Phaser.Scene {
             this.leftArrow.setVisible(true);
 
             this.tweens.add({
-                targets: [this.imgKey, this.imgTitle, this.imgText, this.imgTextKey],
+                targets: [this.imgKey, this.imgTitle, this.imgText],
                 alpha: 0,
                 duration: 250,
                 onComplete: () => {
                     try {
                         this.tweens.add({
-                            targets: [this.imgKey, this.imgTitle, this.imgText, this.imgTextKey],
+                            targets: [this.imgKey, this.imgTitle, this.imgText],
                             alpha: 1,
                             duration: 250,
                         });
@@ -426,13 +425,13 @@ export class BaseScene extends Phaser.Scene {
             this.rightArrow.setVisible(true);
 
             this.tweens.add({
-                targets: [this.imgKey, this.imgTitle, this.imgText, this.imgTextKey],
+                targets: [this.imgKey, this.imgTitle, this.imgText],
                 alpha: 0,
                 duration: 250,
                 onComplete: () => {
                     try {
                         this.tweens.add({
-                            targets: [this.imgKey, this.imgTitle, this.imgText, this.imgTextKey],
+                            targets: [this.imgKey, this.imgTitle, this.imgText],
                             alpha: 1,
                             duration: 250,
                         });

@@ -147,10 +147,10 @@ export class GameScene extends BaseScene {
         this.isOverlayVisible = true
 
         if (this.eventZone == LABEL_ID.FIRST_KEY) {
-            const key = '4';
+            const key = '1';
             this.showImg(key);
         } else if (this.eventZone == LABEL_ID.SECOND_KEY) {
-            const key = '2';
+            const key = '5';
             this.showImg(key);
         } else if (this.eventZone == LABEL_ID.EMPTY_KEY) {
             this.imgKey.setTexture('emptyKey')
@@ -167,7 +167,6 @@ export class GameScene extends BaseScene {
         this.imgKey.setVisible(false);
         this.imgTitle.setVisible(false);
         this.imgText.setVisible(false);
-        this.imgTextKey.setVisible(false);
         this.overlayBackground.setVisible(false);
         this.closeButton.setVisible(false);
     }
