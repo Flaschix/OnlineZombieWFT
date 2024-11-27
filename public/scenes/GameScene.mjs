@@ -1,4 +1,5 @@
 import { CST, LABEL_ID, myMap } from "../CST.mjs";
+import { Colors } from "../share/Colors.mjs";
 
 
 import { createUILeftMobile } from "../share/UICreator.mjs";
@@ -15,6 +16,14 @@ import { BaseScene } from "./BaseScene.mjs";
 export class GameScene extends BaseScene {
     constructor() {
         super(CST.SCENE.GAMESCENE);
+
+        this.otherCursors = {};
+        this.selectedColor = Colors.WHITE;
+
+        this.fillArr = [];
+        this.glasses = null;
+
+        this.answerOverlay = false;
     }
 
     preload() {
@@ -307,7 +316,7 @@ export class GameScene extends BaseScene {
         this.mySocket.subscribePlayerClosedBoard(this, this.deleteBoardPlayer);
 
         // Прослушивание переданных сервером данных о курсорах других игроков
-        socket.on('cursorMove', (data) => {
+        this.mySocket.socket.on('cursorMove', (data) => {
             if (!this.otherCursors[data.playerId]) {
                 // Создать курсор для нового игрока
                 this.otherCursors[data.playerId] = {};
