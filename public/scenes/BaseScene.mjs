@@ -285,6 +285,7 @@ export class BaseScene extends Phaser.Scene {
 
         this.imgKey.setTexture(keyObj.img);
         this.imgTitle.setText(`Стр ${key}`);
+        if (this.imgTitle.x != 490) this.imgTitle.setPosition(490, 200);
         this.imgText.setText(decrypt(keyObj.text));
         this.imgTextKey.setText(decrypt(keyObj.key));
 
