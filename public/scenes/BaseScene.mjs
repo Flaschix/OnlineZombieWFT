@@ -185,12 +185,16 @@ export class BaseScene extends Phaser.Scene {
         this.overlayBackground.setAlpha(0); // Начальное значение прозрачности
 
         //Первый ключ
-        this.imgKey = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, 'paperPlace');
+        this.imgKey = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, 'paper');
         this.imgKey.setScale(0.8);
         this.imgKey.setVisible(false);
         this.imgKey.setDepth(2);
         this.imgKey.setScrollFactor(0);
         this.imgKey.setAlpha(0);
+
+        this.imgText = this.add.text(0, 0, ``, { font: "40px MyCustomFont", fill: '#000000', align: 'center' }).setScrollFactor(0).setDepth(2);
+        this.imgText.setVisible(false);
+        this.imgText.setAlpha(0);
 
         this.closeButton = this.add.image(this.cameras.main.width - 200, 85, 'closeIcon');
         this.closeButton.setDisplaySize(50, 50);
@@ -203,7 +207,7 @@ export class BaseScene extends Phaser.Scene {
         this.closeButton.on('pointerdown', () => {
             this.isOverlayVisible = false;
             this.tweens.add({
-                targets: [this.closeButton, this.overlayBackground, this.imgKey],
+                targets: [this.closeButton, this.overlayBackground, this.imgKey, this.imgText],
                 alpha: 0,
                 duration: 500,
                 onComplete: () => {
@@ -249,14 +253,14 @@ export class BaseScene extends Phaser.Scene {
                 this.showOverlay();
 
                 this.tweens.add({
-                    targets: [this.overlayBackground, this.closeButton, this.imgKey],
+                    targets: [this.overlayBackground, this.closeButton, this.imgKey, this.imgText],
                     alpha: 1,
                     duration: 500
                 });
             }
             else {
                 this.tweens.add({
-                    targets: [this.overlayBackground, this.closeButton, this.imgKey],
+                    targets: [this.overlayBackground, this.closeButton, this.imgKey, this.imgText],
                     alpha: 0,
                     duration: 500,
                     onComplete: () => {

@@ -57,7 +57,7 @@ io.on('connection', (socket) => {
         const roomId = uuidv4();
 
         try {
-            await redisClient.set(roomCode, roomId, { EX: 1000 }); // Устанавливаем срок действия 24 часа 86400
+            await redisClient.set(roomCode, roomId, { EX: 86400 }); // Устанавливаем срок действия 24 часа 86400
             rooms[roomId] = { levels: {} };
             // socket.join(roomId);
             socket.emit('roomCreated', roomCode);

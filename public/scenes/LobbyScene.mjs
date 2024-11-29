@@ -78,9 +78,7 @@ export class LobbyScene extends Phaser.Scene {
         this.load.image('box23', 'assets/boxes/box23.png');
 
 
-
-        this.load.image('paperPlace', 'assets/keyFrame/paperPlace.png');
-        this.load.image('paperDoor', 'assets/keyFrame/paperDoor.png');
+        this.load.image('paper', 'assets/keyFrame/paper.png');
         // this.load.image('emptyKey', 'assets/keyFrame/emptyKey.png');
     }
 

@@ -1,7 +1,7 @@
-import { CST, LABEL_ID } from "../CST.mjs";
+import { CST, LABEL_ID, myMap } from "../CST.mjs";
 import { BoxesController } from "../share/BoxesController.mjs";
 
-import { createUILeftMobile } from "../share/UICreator.mjs";
+import { createUILeftMobile, decrypt } from "../share/UICreator.mjs";
 import { createUI } from "../share/UICreator.mjs";
 import { createAvatarDialog } from "../share/UICreator.mjs";
 import { isMobile } from "../share/UICreator.mjs";
@@ -95,7 +95,24 @@ export class GameScene6 extends BaseScene {
     }
 
     moveForwardRoom() {
-        console.log('win');
+        this.isOverlayVisible = true
+
+
+        const info = myMap.get('answer');
+
+        this.tweens.add({
+            targets: [this.overlayBackground, this.closeButton, this.imgKey, this.imgText],
+            alpha: 1,
+            duration: 500
+        });
+
+        this.imgText.setText(decrypt(info.text));
+        this.imgText.setPosition(info.x, info.y);
+
+        this.imgKey.setVisible(true);
+        this.imgText.setVisible(true);
+        this.overlayBackground.setVisible(true);
+        this.closeButton.setVisible(true);
     }
 
     moveBackRoom() {
@@ -108,12 +125,19 @@ export class GameScene6 extends BaseScene {
         this.isOverlayVisible = true
 
         if (this.eventZone == LABEL_ID.DOOR_FORWARD_ID) {
-            this.imgKey.setTexture('paperDoor');
+            const info = myMap.get('door');
+
+            this.imgText.setText(info.text);
+            this.imgText.setPosition(info.x, info.y);
         } else {
-            this.imgKey.setTexture('paperPlace');
+            const info = myMap.get('place');
+
+            this.imgText.setText(info.text);
+            this.imgText.setPosition(info.x, info.y);
         }
 
         this.imgKey.setVisible(true);
+        this.imgText.setVisible(true);
         this.overlayBackground.setVisible(true);
         this.closeButton.setVisible(true);
     }
@@ -122,6 +146,7 @@ export class GameScene6 extends BaseScene {
         this.isOverlayVisible = false
 
         this.imgKey.setVisible(false);
+        this.imgText.setVisible(false);
         this.overlayBackground.setVisible(false);
         this.closeButton.setVisible(false);
     }
