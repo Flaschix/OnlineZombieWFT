@@ -64,9 +64,26 @@ export class GameScene4 extends BaseScene {
         this.matter.add.fromVertices(1269 + 73, 414.5 + 32.5, '1 64 5 16.5 144.5 1.5 139.5 41 134.5 56.5', { isStatic: true }, true)
         this.matter.add.fromVertices(1733 + 60, 374.5 + 19.5, '1.5 30.5 7 14 119 1.5 119 38', { isStatic: true }, true)
         this.matter.add.fromVertices(1817 + 59, 1660 + 64, '24 122.5 5 102 1 24.5 8.5 1 86.5 1 98.5 3.5 111 6 111 95 117 114 97 127.5 57.5 127.5 24 122.5', { isStatic: true }, true)
-        this.matter.add.fromVertices(1502 + 123, 1569.5 + 119.5, '11.5 78.5 117 1.5 245 139.5 123 238 1 92.5', { isStatic: true }, true)
         this.matter.add.fromVertices(1236 + 85, 1404 + 84.5, '71.5 4 11 56.5 1 69 11 80.5 88.5 168 102.5 159 166 93.5 168.5 73 154 66 83.5 1.5 71.5 4', { isStatic: true }, true)
         this.matter.add.fromVertices(1270 + 170, 516 + 176.5, '5.5 193.5 1.5 234.5 167 352 195 311.5 328.5 174 328.5 155.5 323 145.5 339 135 328.5 101 195 1.5 171 13 5.5 193.5', { isStatic: true }, true)
+
+        this.matter.add.fromVertices(1030 + 149.5, 860 + 128, '1.5 180 10.5 149.5 123.5 36 133 4 145 1 211.5 19 215 26.5 211.5 38.5 207.5 44.5 204.5 54.5 298 204.5 287 255 280 252.5 289.5 208 101 161.5 90.5 208 85 212 4 191 1.5 180', { isStatic: true }, true);
+        this.matter.add.fromVertices(1002.5 + 166.5, 883.5 + 111, '41 1.5 1.5 144.5 295 220.5 332 76.5', { isStatic: true }, true);
+        this.matter.add.fromVertices(1610 + 77.5, 1234 + 83.5, '100 1.5 1.5 22 29 166 130 147 130 127 154 122.5 134 25 107.5 31 100 1.5', { isStatic: true }, true);
+        this.matter.add.fromVertices(1431 + 40.5, 1777 + 41, '8 35.5 1 39.5 8 62.5 29.5 80.5 38 75.5 38 69 63 50 63 39.5 67 35.5 67 31.5 80 31.5 76.5 20 67 20 63 12.5 60 1 51.5 1 48 6.5 51.5 23 38 31.5 27 23 23.5 26.5 29.5 42 21 42 8 35.5', { isStatic: true }, true);
+        this.matter.add.fromVertices(578 + 43, 222 + 71, '47.5 107 70.5 140.5 79 125.5 85 61 75 51 70.5 53.5 52 41.5 47.5 31.5 38 26 34.5 11.5 20.5 1.5 7 6.5 1.5 17.5 4 29 12.5 39.5 4 51 4 85.5 25.5 107 25.5 121 38 125.5 41.5 118 47.5 107', { isStatic: true }, true);
+        this.matter.add.fromVertices(1250 + 106.5, 139.5 + 147.5, '18 294 1 7.5 187 1.5 212 263.5 166 282', { isStatic: true }, true);
+        this.matter.add.fromVertices(1731 + 94, 117 + 128, '1 254.5 1 7 179.5 1.5 187 149.5 155 156 169 210.5 147 245', { isStatic: true }, true);
+        this.matter.add.fromVertices(1627.5 + 170.5, 941.5 + 94.5, '0.5 188.5 0.5 0.5 340.5 0.5 340.5 188.5', { isStatic: true }, true);
+        this.matter.add.fromVertices(1374.5 + 48, 1942.5 + 37, '0.5 1.5 0.5 73.5 95.5 73.5 95.5 10', { isStatic: true }, true);
+        this.matter.add.fromVertices(450 + 73, 1555 + 126, '1 250.5 1 1 130.5 1 145.5 13 145.5 246', { isStatic: true }, true);
+        this.matter.add.fromVertices(101.5 + 179, 1107.5 + 94.5, '357 188 0.5 175.5 0.5 0.5 338 0.5 357 28', { isStatic: true }, true);
+        // this.matter.add.fromVertices(, { isStatic: true }, true);
+        // this.matter.add.fromVertices(, { isStatic: true }, true);
+        // this.matter.add.fromVertices(, { isStatic: true }, true);
+        // this.matter.add.fromVertices(, { isStatic: true }, true);
+
+
         // this.matter.add.fromVertices(0, 0, '', { isStatic: true }, true)
     }
 
@@ -82,40 +99,18 @@ export class GameScene4 extends BaseScene {
             isSensor: true
         })
 
-        const box1 = this.matter.add.fromVertices(101.5 + 179, 1107.5 + 94.5, '357 188 0.5 175.5 0.5 0.5 338 0.5 357 28', {
+        const box1 = this.matter.add.fromVertices(1502 + 123, 1569.5 + 119.5, '11.5 78.5 117 1.5 245 139.5 123 238 1 92.5', {
             label: `${LABEL_ID.EMPTY_KEY}`,
             isStatic: true,
         })
 
         const box2 = this.matter.add.fromVertices(512.5 + 104.5, 714 + 166, '4.5 330.5 0.5 9.5 193 1 207.5 322', {
-            label: `${LABEL_ID.EMPTY_KEY}`,
+            label: `${LABEL_ID.SECOND_KEY}`,
             isStatic: true,
         })
 
-        const box4 = this.matter.add.fromVertices(1250 + 106.5, 139.5 + 147.5, '18 294 1 7.5 187 1.5 212 263.5 166 282', {
-            label: `${LABEL_ID.EMPTY_KEY}`,
-            isStatic: true,
-        })
-
-        const box5 = this.matter.add.fromVertices(1731 + 94, 117 + 128, '1 254.5 1 7 179.5 1.5 187 149.5 155 156 169 210.5 147 245', {
-            label: `${LABEL_ID.EMPTY_KEY}`,
-            isStatic: true,
-        })
-
-        box5.form = '1 254.5 1 7 179.5 1.5 187 149.5 155 156 169 210.5 147 245';
-
-        const box7 = this.matter.add.fromVertices(1627.5 + 170.5, 941.5 + 94.5, '0.5 188.5 0.5 0.5 340.5 0.5 340.5 188.5', {
-            label: `${LABEL_ID.EMPTY_KEY}`,
-            isStatic: true,
-        })
-
-        const box8 = this.matter.add.fromVertices(1374.5 + 48, 1942.5 + 37, '0.5 1.5 0.5 73.5 95.5 73.5 95.5 10', {
-            label: `${LABEL_ID.EMPTY_KEY}`,
-            isStatic: true,
-        })
-
-        const box9 = this.matter.add.fromVertices(450 + 73, 1555 + 126, '1 250.5 1 1 130.5 1 145.5 13 145.5 246', {
-            label: `${LABEL_ID.EMPTY_KEY}`,
+        const box4 = this.matter.add.fromVertices(1585 + 65.5, 164 + 123.5, '1 246 1 1 130 1 130 246', {
+            label: `${LABEL_ID.THIRD_KEY}`,
             isStatic: true,
         })
 
@@ -126,11 +121,9 @@ export class GameScene4 extends BaseScene {
 
         box11.form = '0.5 160 0.5 9 486.5 1 499.5 194.5 490 237 309 194.5 279.5 205 40.5 205';
 
-        const arrBodies = [bodyDoorBack, bodyDoor, box1, box2, box4, box7, box8, box9];
+        const arrBodies = [bodyDoorBack, bodyDoor, box1, box2, box4];
 
-
-
-        const arrBodiesDiff = [box11, box5];
+        const arrBodiesDiff = [box11];
 
         this.createSimpleCollision(arrBodies, arrBodiesDiff);
     }
@@ -150,21 +143,15 @@ export class GameScene4 extends BaseScene {
     showOverlay() {
         this.isOverlayVisible = true
 
-        if (this.eventZone == LABEL_ID.FIRST_KEY) {
-            this.imgKey.setVisible(true);
-            this.imgKey.setTexture('firstKey')
-            if (this.fold.indexOf(this.imgKey.texture.key) == -1) {
-                this.mySocket.emitAddNewImg(this.imgKey.texture.key);
-            }
-        } else if (this.eventZone == LABEL_ID.SECOND_KEY) {
-            this.imgKey.setVisible(true);
-            this.imgKey.setTexture('secondKey')
-            if (this.fold.indexOf(this.imgKey.texture.key) == -1) {
-                this.mySocket.emitAddNewImg(this.imgKey.texture.key);
-            }
+        if (this.eventZone == LABEL_ID.SECOND_KEY) {
+            const key = '2';
+            this.showImg(key);
+        } else if (this.eventZone == LABEL_ID.THIRD_KEY) {
+            const key = '3';
+            this.showImg(key);
         } else if (this.eventZone == LABEL_ID.EMPTY_KEY) {
-            this.imgKey.setVisible(true);
             this.imgKey.setTexture('emptyKey')
+            this.imgKey.setVisible(true);
         }
 
         this.overlayBackground.setVisible(true);
@@ -173,8 +160,11 @@ export class GameScene4 extends BaseScene {
 
     hideOverlay() {
         this.isOverlayVisible = false
-        if (this.imgKey.visible) this.imgKey.setVisible(false);
 
+        this.imgKey.setVisible(false);
+        this.imgTitle.setVisible(false);
+        this.imgText.setVisible(false);
+        this.imgTextKey.setVisible(false);
         this.overlayBackground.setVisible(false);
         this.closeButton.setVisible(false);
     }

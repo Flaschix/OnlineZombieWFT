@@ -1,6 +1,6 @@
-import { CST, LABEL_ID } from "../CST.mjs";
+import { CST, LABEL_ID, myMap } from "../CST.mjs";
 
-import { createUILeftMobile } from "../share/UICreator.mjs";
+import { cd, createUILeftMobile, decrypt, decryptN } from "../share/UICreator.mjs";
 import { createUI } from "../share/UICreator.mjs";
 import { createAvatarDialog } from "../share/UICreator.mjs";
 import { isMobile } from "../share/UICreator.mjs";
@@ -14,6 +14,10 @@ import { BaseScene } from "./BaseScene.mjs";
 export class GameScene6 extends BaseScene {
     constructor() {
         super(CST.SCENE.GAMESCENE6);
+
+        this.cd = decryptN(cd);
+
+        this.enterCodeContainer;
     }
 
     preload() {
@@ -46,6 +50,8 @@ export class GameScene6 extends BaseScene {
         this.createFold();
 
         createAvatarDialog(this, this.enterNewSettingsInAvatarDialog, this.closeAvatarDialog, this.player.room, isMobile());
+
+        this.createEnterCodeContainer();
     }
 
     update() {
@@ -59,15 +65,23 @@ export class GameScene6 extends BaseScene {
         this.matter.add.fromVertices(300 + 95.5, 905 + 117.5, '190.5 234.5 25 234.5 1 203 1 0.5 168.5 0.5 168.5 203 190.5 225 190.5 234.5', { isStatic: true }, true)
         this.matter.add.fromVertices(656 + 44, 297 + 67, '75.5 103.5 79.5 130 87 130 87 118 83 89 87 57.5 87 1 75.5 1 75.5 17 14 17 1 22 1 84 14 133.5 20.5 133.5 14 103.5 75.5 103.5', { isStatic: true }, true)
         this.matter.add.fromVertices(1627.5 + 125.5, 1646 + 106.5, '250 93 119 212 9.5 101.5 1.5 81 71.5 5 154 1 161.5 13.5 197.5 40 250 93', { isStatic: true }, true)
-        this.matter.add.fromVertices(1260 + 141.5, 1480 + 137.5, '120 10.5 110.5 1.5 11.5 104.5 6.5 101 1 110.5 11.5 119 16.5 114.5 139 232.5 130.5 243 163.5 273.5 281.5 158 245 119 233 130 120 10.5', { isStatic: true }, true)
         this.matter.add.fromVertices(603.5 + 86.5, 1349.5 + 88, '3.5 174.5 0.5 0.5 172.5 0.5 172.5 168.5', { isStatic: true }, true)
         this.matter.add.fromVertices(1515 + 68.5, 273 + 74.5, '0.5 97 3.5 116 11.5 109 101.5 126.5 101.5 148 107 148 115.5 133.5 127 91.5 136 12.5 124 9 115.5 39.5 32.5 22 37 5 23.5 1.5 0.5 97', { isStatic: true }, true)
+
+        this.matter.add.fromVertices(233.5 + 16, 1096.5 + 90, '31.5 178.5 0.5 161.5 4.5 1.5 31.5 18', { isStatic: true }, true);
+        this.matter.add.fromVertices(499 + 167.5, 123.5 + 78, '1 116 1 0.5 334 4 334 155 9.5 155', { isStatic: true }, true);
+        this.matter.add.fromVertices(128 + 103, 252 + 153.5, '1 1 174.5 1 205 39.5 205 136.5 198 147.5 180.5 119 180.5 304.5 165 283 1 287.5', { isStatic: true }, true)
+        this.matter.add.fromVertices(1817.5 + 66.5, 149.5 + 146.5, '4.5 292.5 0.5 0.5 132 0.5 132 292.5', { isStatic: true }, true);
+        this.matter.add.fromVertices(311 + 75.5, 1278 + 78.5, '76.5 1 1 60.5 71.5 155.5 149.5 98.5', { isStatic: true }, true);
+        this.matter.add.fromVertices(1378 + 84, 936 + 72, '7 83.5 1 64 21.5 64 81.5 55.5 116.5 39.5 121 11 145 1.5 159 11 148.5 29 163 29 167 44.5 159 64 167 88.5 167 114.5 159 126 148.5 119.5 148.5 96.5 129 83.5 37 133.5 29.5 142.5 16.5 126 16.5 96.5 7 83.5', { isStatic: true }, true);
+
+
         // this.matter.add.fromVertices(0, 0, '', { isStatic: true }, true)
     }
 
     createCollision() {
         const bodyDoor = this.matter.add.fromVertices(962 + 89, 92 + 55.5, '1 1 1 110.5 177 110.5 177 1', {
-            label: `${LABEL_ID.DOOR_FORWARD_ID}`,
+            label: `${LABEL_ID.ANSWER_KEY}`,
             isStatic: true,
         })
 
@@ -77,47 +91,29 @@ export class GameScene6 extends BaseScene {
             isSensor: true
         })
 
-        const box1 = this.matter.add.fromVertices(233.5 + 16, 1096.5 + 90, '31.5 178.5 0.5 161.5 4.5 1.5 31.5 18', {
-            label: `${LABEL_ID.EMPTY_KEY}`,
-            isStatic: true,
-        })
+        // const box1 = this.matter.add.fromVertices(233.5 + 16, 1096.5 + 90, '31.5 178.5 0.5 161.5 4.5 1.5 31.5 18', {
+        //     label: `${LABEL_ID.EMPTY_KEY}`,
+        //     isStatic: true,
+        // })
 
         const box2 = this.matter.add.fromVertices(460 + 11.5, 867 + 110, '21.5 218 1 196 1 2 19 29', {
             label: `${LABEL_ID.EMPTY_KEY}`,
             isStatic: true,
         })
 
-        const box4 = this.matter.add.fromVertices(499 + 167.5, 123.5 + 78, '1 116 1 0.5 334 4 334 155 9.5 155', {
+        const box8 = this.matter.add.fromVertices(1260 + 141.5, 1480 + 137.5, '120 10.5 110.5 1.5 11.5 104.5 6.5 101 1 110.5 11.5 119 16.5 114.5 139 232.5 130.5 243 163.5 273.5 281.5 158 245 119 233 130 120 10.5', {
             label: `${LABEL_ID.EMPTY_KEY}`,
             isStatic: true,
         })
 
-        const box5 = this.matter.add.fromVertices(128 + 103, 252 + 153.5, '1 1 174.5 1 205 39.5 205 136.5 198 147.5 180.5 119 180.5 304.5 165 283 1 287.5', {
-            label: `${LABEL_ID.EMPTY_KEY}`,
+        box8.form = '120 10.5 110.5 1.5 11.5 104.5 6.5 101 1 110.5 11.5 119 16.5 114.5 139 232.5 130.5 243 163.5 273.5 281.5 158 245 119 233 130 120 10.5'
+
+        const box9 = this.matter.add.fromVertices(1604 + 19.5, 700 + 42, '1 -136 1 80 5.5 83 10 64.5 530 64.5 550.5 53.5 550.5 -149 535.5 -169.5 444.5 -169.5 435.5 -158.5 435.5 -136 256 -136 256 -149 241 -158.5 155 -149 155 -136 100 -136 94.5 -153.5 36.5 -136 1 -136', {
+            label: `${LABEL_ID.NINETH_KEY}`,
             isStatic: true,
         })
 
-        box5.form = '1 1 174.5 1 205 39.5 205 136.5 198 147.5 180.5 119 180.5 304.5 165 283 1 287.5';
-
-        const box7 = this.matter.add.fromVertices(1817.5 + 66.5, 149.5 + 146.5, '4.5 292.5 0.5 0.5 132 0.5 132 292.5', {
-            label: `${LABEL_ID.EMPTY_KEY}`,
-            isStatic: true,
-        })
-
-        const box8 = this.matter.add.fromVertices(1310 + 176, 690 + 103, '0.5 205 5 6 351.5 1 351.5 175.5 11.5 180', {
-            label: `${LABEL_ID.EMPTY_KEY}`,
-            isStatic: true,
-        })
-
-        box8.form = '0.5 205 5 6 351.5 1 351.5 175.5 11.5 180'
-
-        const box9 = this.matter.add.fromVertices(1726.5 + 120, 707 + 90.5, '239.5 1 22 1 22 152 1.5 180.5 239.5 180.5', {
-            label: `${LABEL_ID.EMPTY_KEY}`,
-            isStatic: true,
-        })
-
-        box9.form = '239.5 1 22 1 22 152 1.5 180.5 239.5 180.5'
-
+        box9.form = '1 -136 1 80 5.5 83 10 64.5 530 64.5 550.5 53.5 550.5 -149 535.5 -169.5 444.5 -169.5 435.5 -158.5 435.5 -136 256 -136 256 -149 241 -158.5 155 -149 155 -136 100 -136 94.5 -153.5 36.5 -136 1 -136'
 
         const box11 = this.matter.add.fromVertices(1333 + 225.5, 136.5 + 117, '1 233.5 1 7.5 450.5 0.5 450.5 123.5 441 166.5 359.5 166.5 369 123.5 118.5 123.5 118.5 192 112 233.5', {
             label: `${LABEL_ID.EMPTY_KEY}`,
@@ -126,19 +122,11 @@ export class GameScene6 extends BaseScene {
 
         box11.form = '1 233.5 1 7.5 450.5 0.5 450.5 123.5 441 166.5 359.5 166.5 369 123.5 118.5 123.5 118.5 192 112 233.5';
 
-        const arrBodies = [bodyDoorBack, bodyDoor, box1, box2, box4, box7];
+        const arrBodies = [bodyDoorBack, bodyDoor, box2];
 
-
-
-        const arrBodiesDiff = [box11, box5, box8, box9];
+        const arrBodiesDiff = [box11, box9, box8];
 
         this.createSimpleCollision(arrBodies, arrBodiesDiff);
-    }
-
-    moveForwardRoom() {
-        // this.isInZone = false;
-        // this.eventZone = null;
-        // this.mySocket.emitSwitchScene(CST.SCENE.GAMESCENE4, 1024, 1800);
     }
 
     moveBackRoom() {
@@ -150,21 +138,18 @@ export class GameScene6 extends BaseScene {
     showOverlay() {
         this.isOverlayVisible = true
 
-        if (this.eventZone == LABEL_ID.FIRST_KEY) {
-            this.imgKey.setVisible(true);
-            this.imgKey.setTexture('firstKey')
-            if (this.fold.indexOf(this.imgKey.texture.key) == -1) {
-                this.mySocket.emitAddNewImg(this.imgKey.texture.key);
-            }
-        } else if (this.eventZone == LABEL_ID.SECOND_KEY) {
-            this.imgKey.setVisible(true);
-            this.imgKey.setTexture('secondKey')
-            if (this.fold.indexOf(this.imgKey.texture.key) == -1) {
-                this.mySocket.emitAddNewImg(this.imgKey.texture.key);
-            }
+        if (this.eventZone == LABEL_ID.NINETH_KEY) {
+            const key = '9';
+            this.showImg(key);
         } else if (this.eventZone == LABEL_ID.EMPTY_KEY) {
-            this.imgKey.setVisible(true);
             this.imgKey.setTexture('emptyKey')
+            this.imgKey.setVisible(true);
+        } else if (this.eventZone == LABEL_ID.ANSWER_KEY) {
+            if (!this.enterCodeContainer.visible) {
+                this.enterCodeContainer.setVisible(true);
+                return;
+            }
+
         }
 
         this.overlayBackground.setVisible(true);
@@ -173,9 +158,117 @@ export class GameScene6 extends BaseScene {
 
     hideOverlay() {
         this.isOverlayVisible = false
-        if (this.imgKey.visible) this.imgKey.setVisible(false);
 
+        if (this.enterCodeContainer.visible) this.enterCodeContainer.setVisible(false);
+
+        this.imgKey.setVisible(false);
+        this.imgTitle.setVisible(false);
+        this.imgText.setVisible(false);
+        this.imgTextKey.setVisible(false);
         this.overlayBackground.setVisible(false);
         this.closeButton.setVisible(false);
+    }
+
+    createEnterCodeContainer() {
+        this.enterCodeContainer = this.add.dom(this.cameras.main.width / 2, this.cameras.main.height / 2).createFromHTML(`
+    <div class="enterCodeContainer">
+        <div id="enterCodeDialog">
+            <h2 id="enterCodeTitle">Enter code</h2>
+            <div id="codeInputs">
+                <input class="connect-space-input" type="text" maxlength="1">
+                <input class="connect-space-input" type="text" maxlength="1">
+                <input class="connect-space-input" type="text" maxlength="1">
+                <input class="connect-space-input" type="text" maxlength="1">
+                <input class="connect-space-input" type="text" maxlength="1">
+                <input class="connect-space-input" type="text" maxlength="1">
+            </div>
+            <input id="join-room-connect" class="connect-space-button" type="image" src="./assets/button/enter.png" alt="Connect">
+            <input id="join-room-cancel" class="connect-space-button" type="image" src="./assets/button/cancel.png" alt="Cancel">
+        </div>
+    </div>
+                `);
+        this.enterCodeContainer.setScrollFactor(0);
+        this.enterCodeContainer.setOrigin(0.5, 0.5);
+        const inputsContainer = document.getElementById('codeInputs')
+        const titleContainer = document.getElementById('enterCodeTitle')
+
+        const inputs = document.querySelectorAll('#codeInputs input');
+
+        inputs.forEach((input, index) => {
+            input.addEventListener('input', () => {
+                if (input.value.length === 1 && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+            });
+
+            input.addEventListener('keydown', (event) => {
+                if (event.key === 'Backspace' && input.value.length === 0 && index > 0) {
+                    inputs[index - 1].focus();
+                }
+            });
+
+            input.addEventListener('paste', (event) => {
+                event.preventDefault();
+                const pasteData = (event.clipboardData || window.clipboardData).getData('text');
+                const pasteArray = pasteData.split('').slice(0, inputs.length);
+
+                pasteArray.forEach((char, i) => {
+                    inputs[i].value = char;
+                });
+
+                if (pasteArray.length < inputs.length) {
+                    inputs[pasteArray.length].focus();
+                }
+            });
+        });
+
+        const correctCode = this.cd;
+
+        const joinRoomConnect = document.getElementById('join-room-connect');
+        joinRoomConnect.addEventListener('click', () => {
+
+            let code = '';
+
+            inputs.forEach(input => {
+                code += input.value;
+            });
+
+            code = code.toUpperCase();
+
+            this.tweens.add({
+                targets: [this.closeButton, this.overlayBackground, this.imgKey, this.imgTitle],
+                alpha: 1,
+                duration: 500
+            });
+
+            let keyObj = null;
+            this.isOverlayVisible = true;
+            this.enterCodeContainer.setVisible(false);
+
+            if (code == correctCode) {
+                keyObj = myMap.get('answer');
+            }
+            else {
+                keyObj = myMap.get('wrong');
+            }
+
+            this.imgKey.setTexture(keyObj.img);
+
+            this.imgTitle.setText(decrypt(keyObj.text));
+            this.imgTitle.setPosition(keyObj.x, keyObj.y);
+
+            this.imgTitle.setVisible(true);
+            this.imgKey.setVisible(true);
+            this.overlayBackground.setVisible(true);
+            this.closeButton.setVisible(true);
+        });
+
+        const joinRoomCancel = document.getElementById('join-room-cancel');
+        joinRoomCancel.addEventListener('click', () => {
+            this.isOverlayVisible = false;
+            this.hideOverlay();
+        });
+
+        this.enterCodeContainer.setVisible(false);
     }
 }

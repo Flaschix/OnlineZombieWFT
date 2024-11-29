@@ -131,6 +131,8 @@ export function createExitMenu(self, eventLeaveBtn, eventCloseBtn, isMobile) {
     self.exitContainer.setVisible(false);
 }
 
+export const cd = '486790';
+
 export function createAvatarDialog(self, eventConfirmBtn, eventCloseBtn, room, isMobile, nameButton) {
     let avatars;
     let nameInput;
@@ -251,6 +253,8 @@ export function decrypt(text) {
             return String.fromCharCode(((code - 1040 - 3 + 32) % 32) + 1040);
         } else if (code >= 1072 && code <= 1103) {
             return String.fromCharCode(((code - 1072 - 3 + 32) % 32) + 1072);
+        } else if (code >= 48 && code <= 57) {
+            return String.fromCharCode(((code - 43 + 10) % 10) + 48);
         }
         return char;
     }).join('');
@@ -296,6 +300,16 @@ export function createJoystick(context, joystickBase, joystickThumb, flag, x, y)
         flag = false;
         context.joystickThumb.setPosition(context.joystickBase.x, context.joystickBase.y);
     });
+}
+
+export function decryptN(text) {
+    return text.split('').map(char => {
+        const code = char.charCodeAt(0);
+        if (code >= 48 && code <= 57) {
+            return String.fromCharCode(((code - 43 + 10) % 10) + 48);
+        }
+        return char;
+    }).join('');
 }
 
 export function createMobileXButton(context, nameButton, nameBackgorund, x, y, event) {

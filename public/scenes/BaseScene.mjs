@@ -239,6 +239,8 @@ export class BaseScene extends Phaser.Scene {
 
     itemInteract() {
         if (this.foldColseBtn.visible) return;
+        if (this.avatarDialog.visible || this.exitContainer.visible) return;
+
         if (this.isInZone) {
             this.player.setVelocity(0);
 
@@ -451,6 +453,7 @@ export class BaseScene extends Phaser.Scene {
 
     showSettings(self) {
         if (self.foldColseBtn.visible || self.overlayBackground.visible) return;
+        if (self.enterCodeContainer != null && self.enterCodeContainer.visible) return;
         self.avatarDialog.setPosition(self.cameras.main.scrollX + 640, self.cameras.main.scrollY + 360);
         self.avatarDialog.setVisible(true);
         self.isOverlayVisible = true
@@ -460,6 +463,7 @@ export class BaseScene extends Phaser.Scene {
 
     showExitMenu(self) {
         if (self.foldColseBtn.visible || self.overlayBackground.visible) return;
+        if (self.enterCodeContainer != null && self.enterCodeContainer.visible) return;
         self.exitContainer.setPosition(self.cameras.main.scrollX + 640, self.cameras.main.scrollY + 360);
         self.exitContainer.setVisible(true);
         self.isOverlayVisible = true
