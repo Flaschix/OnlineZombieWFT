@@ -25,7 +25,7 @@ export const LABEL_ID = {
 }
 
 export const myMap = new Map([
-    ['place', { x: 430, y: 310, text: 'Кажется, здесь должен\nстоять энергоблок' }],
-    ['door', { x: 440, y: 270, text: 'Чтобы включить\nэлектричество,\nрасставьте правильно\nвсе энергоблоки' }],
-    ['answer', { x: 500, y: 290, text: 'Ею фтугелолфя!\nНсзсеси фосес:\n\noxplhuh' }],
+    ['place', { x: 440, y: 310, text: 'It looks like there should\nbe an energy unit here' }],
+    ['door', { x: 440, y: 290, text: 'Arrange all the power\nblocks correctly to turn\non the electricity' }],
+    ['answer', { x: 550, y: 280, text: 'Brx glg lw!\nFrgh zrug:\n\noxplhuh' }],
 ])
