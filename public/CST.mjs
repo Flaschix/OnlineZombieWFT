@@ -32,16 +32,16 @@ export const LABEL_ID = {
 }
 
 export const myMap = new Map([
-    ["1", { x: 490, y: 230, xk: 638, yk: 385, img: 'paper1', key: 'зиевхл ', text: "Фссдьирлв тс рсесфхвп\nфхгрсевхфв ефи дсоии\nхуиесйрюпл. Елуцф\nугфтусфхугрвихфв\nфолынсп дюфхус. В л псв\nнспгрзг лк\nъиосеин ргъгол\nлффоизсегрлв, рс згйи\nпю ри псйип тсрвхя, ъхс\nтуслфшсзлх." }],
-    ["2", { x: 490, y: 230, xk: 490, yk: 448, img: 'paper1', key: 'хуихяип ', text: "Пю цфоюыгол нулнл,\nснгкгосфя, ъхс\nтсзстюхрюм тулыио е\nфидв л цнцфло нсооижц. В\nрлнсжзг ри лфтюхюего\nхгнсжс цйгфг. Пю\nкгдгуулнгзлусеголфя е\n                схзиоирлл\nзснцпирхгщлл, рс\nзцпгб, ъхс зсожс пю хцх\nри тусзиуйлпфв." }],
-    ["3", { x: 490, y: 230, xk: 568, yk: 324, img: 'paper1', key: 'сзлр ', text: "Пю зсойрю еювфрлхя, нгн\nсфхгрселхя\nугфтусфхугрирли елуцфг!\nЕъиуг          нсооижг\nфнгкго, ъхс ефи тстюхнл\nцйи дифтсоикрю. Рс в ри\nхиувб ргзийзю." }],
-    ["4", { x: 490, y: 230, xk: 638, yk: 385, img: 'paper4', key: '', text: "Кгтгфю изю лфхсьгбхфв.\nФоюырс, нгн кг фхиргпл\nнстсыгхфв кспдл. Нгйзюм\nзиря фхгрселхфв ефи\nхуцзрии. В ргълргб\nхиувхя ргзийзц." }],
-    ["5", { x: 490, y: 230, xk: 550, yk: 292, img: 'paper1', key: 'Зеси ', text: "Ринсхсуюи ъоирю\nнспгрзю ргъгол фшсзлхя ф\nцпг.           тстюхголфя\nфдийгхя е тсуюеи\nсхъгврлв л ъиуик плрцхц\nпю цфоюыгол лш\nлфхсырюи нулнл. Пю\nзсойрю сфхгегхяфв\nепифхи." }],
-    ["6", { x: 490, y: 230, xk: 638, yk: 385, img: 'paper6', key: '', text: "Лк тсфоизрлш фло пю\nтусзсойгип\nлффоизсегрлв. Пю ргыол\nтсхирщлго е сдугкщгш,\nнсхсуюи псжол дю\nкгдоснлусегхя елуцф!\nРгзс тусеифхл\nанфтиулпирхю нгн псйрс\nфнсуии." }],
-    ["7", { x: 490, y: 230, xk: 660, yk: 232, img: 'paper7', key: 'ъихеиус ', text: "Ргф сфхгосфя                .\nВ ъцефхецб, нгн фхугш л\nтгугрсмв сшегхюегбх\nргф. Кспдл ефи долйи." }],
-    ["8", { x: 490, y: 230, xk: 638, yk: 385, img: 'paper1', key: '', text: "Ифол нхс-рлдцзя\nессдьи ргмзих нсжзг-\nрлдцзя ахл кгтлфл:\nри фзгегмхифя.\nЛрчсупгщлв псйих\nфтгфхл плу!\nЕю зсойрю сфхгрселхя\nахс!" }],
-    ["9", { x: 490, y: 230, xk: 490, yk: 324, img: 'paper9', key: 'твхя ', text: "Тснг тлыц, фоюыц лш\nтулдолйирли. Ри шсъц,\nъхсдю псл тсфоизрли\n         плрцх йлкрл\nтусыол е гжсрлл, оцъыи\nцмхл дюфхус фгпспц. Н\nфъгфхяб, кзифя прсжси\nпсйих тспсъя при е\nахсп. Кргмхи, в дсусофв\nзс нсрщг." }],
-    ["answer", { x: 490, y: 320, img: 'paper1', text: "Ею ееиол еиурюм тгусоя:\n486790\n\nЗеиуя схнуюхг" }],
-    ["wrong", { x: 500, y: 370, img: 'paper1', text: "Ритугелоярюм тгусоя" }],
+    ["1", { x: 490, y: 230, xk: 583, yk: 353, img: 'paper1', key: 'qlqh ', text: "Wkh qhzv uhsruwv duh\njhwwlqj lqfuhdvlqjob\ndoduplqj. Wkh yluxv lv\nvsuhdglqj wrr idvw. Pb\nwhdp ri         dqg L kdyh\nvwduwhg uhvhdufklqj, exw\nhyhq zh fdq'w iljxuh rxw\nzkdw'v jrlqj rq." }],
+    ["2", { x: 490, y: 230, xk: 680, yk: 385, img: 'paper1', key: 'wklug ', text: "Zh khdug vfuhdpv dqg\nuhdolchg wkh whvw vxemhfw\nkdg frph wr dqg elw d\nfroohdjxh. L'yh qhyhu ihow\nvxfk whuuru. Zh eduulfdghg\nrxuvhoyhv lq wkh       \ngrfxphqwdwlrq riilfh, exw\nL grq’w wklqn zh fdq krog\nrxw khuh iru orqj." }],
+    ["3", { x: 490, y: 230, xk: 683, yk: 293, img: 'paper1', key: 'rqh ', text: "Zh qhhg wr iljxuh rxw krz\nwr vwrs wkh vsuhdg ri wkh\nyluxv! Bhvwhugdb,      \nfroohdjxh vdlg wkdw doo\nhiiruwv duh douhdgb\nsrlqwohvv. Exw L’p qrw jlylqj\nxs krsh." }],
+    ["4", { x: 490, y: 230, xk: 638, yk: 385, img: 'paper4', key: '', text: "Irrg vxssolhv duh uxqqlqj\norz. L fdq khdu crpelhv\nvkxiiolqj durxqg rxwvlgh\nwkh zdoov. Hyhub gdb lv\njhwwlqj kdughu. L'p vwduwlqj\nwr orvh krsh." }],
+    ["5", { x: 490, y: 230, xk: 489, yk: 292, img: 'paper1', key: 'Wzr ', text: "Vrph whdp phpehuv\nvwduwhg orvlqj wkhlu plqgv.\n        ri wkhp wulhg wr\nhvfdsh lq d ilw ri ghvsdlu,\ndqg d plqxwh odwhu zh khdug wkhlu\niudqwlf vfuhdpv. Zh\nqhhg wr vwlfn wrjhwkhu." }],
+    ["6", { x: 490, y: 230, xk: 638, yk: 385, img: 'paper6', key: '', text: "Zh'uh sxvklqj wkurxjk zlwk\nrxu uhvhdufk. Zh'yh irxqg\nsrwhqwldo lq vdpsohv wkdw\nfrxog eorfn wkh yluxv! Zh\nqhhg wr frqgxfw\nhashulphqwv dv vrrq dv\nsrvvleoh." }],
+    ["7", { x: 490, y: 230, xk: 660, yk: 231, img: 'paper7', key: 'irxu ', text: "Wkhuh duh rqob        ri xv\nohiw. L fdq ihho krz ihdu\ndqg sdudqrld duh wdnlqj\nryhu xv. Crpelhv duh\njhwwlqj forvhu." }],
+    ["8", { x: 490, y: 230, xk: 638, yk: 385, img: 'paper1', key: '', text: "Li dqbrqh hyhu ilqgv wklv:\nGrq'w jlyh xs. Wkh\nlqirupdwlrq frxog vdyh\nwkh zruog!\nBrx kdyh wr vwrs wklv!" }],
+    ["9", { x: 490, y: 230, xk: 644, yk: 292, img: 'paper9', key: 'ilyh ', text: "Dv L zulwh wklv, L fdq khdu\nwkhp jhwwlqj forvhu. L grq’w\nzdqw pb odvw        plqxwhv\nri olih wr eh vshqw lq djrqb;\nlw'v ehwwhu wr wdnh pdwwhuv\nlqwr pb rzq kdqgv.\nIruwxqdwhob, wkhuh'v d orw\nkhuh wkdw fdq khos ph zlwk\nwkdw. Mxvw nqrz wkdw L\nirxjkw xqwlo wkh hqg." }],
+    ["answer", { x: 500, y: 320, img: 'paper1', text: "Brx hqwhuhg wkh fruuhfw\nsdvvzrug: 486790\n\nWkh grru lv rshq" }],
+    ["wrong", { x: 550, y: 370, img: 'paper1', text: "Zurqj sdvvzrug" }],
     // ["", { x: 410, y: 370, xk: 400, yk: 500, img: 'paper', key: '', text: "" }],
 ]);
