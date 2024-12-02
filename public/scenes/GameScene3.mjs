@@ -53,90 +53,60 @@ export class GameScene3 extends BaseScene {
     }
 
     createUnWalkedObjects() {
-        this.matter.add.fromVertices(1065, 722, '693 1956 855 1960.5 843 2003 0.5 1997 0.5 1 1962 1 1962 1107 1893 1107 1884 1187 1753 1175 1747.5 1158.5 1757 1071 1869.5 1080.5 1869.5 1071 1901.5 1080.5 1901.5 917 1718 917 1718 797.5 1753 773 1901.5 773 1901.5 372.5 1901.5 312.5 1892 288.5 1799.5 342 1783 349.5 1773.5 337 1790 327.5 1749.5 206 1773.5 174 1799.5 149 1821 144.5 1843.5 149 1860.5 163 1897.5 199.5 1901.5 131 1674.5 131 1315.5 159 1261.5 159 1267 208.5 1186 217 1178 159 1127 159 1121.5 175.5 1103 175.5 1103 159 1110.5 45.5 930.5 45.5 936.5 150.5 930.5 175.5 913.5 175.5 908.5 159 870 159 870 248 790 248 790 274.5 668.5 274.5 650 180 650 128.5 397.5 128.5 274.5 128.5 274.5 244 81.5 244 73 389 73 1144.5 165.5 1160.5 165.5 1293.5 73 1293.5 73 1605 57 1915 320 1915 396.5 1894 420 1883 420 1824 693 1831.5 693 1956', { isStatic: true }, true)
-        this.matter.add.fromVertices(1700, + 1815, '140.5 864.5 0.5 864.5 0.5 906 862.5 895.5 862.5 5.5 781.5 1 786.5 307.5 587 307.5 594.5 530.5 779 536 786 702 651 706 643 725.5 643 871.5 565.5 871.5 570 783 443 783 418.5 801.5 409 871.5 361.5 871.5 361.5 783 140.5 783 140.5 864.5', { isStatic: true }, true)
+        this.matter.add.fromVertices(871, 895, '472 1480 472 1628.5 0.5 1628.5 0.5 0.5 1733 0.5 1733 799 1516 799 1516 449.5 1525.5 417.5 1562.5 412 1579.5 390.5 1606.5 396 1612.5 381 1632 373.5 1632 346.5 1461.5 346.5 1461.5 171.5 1431.5 171.5 1412 151 1390.5 165 1381 151 1322 151 1322 270 1106.5 270 1101 165 1032 159.5 1024.5 72 775.5 67.5 758.5 159.5 668.5 165 663 270 561 275.5 548.5 300.5 548.5 182.5 396 175 396 300.5 335 290.5 329.5 166 253 166 246 253 216 246.5 216 331 124 331 96 513.5 96 676 124 707 124 829 108.5 829 108.5 1008 174.5 1008 174.5 1202.5 63 1202.5 63 1364 166 1364 174.5 1480 472 1480', { isStatic: true }, true);
+        this.matter.add.fromVertices(1416 + 376, 1242 + 422, '1 694.5 1 843 751 843 751 0.5 536 0.5 512.5 98 512.5 136 536 149 536 261.5 644 261.5 644 404.5 616.5 404.5 603.5 418.5 565.5 418.5 565.5 489.5 644 489.5 644 565 616.5 544 572 530 536 550 523 588.5 536 618 565.5 640.5 565.5 662.5 523 669 498.5 694.5 1 694.5', { isStatic: true }, true);
 
-        this.matter.add.fromVertices(969.5 + 44, 1179.5 + 46, '0.5 91.5 0.5 0.5 87.5 0.5 87.5 91.5 0.5 91.5', { isStatic: true }, true)
-        this.matter.add.fromVertices(135.5 + 53, 897 + 46, '0.5 91 0.5 1 105 1 105 91 0.5 91', { isStatic: true }, true)
-        this.matter.add.fromVertices(1575 + 72.5, 1457, '85.5 138.5 0.5 92 0.5 1 24.5 7 35 1 108.5 29.5 143.5 34.5 113.5 121.5 98 121.5 85.5 138.5', { isStatic: true }, true)
-        this.matter.add.fromVertices(1247 + 85.5, 580 + 112.5, '74 224 11.5 169 22.5 143.5 1.5 95.5 88 1 103.5 58.5 116 66.5 120.5 49.5 170 105.5 161 139.5 170 154 165.5 173 152 149 97.5 206.5 88 206.5 74 224', { isStatic: true }, true)
-        this.matter.add.fromVertices(260 + 77, 536 + 82, '86.5 1 1 35 23.5 75 10 81.5 38.5 158.5 56.5 150.5 60.5 162.5 153 125.5 134.5 60.5 119 41 107 41 86.5 1', { isStatic: true }, true)
-        this.matter.add.fromVertices(495 + 129, 1230 + 58.5, '1 102 1 54.5 42 54.5 188 0.5 257.5 4.5 257.5 107.5 240 116 211.5 116 51 98 1 102', { isStatic: true }, true)
+        this.matter.add.fromVertices(1191 + 88.5, 1495 + 105.5, '176 184 123 209.5 4 141.5 4 79 1 75.5 1 62 42 41.5 42 1 83 1 83 48.5 123 69 136.5 62 168.5 79 163.5 101.5 176 114.5 176 184', { isStatic: true }, true);
+        this.matter.add.fromVertices(402 + 43.5, 1776 + 28, '0.5 0.5 0.5 55 86.5 55 86.5 24.5 53 0.5', { isStatic: true }, true);
+        this.matter.add.fromVertices(1303 + 72, 788 + 85.5, '143.5 139 87.5 170 3.5 125.5 1 56.5 1 47 19 38 19 24.5 66.5 1 74 6 74 19 120 49.5 120 24.5 128 24.5 128 53 143.5 58.5 143.5 139', { isStatic: true }, true);
+        this.matter.add.fromVertices(1336 + 116.5, 1208 + 100, '145 163.5 86 131.5 66 139 66 163.5 60 166.5 54.5 163.5 54.5 137 15 115.5 15 137 12 139 6.5 137 6.5 106.5 1 104 1 85 92.5 32 131.5 18.5 151.5 18.5 151.5 10.5 171 1.5 171 10.5 163.5 15.5 157 28 171 32 182.5 28 189 36 182.5 43 182.5 68.5 232 99.5 232 118.5 223.5 125.5 223.5 157 214 163.5 214 131.5 157 163.5 157 195 145 199 145 163.5', { isStatic: true }, true);
+        this.matter.add.fromVertices(371.5 + 26.5, 1548 + 29, '0.5 20 0.5 32 29.5 57 52.5 39.5 52.5 26 25 1', { isStatic: true }, true);
+        this.matter.add.fromVertices(454 + 30, 1278 + 54.5, '17 59 1 87 29 107.5 59 84 42.5 59 42.5 48 39 9.5 25.5 1 17 9.5 17 48 13.5 52.5', { isStatic: true }, true);
+        this.matter.add.fromVertices(355 + 78.5, 964 + 110, '57.5 218.5 0.5 184.5 0.5 48 43.5 26.5 43.5 19 57.5 15 57.5 22 66.5 19 66.5 5.5 75 1 81 11.5 91 5.5 120 19 120 76.5 156 97.5 156 170 57.5 218.5', { isStatic: true }, true);
+        this.matter.add.fromVertices(548 + 39, 871.5 + 31, '1 34 1 44.5 29.5 61 77 30 77 21.5 46.5 1.5', { isStatic: true }, true);
+        this.matter.add.fromVertices(491 + 31.5, 707 + 34, '1 21 1 50.5 34 67 62 44.5 62 16 29 1', { isStatic: true }, true);
 
-        // this.matter.add.fromVertices(0, 0, '', { isStatic: true }, true)
+
+        // this.matter.add.fromVertices(0, 0, '', { isStatic: true }, true);
     }
 
     createCollision() {
-        const bodyDoor = this.matter.add.fromVertices(955.5 + 94, 62 + 70, '1.5 1 9 139 175 139 186.5 1', {
+        const bodyDoor = this.matter.add.fromVertices(916.5 + 134.5, 279.5 + 131, '0.5 0.5 0.5 261 268.5 261 268.5 0.5', {
             label: `${LABEL_ID.DOOR_FORWARD_ID}`,
             isStatic: true,
-            isSensor: true
         })
 
-        const bodyDoorBack = this.matter.add.fromVertices(866 + 143, 2002 + 23, '1 45.5 18 1 281 1 284.5 45.5', {
+        const bodyDoorBack = this.matter.add.fromVertices(626.5 + 286.5, 1933.5 + 55, '0.5 0.5 0.5 109 572.5 109 572.5 0.5', {
             label: `${LABEL_ID.DOOR_BACK_ID}`,
             isStatic: true,
             isSensor: true
         })
 
-        const box1 = this.matter.add.fromVertices(56 + 157, 1469 + 90, '313 179.5 1 179.5 5.5 8.5 313 1', {
+        const box1 = this.matter.add.fromVertices(1390.5 + 28, 1122.5 + 19, '45 37 1.5 37 13 0.5 54.5 0.5', {
+            label: `${LABEL_ID.FIVETH_KEY}`,
+            isStatic: true,
+            isSensor: true
+        })
+
+        const box2 = this.matter.add.fromVertices(213 + 76, 647 + 145, '1 171 26 282 28.5 289 151 289 146 1 1 1', {
             label: `${LABEL_ID.EMPTY_KEY}`,
             isStatic: true,
         })
 
-        const box2 = this.matter.add.fromVertices(586 + 150, 864.5 + 85, '299 169.5 1 169.5 1 1.5 299 9', {
+        const box4 = this.matter.add.fromVertices(548.5 + 77, 506 + 110, '0.5 219 0.5 1 153.5 1 153.5 219', {
             label: `${LABEL_ID.EMPTY_KEY}`,
             isStatic: true,
         })
 
-        const box4 = this.matter.add.fromVertices(420.5 + 130.5, 114.5 + 55.5, '6 110.5 1.5 0.5 256 5.5 259.5 107.5', {
+        const box11 = this.matter.add.fromVertices(481.5 + 50.5, 1525 + 59, '0.5 28.5 0.5 90 48 117 100.5 90 100.5 28.5 53.5 1', {
             label: `${LABEL_ID.EMPTY_KEY}`,
             isStatic: true,
         })
 
-        const box5 = this.matter.add.fromVertices(100.5 + 63, 286 + 75.5, '1.5 149.5 5 1 105 1 120.5 16 125 144.5', {
-            label: `${LABEL_ID.EMPTY_KEY}`,
-            isStatic: true,
-        })
+        box11.form = '0.5 28.5 0.5 90 48 117 100.5 90 100.5 28.5 53.5 1';
 
-        const box7 = this.matter.add.fromVertices(579.5 + 80.5, 1191.5 + 111.5, '0.5 222 0.5 0.5 160.5 0.5 160.5 222', {
-            label: `${LABEL_ID.EMPTY_KEY}`,
-            isStatic: true,
-        })
 
-        const box8 = this.matter.add.fromVertices(1346.5 + 178, 117 + 65.5, '348.5 125.5 354.5 5 16.5 1 0.5 31.5 5 130', {
-            label: `${LABEL_ID.EMPTY_KEY}`,
-            isStatic: true,
-        })
-
-        const box9 = this.matter.add.fromVertices(1691 + 128.5, 411.5 + 150.5, '1 296 242.5 300.5 256 0.5 21 4.5 9 23.5', {
-            label: `${LABEL_ID.EMPTY_KEY}`,
-            isStatic: true,
-        })
-
-        const box10 = this.matter.add.fromVertices(1444 + 138.5, 1039.5 + 75.5, '1 150.5 3.5 0.5 276 0.5 272.5 148', {
-            label: `${LABEL_ID.EMPTY_KEY}`,
-            isStatic: true,
-        })
-
-        const box11 = this.matter.add.fromVertices(1342 + 111.5, 1340 + 110, '15.5 112.5 19 1 222.5 4 220 219 1.5 210.5 5.5 120', {
-            label: `${LABEL_ID.EMPTY_KEY}`,
-            isStatic: true,
-        })
-
-        box11.form = '15.5 112.5 19 1 222.5 4 220 219 1.5 210.5 5.5 120';
-
-        const box3 = this.matter.add.fromVertices(90 + 74.5, 1746.5 + 64.5, '113 1.5 1 35.5 30 127.5 148 92', {
-            label: `${LABEL_ID.EMPTY_KEY}`,
-            isStatic: true,
-        })
-
-        const box6 = this.matter.add.fromVertices(46 + 107, 1031 + 91.5, '213 181.5 1 164 3.5 1 181 1 210 35', {
-            label: `${LABEL_ID.EMPTY_KEY}`,
-            isStatic: true,
-        })
-
-        const arrBodies = [bodyDoorBack, bodyDoor, box1, box2, box4, box5, box7, box8, box9, box10, box3, box6];
+        const arrBodies = [bodyDoorBack, bodyDoor, box1, box2, box4];
 
 
 
@@ -148,33 +118,24 @@ export class GameScene3 extends BaseScene {
     moveForwardRoom() {
         this.isInZone = false;
         this.eventZone = null;
-        this.mySocket.emitSwitchScene(CST.SCENE.GAMESCENE4, 1050, 1900);
+        this.mySocket.emitSwitchScene(CST.SCENE.GAMESCENE4, 1024, 1900);
     }
 
     moveBackRoom() {
         this.isInZone = false;
         this.eventZone = null;
-        this.mySocket.emitSwitchScene(CST.SCENE.GAMESCENE2, 1050, 350);
+        this.mySocket.emitSwitchScene(CST.SCENE.GAMESCENE2, 1050, 700);
     }
 
     showOverlay() {
         this.isOverlayVisible = true
 
-        if (this.eventZone == LABEL_ID.FIRST_KEY) {
-            this.imgKey.setVisible(true);
-            this.imgKey.setTexture('firstKey')
-            if (this.fold.indexOf(this.imgKey.texture.key) == -1) {
-                this.mySocket.emitAddNewImg(this.imgKey.texture.key);
-            }
-        } else if (this.eventZone == LABEL_ID.SECOND_KEY) {
-            this.imgKey.setVisible(true);
-            this.imgKey.setTexture('secondKey')
-            if (this.fold.indexOf(this.imgKey.texture.key) == -1) {
-                this.mySocket.emitAddNewImg(this.imgKey.texture.key);
-            }
+        if (this.eventZone == LABEL_ID.FIVETH_KEY) {
+            const key = '5';
+            this.showImg(key);
         } else if (this.eventZone == LABEL_ID.EMPTY_KEY) {
-            this.imgKey.setVisible(true);
             this.imgKey.setTexture('emptyKey')
+            this.imgKey.setVisible(true);
         }
 
         this.overlayBackground.setVisible(true);
@@ -183,8 +144,10 @@ export class GameScene3 extends BaseScene {
 
     hideOverlay() {
         this.isOverlayVisible = false
-        if (this.imgKey.visible) this.imgKey.setVisible(false);
 
+        this.imgKey.setVisible(false);
+        this.imgTitle.setVisible(false);
+        this.imgText.setVisible(false);
         this.overlayBackground.setVisible(false);
         this.closeButton.setVisible(false);
     }

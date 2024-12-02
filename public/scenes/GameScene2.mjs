@@ -53,90 +53,52 @@ export class GameScene2 extends BaseScene {
     }
 
     createUnWalkedObjects() {
-        this.matter.add.fromVertices(886, 746, '762 1538 777 1552.5 777 1860.5 1 1860.5 1 1 1899 1 1899 468.5 1849 468.5 1849 208.5 1776 227 1736 126.5 1736 102 1553.5 102 1553.5 126.5 1428.5 213.5 1375.5 142 1382 102 1049.5 102 1049.5 43.5 875.5 43.5 875.5 78.5 866.5 97.5 779.5 97.5 779.5 221 583.5 216.5 567 182.5 567 43.5 170.5 38.5 170.5 177 191 256 179.5 286.5 86 273.5 72.5 689 64 993.5 58 1846.5 423.5 1851.5 423.5 1609 753 1609 753 1538 762 1538', { isStatic: true }, true)
-        this.matter.add.fromVertices(1766, 1590, '170.5 1377 0.5 1377 0.5 1417.5 748 1417.5 748 0.5 662 0.5 678 348 527 359.5 500 359.5 500 377.5 514.5 384 514.5 538.5 668.5 527 679 1023.5 684.5 1406 583.5 1406 583.5 1219 471.5 1219 471.5 1322 231.5 1322 231.5 1407 170.5 1407 170.5 1377', { isStatic: true }, true)
+        this.matter.add.fromVertices(793, 990, '157 1111.5 151 1209.5 157 1456 413 1450 413 1464 1 1464 9.5 1 1621 1 1621 392.5 1437.5 392.5 1433 366.5 1336.5 360 1306 338 1292 308 1306 279.5 1319.5 257.5 1175.5 257.5 1152.5 264.5 1163 122 1029.5 122 1017 122 1010 103 1010 46 769 46 769 88.5 750 122 735.5 122 731.5 113.5 708.5 113.5 704.5 187.5 693 191.5 525 191.5 513 113.5 328 113.5 346.5 282.5 328 442.5 172.5 442.5 172.5 462.5 145 469.5 135 615.5 107 640.5 78 1087.5 146.5 1087.5 157 1111.5', { isStatic: true }, true);
+        this.matter.add.fromVertices(1665 + 125.5, 1124 + 544.5, '104 0.5 151.5 655.5 26 655.5 19 664.5 36 787.5 1 859 1 872.5 161 866 174 1088 250.5 1088 250.5 0.5 104 0.5', { isStatic: true }, true);
 
-        this.matter.add.fromVertices(584 + 131.5, 1070 + 210.5, '1 402 1 323.5 74.5 222.5 74.5 96.5 90 84 90 37 86.5 15 169 1 187 80.5 159 104.5 159 222.5 217 240 239 257.5 255 250.5 262 257.5 247 263.5 255 272.5 262 292 255 315.5 262 331.5 231 343.5 199 365 170.5 369 170.5 389 113.5 389 102.5 420 37 402 1 402', { isStatic: true }, true)
-        this.matter.add.fromVertices(447 + 89.5, 452 + 103, '102.5 1 1 47 25.5 103.5 40 125.5 53 157 75 205 89 205 139 186 163 170.5 178 170.5 157 125.5 146 125.5 146 96.5 126.5 57 102.5 1', { isStatic: true }, true)
-        this.matter.add.fromVertices(1270 + 90.5, 1372 + 74, '1 36 1 0.5 180.5 0.5 180.5 40.5 154 40.5 154 147.5 111.5 147.5 65 88 65 36 1 36', { isStatic: true }, true)
-        this.matter.add.fromVertices(1104 + 142.5, 497 + 221.5, '94 214 116 214 116 396.5 108.5 410.5 108.5 442.5 284.5 442.5 284.5 390.5 240.5 390.5 240.5 1 101 1 101 90.5 64.5 90.5 21.5 85.5 1 133 1 160 15.5 177 1 192 7.5 198 21.5 187 34.5 192 94 214', { isStatic: true }, true)
-        this.matter.add.fromVertices(1612 + 77, 453 + 85, '144 116.5 90 157 87 168 65.5 123.5 1 47.5 51 1.5 153 87 144 116.5', { isStatic: true }, true)
-        this.matter.add.fromVertices(1120 + 63, 721 + 77.5, '74.5 138.5 101.5 154.5 118.5 154.5 101.5 132.5 109 109 118.5 102.5 113 84.5 125 61 125 46 53 20 39 1 25.5 11 1 84.5 13.5 102.5 39 118 35 126 53 132.5 74.5 138.5', { isStatic: true }, true)
+        this.matter.add.fromVertices(355 + 100.5, 1470 + 90, '182.5 152 132 179 118 174 118 136.5 49.5 96 7.5 118 3 111.5 3 63 1 58 3 50 55.5 21.5 55.5 5.5 65 1.5 70 5.5 70 21.5 158.5 71.5 165 60 182.5 60 191 71.5 182.5 76.5 182.5 87.5 200 96 200 103.5 182.5 111.5 182.5 152', { isStatic: true }, true);
+        this.matter.add.fromVertices(1440 + 79.5, 1020 + 96.5, '158 160 98 192 4 135 4 68.5 1.5 62 5.5 55 25 45.5 25 9 37 1 84 27.5 84 37 158 77.5 158 160', { isStatic: true }, true);
+        this.matter.add.fromVertices(1370 + 94.5, 1610 + 82, '49 135.5 0.5 114 0.5 53.5 25.5 43 25.5 32 22.5 26.5 22.5 17 55 1 92.5 19.5 98 29.5 107 29.5 107 43 113.5 45.5 113.5 35 124.5 35 124.5 53.5 138.5 58 138.5 66.5 188.5 90.5 188.5 138 179 142 179 121.5 144.5 138 144.5 160 133 162.5 133 125.5 95.5 111 72.5 118 52 111 49 135.5', { isStatic: true }, true);
         // this.matter.add.fromVertices(0, 0, '', { isStatic: true }, true)
     }
 
     createCollision() {
-        const bodyDoor = this.matter.add.fromVertices(960 + 95, 103 + 88.5, '1 1 8.5 176 189.5 176 189.5 1', {
+        const bodyDoor = this.matter.add.fromVertices(922.5 + 129.5, 448 + 114.5, '1.5 1 7.5 228.5 250.5 228.5 257.5 1', {
             label: `${LABEL_ID.DOOR_FORWARD_ID}`,
             isStatic: true,
         })
 
-        const bodyDoorBack = this.matter.add.fromVertices(873.5 + 175, 1956 + 45, '0.5 1 0.5 89 349.5 89 349.5 1', {
+        const bodyDoorBack = this.matter.add.fromVertices(916 + 151, 1990 + 29.5, '1 1 1 58 301 58 301 1', {
             label: `${LABEL_ID.DOOR_BACK_ID}`,
             isStatic: true,
             isSensor: true
         })
 
-        const box1 = this.matter.add.fromVertices(136 + 166, 1748 + 106.5, '331 6.5 1 1 1 212.5 312.5 212.5 331 197', {
+        const box1 = this.matter.add.fromVertices(1198 + 66.5, 612 + 116.5, '1 169.5 6 1 126 1 132 78 121 232 1 232', {
             label: `${LABEL_ID.EMPTY_KEY}`,
             isStatic: true,
         })
 
-        const box2 = this.matter.add.fromVertices(147.5 + 102.5, 1365 + 137.5, '204.5 274 0.5 269.5 0.5 1 180.5 1 204.5 16.5', {
-            label: `${LABEL_ID.EMPTY_KEY}`,
+        const box2 = this.matter.add.fromVertices(1652.5 + 13, 1634 + 92, '25 118 0.5 183.5 0.5 59 21 1', {
+            label: `${LABEL_ID.FIRST_KEY}`,
             isStatic: true,
         })
 
-        const box4 = this.matter.add.fromVertices(128 + 114, 947 + 118.5, '227 49.5 227 236.5 0.5 236.5 0.5 1 196.5 1', {
-            label: `${LABEL_ID.EMPTY_KEY}`,
+        const box4 = this.matter.add.fromVertices(625.5 + 80, 963.5 + 59.5, '159 118.5 0.5 118.5 2.5 1.5 149.5 0.5 159 31.5', {
+            label: `${LABEL_ID.NINETH_KEY}`,
             isStatic: true,
         })
 
-        const box5 = this.matter.add.fromVertices(134 + 111.5, 470 + 208.5, '222 416.5 1 416.5 12 1 201.5 1 222 42', {
+
+        const arrBodies = [bodyDoorBack, bodyDoor, box1, box2, box4];
+
+        const box3 = this.matter.add.fromVertices(203 + 187, 1795 + 121.5, '335.5 1 17 1 1 151 39 242 373 242 373 151', {
             label: `${LABEL_ID.EMPTY_KEY}`,
             isStatic: true,
         })
+        box3.form = '335.5 1 17 1 1 151 39 242 373 242 373 151';
 
-        const box7 = this.matter.add.fromVertices(564 + 87.5, 1135 + 120.5, '1 240 1 1 174.5 1 174.5 240', {
-            label: `${LABEL_ID.EMPTY_KEY}`,
-            isStatic: true,
-        })
-
-        const box8 = this.matter.add.fromVertices(1278 + 95, 1115.5 + 144.5, '1 288.5 1 0.5 189 0.5 189 288.5', {
-            label: `${LABEL_ID.EMPTY_KEY}`,
-            isStatic: true,
-        })
-
-        const box9 = this.matter.add.fromVertices(1255.5 + 93.5, 585.5 + 159, '181.5 317.5 186 1.5 0.5 6 0.5 317.5', {
-            label: `${LABEL_ID.EMPTY_KEY}`,
-            isStatic: true,
-        })
-
-        const box10 = this.matter.add.fromVertices(1777 + 90.5, 666 + 162.5, '0.5 26.5 0.5 324 179.5 311.5 172 0.5 14.5 0.5', {
-            label: `${LABEL_ID.EMPTY_KEY}`,
-            isStatic: true,
-        })
-
-        const box11 = this.matter.add.fromVertices(1506.5 + 122.5, 1751.5 + 101.5, '0.5 202 0.5 0.5 240 0.5 244 202', {
-            label: `${LABEL_ID.EMPTY_KEY}`,
-            isStatic: true,
-        })
-
-        const arrBodies = [bodyDoorBack, bodyDoor, box1, box2, box4, box5, box7, box8, box9, box10, box11];
-
-        const box3 = this.matter.add.fromVertices(285 + 207, 261 + 90.5, '412 180.5 11 180.5 0.5 145.5 0.5 0.5 395 0.5 395 145.5', {
-            label: `${LABEL_ID.EMPTY_KEY}`,
-            isStatic: true,
-        })
-        box3.form = '412 180.5 11 180.5 0.5 145.5 0.5 0.5 395 0.5 395 145.5';
-
-        const box6 = this.matter.add.fromVertices(1836 + 61.5, 1354 + 194, '11 0.5 122.5 4 121 387.5 16.5 387.5 16.5 363.5 0.5 340 0.5 21', {
-            label: `${LABEL_ID.EMPTY_KEY}`,
-            isStatic: true,
-        })
-        box6.form = '11 0.5 122.5 4 121 387.5 16.5 387.5 16.5 363.5 0.5 340 0.5 21';
-
-        const arrBodiesDiff = [box3, box6];
+        const arrBodiesDiff = [box3];
 
         this.createSimpleCollision(arrBodies, arrBodiesDiff);
     }
@@ -144,33 +106,27 @@ export class GameScene2 extends BaseScene {
     moveForwardRoom() {
         this.isInZone = false;
         this.eventZone = null;
-        this.mySocket.emitSwitchScene(CST.SCENE.GAMESCENE3, 1024, 1960);
+        this.mySocket.emitSwitchScene(CST.SCENE.GAMESCENE3, 950, 1910);
     }
 
     moveBackRoom() {
         this.isInZone = false;
         this.eventZone = null;
-        this.mySocket.emitSwitchScene(CST.SCENE.GAMESCENE, 1024, 340);
+        this.mySocket.emitSwitchScene(CST.SCENE.GAMESCENE, 1024, 700);
     }
 
     showOverlay() {
         this.isOverlayVisible = true
 
         if (this.eventZone == LABEL_ID.FIRST_KEY) {
-            this.imgKey.setVisible(true);
-            this.imgKey.setTexture('firstKey')
-            if (this.fold.indexOf(this.imgKey.texture.key) == -1) {
-                this.mySocket.emitAddNewImg(this.imgKey.texture.key);
-            }
-        } else if (this.eventZone == LABEL_ID.SECOND_KEY) {
-            this.imgKey.setVisible(true);
-            this.imgKey.setTexture('secondKey')
-            if (this.fold.indexOf(this.imgKey.texture.key) == -1) {
-                this.mySocket.emitAddNewImg(this.imgKey.texture.key);
-            }
+            const key = '1';
+            this.showImg(key);
+        } else if (this.eventZone == LABEL_ID.NINETH_KEY) {
+            const key = '9';
+            this.showImg(key);
         } else if (this.eventZone == LABEL_ID.EMPTY_KEY) {
-            this.imgKey.setVisible(true);
             this.imgKey.setTexture('emptyKey')
+            this.imgKey.setVisible(true);
         }
 
         this.overlayBackground.setVisible(true);
@@ -179,8 +135,10 @@ export class GameScene2 extends BaseScene {
 
     hideOverlay() {
         this.isOverlayVisible = false
-        if (this.imgKey.visible) this.imgKey.setVisible(false);
 
+        this.imgKey.setVisible(false);
+        this.imgTitle.setVisible(false);
+        this.imgText.setVisible(false);
         this.overlayBackground.setVisible(false);
         this.closeButton.setVisible(false);
     }

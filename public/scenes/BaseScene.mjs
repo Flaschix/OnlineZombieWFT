@@ -235,7 +235,8 @@ export class BaseScene extends Phaser.Scene {
 
     itemInteract() {
         if (this.foldColseBtn.visible) return;
-        console.log('test');
+        if (this.avatarDialog.visible || this.exitContainer.visible) return;
+
         if (this.isInZone) {
             this.player.setVelocity(0);
 
@@ -281,7 +282,6 @@ export class BaseScene extends Phaser.Scene {
     }
 
     showImg(key) {
-        console.log(key);
 
         const keyObj = myMap.get(key);
 
@@ -292,7 +292,7 @@ export class BaseScene extends Phaser.Scene {
         this.imgTitle.setPosition(keyObj.xt, keyObj.yt);
         this.imgText.setPosition(keyObj.x, keyObj.y);
 
-        if (keyObj.title == '') this.imgText.setStyle({ font: "italic 32px MyCustomFont", align: 'center' });
+        if (keyObj.title == '') this.imgText.setStyle({ font: "italic 30px MyCustomFont", align: 'center' });
         else this.imgText.setStyle({ font: "26px MyCustomFont", align: 'left' });
 
         this.imgKey.setVisible(true);
