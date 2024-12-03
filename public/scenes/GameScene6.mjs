@@ -154,7 +154,7 @@ export class GameScene6 extends BaseScene {
     }
 
     boardEvent() {
-        if (this.isOverlayVisible) { this.hideOverlay(); return; }
+        if (this.isOverlayVisible) { this.hideOverlay(); }
         if (!this.boardController.boardFlag) {
             this.boardController.openBoard();
         }

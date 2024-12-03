@@ -22,6 +22,7 @@ export class BoardController {
     openBoard() {
         this.scene.isOverlayVisible = true
         this.boardFlag = true;
+        this.selectedColor = Colors.WHITE;
 
         this.boardBack = this.scene.add.image(this.scene.cameras.main.width / 2 + 40, this.scene.cameras.main.height / 2, 'boardBack').setScale(1.25, 1.3).setOrigin(0.5, 0.5).setScrollFactor(0).setDepth(4);
 
@@ -32,7 +33,6 @@ export class BoardController {
         this.boardTitle = this.scene.add.text(this.scene.cameras.main.width / 2 - 120, 50, 'Lab table No. 1', { font: "bold 50px Handlee", fill: '#5568FE' }).setScrollFactor(0).setDepth(4);
 
         this.boardCloseButton = this.scene.add.image(this.scene.cameras.main.width - 80, 60, 'closeIcon').setScrollFactor(0).setDepth(4).setInteractive().on('pointerdown', () => {
-            this.socket.emitCloseBoard();
             this.closeBoard();
         });
 
@@ -242,8 +242,9 @@ export class BoardController {
     }
 
     initCursors() {
+        console.log(this.scene.player.name);
         this.cursorImage = this.scene.add.image(-100, -100, 'cursorBack').setOrigin(0.2, 0.2).setScale(0.7).setDepth(6).setScrollFactor(0);
-        this.cursorPlayerImg = this.scene.add.image(-100, -100, `char${this.scene.player.character}`).setOrigin(-0.55, -0.6).setScale(0.8).setDepth(6).setScrollFactor(0);;
+        this.cursorPlayerImg = this.scene.add.image(-100, -100, `char${this.scene.player.character}`).setOrigin(0.5, 0.5).setScale(0.8).setDepth(6).setScrollFactor(0);;
         this.cursorStoke = this.scene.add.image(-100, -100, 'cursorStoke').setOrigin(0.15, 0.05).setScale(0.7).setDepth(6).setScrollFactor(0);
         this.cursorName = this.scene.add.text(-100, -100, `${this.scene.player.name}`, { font: "bold 12px Handlee", fill: '#FFFFFF', align: 'center' }).setOrigin(0.5, 0.5).setScrollFactor(0).setDepth(6);
 
@@ -251,7 +252,7 @@ export class BoardController {
 
         this.scene.input.on('pointermove', (pointer) => {
             this.cursorImage.setPosition(pointer.x, pointer.y);
-            this.cursorPlayerImg.setPosition(pointer.x, pointer.y);
+            this.cursorPlayerImg.setPosition(pointer.x + 25, pointer.y + 35);
             this.cursorStoke.setPosition(pointer.x, pointer.y);
             this.cursorName.setPosition(pointer.x + 25, pointer.y + 10);
             this.sendCursorPositionToServer(pointer.x, pointer.y);
@@ -260,7 +261,7 @@ export class BoardController {
         if (this.scene.mobileFlag) {
             this.scene.input.on('pointerdown', (pointer) => {
                 this.cursorImage.setPosition(pointer.x, pointer.y);
-                this.cursorPlayerImg.setPosition(pointer.x, pointer.y);
+                this.cursorPlayerImg.setPosition(pointer.x + 25, pointer.y + 35);
                 this.cursorStoke.setPosition(pointer.x, pointer.y);
                 this.cursorName.setPosition(pointer.x + 25, pointer.y + 10);
                 this.sendCursorPositionToServer(pointer.x, pointer.y);
@@ -281,7 +282,7 @@ export class BoardController {
                 // Создать курсор для нового игрока
                 this.otherCursors[data.playerId] = {};
                 this.otherCursors[data.playerId].cursor = this.scene.add.image(data.x, data.y, 'cursorBack').setOrigin(0.2, 0.2).setDepth(4).setScale(0.7).setScrollFactor(0);
-                this.otherCursors[data.playerId].cursorImg = this.scene.add.image(data.x, data.y, `char${data.character}`).setOrigin(-0.55, -0.6).setScale(0.7).setDepth(4).setScrollFactor(0);
+                this.otherCursors[data.playerId].cursorImg = this.scene.add.image(data.x, data.y, `char${data.character}`).setOrigin(0.5, 0.5).setScale(0.7).setDepth(4).setScrollFactor(0);
                 this.otherCursors[data.playerId].cursorStoke = this.scene.add.image(data.x, data.y, 'cursorStoke').setOrigin(0.15, 0.05).setScale(0.7).setDepth(4).setScrollFactor(0).setTintFill(data.color);
                 this.otherCursors[data.playerId].cursorName = this.scene.add.text(data.x + 25, data.y + 10, `${data.name}`, { font: "bold 12px Handlee", fill: '#FFFFFF', align: 'center' }).setOrigin(0.5, 0.5).setScrollFactor(0).setDepth(4);
                 this.otherCursors[data.playerId].color = data.color;
@@ -297,7 +298,7 @@ export class BoardController {
                 }
 
                 this.scene.tweens.add({
-                    targets: [cursor, cursorImg, stoke],
+                    targets: [cursor, stoke],
                     x: data.x,
                     y: data.y,
                     duration: 200,
@@ -307,6 +308,13 @@ export class BoardController {
                     targets: [cursorName],
                     x: data.x + 25,
                     y: data.y + 10,
+                    duration: 200,
+                });
+
+                this.scene.tweens.add({
+                    targets: [cursorImg],
+                    x: data.x + 25,
+                    y: data.y + 35,
                     duration: 200,
                 });
             }
@@ -327,6 +335,7 @@ export class BoardController {
     }
 
     closeBoard() {
+        this.socket.emitCloseBoard();
         this.socket.unSubscribeBoard();
 
         // Отключение отслеживания курсора

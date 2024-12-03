@@ -488,6 +488,7 @@ export class BaseScene extends Phaser.Scene {
             this.mySocket.emitPlayerReconnect({ x: this.player.x, y: this.player.y, avatar: imgCount + 1, name: username });
             this.player.setTexture(`character${imgCount + 1}`);
             this.player.character = imgCount + 1;
+            this.player.name = username;
             this.player.nameText.setText(username);
             this.avatarDialog.setVisible(false);
             this.isOverlayVisible = false;
