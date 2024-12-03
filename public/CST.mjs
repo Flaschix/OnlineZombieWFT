@@ -34,17 +34,17 @@ export const LABEL_ID = {
 }
 
 export const myMap = new Map([
-    ["1", { x: 440, y: 330, xt: 430, yt: 290, img: 'paper1', title: 'Тиуегв нсодг:', text: "• \"Флрлм зсойир лзхл тсфои\nнугфрсжс\"\n• \"Йиохюм щеих кгрлпгих\nхуихяб тсклщлб.\"\n• \"Киоирюм щеих ри псйих\nдюхя тиуеюп\"" }],
-    ["2", { x: 440, y: 330, xt: 430, yt: 290, img: 'paper1', title: 'Ехсугв нсодг:', text: "• \"Члсоихсеюм щеих лзих тиуиз\nйиохюп.\"\n• \"Усксеюм щеих ри псйих дюхя\nтиуеюп лол тсфоизрлп.\"\n• \"Флрлм л нугфрюм щеихг ри\nешсзвх ес ехсуцб нсодц.\"" }],
-    ["3", { x: 440, y: 280, xt: 430, yt: 250, img: 'paper1', title: 'Хуихяв нсодг:', text: "• \"Киоирюм щеих ри псйих дюхя\nтсфоизрлп лол туизтсфоизрлп.\"\n• \"Йиохюм щеих схфцхфхецих е ахсм\nнсоди.\"\n• \"Нугфрюм зсойир дюхя жзи-хс е\nахсм нсоди, рс ри увзсп ф\nчлсоихсеюп.\"\n• \"Флрлм щеих кгрлпгих хуихяб\nтсклщлб.\"" }],
-    ["4", { x: 440, y: 280, xt: 430, yt: 250, img: 'paper1', title: 'Ъихеиухгв нсодг:', text: "• \"Усксеюм щеих кгрлпгих зеи\nтсклщлл, рс ри увзсп.\"\n• \"Йиохюм щеих ри псйих кгрлпгхя\nтиуецб, хуихяб л ъихеиухцб\nтсклщлб.\"\n• \"Флрлм щеих кгрлпгих\nтуизтсфоизрбб тсклщлб.\"\n• \"Киоирюм щеих схфцхфхецих е\nахсм нсоди.\"" }],
-    ["5", { x: 470, y: 280, xk: 550, yk: 292, img: 'paper5', title: '', text: "Фхгугв кгтлфнг:\n\n”Сфхгелог рг фхсои хесм\nобдлпюм нсчи. Псйих\nфшсзлп епифхи рг сдиз\nкгехуг? ;)”" }],
-    ["6", { x: 430, y: 270, xk: 638, yk: 385, img: 'paper5', title: '', text: "Уикцояхгхю грголксе:\n\n”Кгчлнфлусегрс грспгоярс\nеюфснси ълфос оимнсщлхсе е\nнусел тсзстюхрсжс, тсугйир\nжсосерсм пскж, фиузщидлирли\nсхфцхфхецих.”" }],
-    ["7", { x: 420, y: 260, xk: 660, yk: 232, img: 'paper5', title: '', text: "Фхгуси фипимрси чсхс.\nРгзтлфя рг сдсусхи:\n\n“Тцфхя ахсх фъгфхолеюм пспирх\nефижзг дцзих ф хсдсм:\nхю, в л ргыг пгобхнг. Фпсхул\nрг чсхс ъгьи л цоюдгмфв :)”" }],
-    ["8", { x: 470, y: 280, xk: 638, yk: 385, img: 'paper5', title: '', text: "Фоспгррюм плнусфнст.\n\nНсжзг-хс ф ижс тспсьяб\nзиогол еиолнли схнуюхлв,\nрс фимъгф ср кгдюх л,\nескпсйрс, ргефижзг." }],
-    ["9", { x: 470, y: 278, xk: 490, yk: 324, img: 'paper5', title: '', text: " Фхгуюм ытулщ\n\nЕрцхул елзрю кгфсшыли\nсфхгхнл нусел. Дцзяхи\nсфхсусйрю, еизя нхс\nкргих, ъяв ахс нусея..." }],
-    ["10", { x: 490, y: 285, xk: 490, yk: 324, img: 'paper5', title: '', text: "Нгухсънг фсхуцзрлнг:\n\nЗйср Зсц, жогег\nзитгухгпирхг\nдлсосжлъифнлш\nлффоизсегрлм" }],
-    ["answer", { x: 480, y: 270, xk: 490, yk: 324, img: 'paper5', title: '', text: "Тскзугеовип!\n\nЕю цфтиырс фскзгол\nегнщлрц тусхле елуцфг.\n\nНсзсеси фосес: VXUY" }],
+    ["1", { x: 450, y: 350, xt: 440, yt: 310, img: 'paper1', title: 'Ehdnhu 1:', text: "• \"Eoxh pxvw frph diwhu uhg.\"\n• \"Bhoorz lv lq wkh wklug srvlwlrq.\"\n• \"Juhhq fdq’w eh iluvw.\"" }],
+    ["2", { x: 450, y: 330, xt: 440, yt: 290, img: 'paper1', title: 'Ehdnhu 2:', text: '• "Sxusoh lv ehiruh bhoorz."\n• "Slqn fdq’w eh iluvw ru odvw."\n• "Eoxh dqg uhg duh qrw lq wkh\nvhfrqg ehdnhu."' }],
+    ["3", { x: 450, y: 300, xt: 440, yt: 270, img: 'paper1', title: 'Ehdnhu 3:', text: '• "Juhhq fdq\'w eh odvw ru\nvhfrqg wr odvw."\n• "Bhoorz lv qrw lq wklv ehdnhu."\n• "Uhg kdv wr eh vrphzkhuh lq\nkhuh, exw qrw qhaw wr sxusoh."\n• "Eoxh lv lq wkh wklug srvlwlrq."' }],
+    ["4", { x: 440, y: 290, xt: 430, yt: 250, img: 'paper1', title: 'Ehdnhu 4:', text: '• "Slqn wdnhv xs wzr vsrwv, exw\nwkhb fdq\'w eh qhaw wr hdfk rwkhu."\n• "Bhoorz fdq\'w eh lq wkh iluvw, wklug,\nru irxuwk srvlwlrq."\n• "Eoxh wdnhv wkh vhfrqg wr odvw\nvsrw."\n• "Juhhq lv qrw lq wklv ehdnhu."' }],
+    ["5", { x: 450, y: 310, xk: 550, yk: 292, img: 'paper5', title: '', text: 'Rog qrwh:\n"L ohiw brxu idyrulwh friihh rq\nwkh wdeoh. Zdqw wr jude oxqfk\nwrjhwkhu wrpruurz? ;)"' }],
+    ["6", { x: 430, y: 280, xk: 638, yk: 385, img: 'paper5', title: '', text: 'Whvw uhvxowv:\n"Dq deqrupdoob kljk qxpehu ri\nzklwh eorrg fhoov zdv uhfrughg lq\nwkh vxemhfw\'v eorrg, wkh eudlq lv\ndiihfwhg, dqg wkhuh lv qr\nkhduwehdw."' }],
+    ["7", { x: 420, y: 280, xk: 660, yk: 232, img: 'paper5', title: '', text: 'Dq rog idplob skrwr.\nWkh lqvfulswlrq rq wkh edfn uhdgv:\n“Ohw wklv kdssb prphqw dozdbv\neh zlwk brx: brx, ph, dqg rxu\nolwwoh rqh. Orrn dw wkh skrwr riwhq\ndqg vploh :)”' }],
+    ["8", { x: 450, y: 300, xk: 638, yk: 385, img: 'paper5', title: '', text: 'D eurnhq plfurvfrsh.\nEhiruh lw zdv xvhg iru juhdw\nglvfryhulhv, exw qrz lw’v\nirujrwwhq dqg shukdsv zloo eh\niruhyhu.' }],
+    ["9", { x: 440, y: 320, xk: 490, yk: 324, img: 'paper5', title: '', text: 'Rog vbulqjh.\nBrx fdq vhh gulhg eorrg lqvlgh.\nEh fduhixo, zkr nqrzv zkrvh\neorrg wklv lv...' }],
+    ["10", { x: 460, y: 330, xk: 490, yk: 324, img: 'paper5', title: '', text: 'Hpsorbhh Fdug:\nMrkq Grh, Khdg ri Elrorjlfdo \nUhvhdufk Ghsduwphqw' }],
+    ["answer", { x: 460, y: 280, xk: 490, yk: 324, img: 'paper5', title: '', text: 'Frqjudwxodwlrqv!\n\nBrx\'yh vxffhvvixoob fuhdwhg d\nydfflqh djdlqvw wkh yluxv.\n\nFrgh zrug: VXUY' }],
 
     // ["", { x: 410, y: 370, xk: 400, yk: 500, img: 'paper', key: '', text: '' }],
 ]);

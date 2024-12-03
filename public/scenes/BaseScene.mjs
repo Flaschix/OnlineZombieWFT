@@ -293,7 +293,7 @@ export class BaseScene extends Phaser.Scene {
         this.imgText.setPosition(keyObj.x, keyObj.y);
 
         if (keyObj.title == '') this.imgText.setStyle({ font: "italic 30px MyCustomFont", align: 'center' });
-        else this.imgText.setStyle({ font: "26px MyCustomFont", align: 'left' });
+        else this.imgText.setStyle({ font: "28px MyCustomFont", align: 'left' });
 
         this.imgKey.setVisible(true);
         this.imgTitle.setVisible(true);
