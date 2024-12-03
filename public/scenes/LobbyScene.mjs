@@ -214,20 +214,21 @@ export class LobbyScene extends Phaser.Scene {
         });
     }
 
-    avatartFinishEditing(self, nameInput, nameError, imgCount) {
+    avatartFinishEditing(nameInput, nameError, imgCount) {
         const username = nameInput.value;
         if (username.length < 1 || username.length > 12) {
             nameError.style.visibility = "visible";
         }
         else {
 
-            let roomCode = self.code;
+            let roomCode = this.code;
             socket.emit('joinRoom', { roomCode, avatar: imgCount + 1, username });
         }
     }
-    closeAvatarDialog(self) {
-        self.avatarDialog.setVisible(false);
-        self.welcomeContainer.setVisible(true);
+
+    closeAvatarDialog() {
+        this.avatarDialog.setVisible(false);
+        this.welcomeContainer.setVisible(true);
     }
 
     createNewSpaceContainer() {
@@ -309,7 +310,7 @@ export class LobbyScene extends Phaser.Scene {
             this.joinRoomContainer.destroy();
             this.newSpaceContainer.destroy();
             this.exitContainer.destroy();
-            this.scene.start(CST.SCENE.GAMESCENE, { players });
+            this.scene.start(CST.SCENE.GAMESCENE6, { players });
         });
 
         socket.on('roomCreated', (roomCode) => {

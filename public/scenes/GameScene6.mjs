@@ -1,7 +1,6 @@
-import { CST, LABEL_ID } from "../CST.mjs";
-import { Colors } from "../share/Colors.mjs";
-
-import { createUILeftMobile } from "../share/UICreator.mjs";
+import { CST, LABEL_ID, myMap } from "../CST.mjs";
+import { BoardController } from "../share/BoardController.mjs";
+import { createUILeftMobile, decrypt } from "../share/UICreator.mjs";
 import { createUI } from "../share/UICreator.mjs";
 import { createAvatarDialog } from "../share/UICreator.mjs";
 import { isMobile } from "../share/UICreator.mjs";
@@ -22,15 +21,6 @@ export class GameScene6 extends BaseScene {
 
         //map
         this.load.image('map6', './assets/map/map6.jpg');
-
-
-        this.otherCursors = {};
-        this.selectedColor = Colors.WHITE;
-
-        this.fillArr = [];
-        this.glasses = null;
-
-        this.answerOverlay = false;
     }
 
     create(data) {
@@ -56,6 +46,8 @@ export class GameScene6 extends BaseScene {
         this.createFold();
 
         createAvatarDialog(this, this.enterNewSettingsInAvatarDialog, this.closeAvatarDialog, this.player.room, isMobile());
+
+        this.boardController = new BoardController(this, this.mySocket, this.showWin.bind(this));
     }
 
     update() {
@@ -161,400 +153,61 @@ export class GameScene6 extends BaseScene {
         this.closeButton.setVisible(false);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    openBoard() {
-        this.boardBack = this.add.image(this.cameras.main.width / 2 + 40, this.cameras.main.height / 2, 'boardBack').setScale(1.25, 1.3).setOrigin(0.5, 0.5).setScrollFactor(0).setDepth(4);
-
-        this.collbsBack = this.add.image(this.cameras.main.width / 2 + 40, this.cameras.main.height * 0.85, 'collbsBack').setScale(0.6).setOrigin(0.5, 0.5).setScrollFactor(0).setDepth(4);
-
-        this.board = this.add.image(this.cameras.main.width / 2 + 40, this.cameras.main.height * 0.4, 'board').setScale(0.6).setOrigin(0.5, 0.5).setScrollFactor(0).setDepth(4);
-
-        this.boardTitle = this.add.text(this.cameras.main.width / 2 - 120, 50, 'Lab table No. 1', { font: "bold 50px Handlee", fill: '#5568FE' }).setScrollFactor(0).setDepth(4);
-
-        this.boardCloseButton = this.add.image(this.cameras.main.width - 80, 60, 'closeIcon').setScrollFactor(0).setDepth(4).setInteractive().on('pointerdown', () => {
-            this.mySocket.emitCloseBoard();
-            this.closeBoard();
-        });
-
-        this.resetBtn = this.add.image(this.cameras.main.width * 0.5 + 250, this.cameras.main.height / 2 + 135, 'reset').setScale(0.8).setOrigin(0.5, 0.5).setScrollFactor(0).setDepth(4);
-        this.generateBtn = this.add.image(this.cameras.main.width * 0.5 - 150, this.cameras.main.height / 2 + 135, 'generate').setScale(0.8).setOrigin(0.5, 0.5).setScrollFactor(0).setDepth(4);
-
-
-        this.glass1 = this.add.image(450, this.cameras.main.height * 0.4, 'glass').setScale(0.6).setOrigin(0.5, 0.5).setScrollFactor(0).setDepth(4);
-        this.glass2 = this.add.image(620, this.cameras.main.height * 0.4, 'glass').setScale(0.6).setOrigin(0.5, 0.5).setScrollFactor(0).setDepth(4);
-        this.glass3 = this.add.image(790, this.cameras.main.height * 0.4, 'glass').setScale(0.6).setOrigin(0.5, 0.5).setScrollFactor(0).setDepth(4);
-        this.glass4 = this.add.image(960, this.cameras.main.height * 0.4, 'glass').setScale(0.6).setOrigin(0.5, 0.5).setScrollFactor(0).setDepth(4);
-
-        this.createFills(450);
-        this.createFills(620);
-        this.createFills(790);
-        this.createFills(960);
-
-        this.mySocket.subscribeExistedGlasses(this, this.fillGlasses);
-        this.mySocket.emitGetGlasses();
-
-        this.createColors();
-
-        this.initCursors();
-        this.syncWithOtherPlayers();
-    }
-
-
-    fillGlasses(data) {
-        for (let i = 0; i < data.length; i++) {
-            for (let j = 0; j < data[i].length; j++) {
-                if (data[i][j] != null) {
-                    this.fillArr[i][j].isColor = true;
-                    this.fillArr[i][j].setTintFill(data[i][j]);
-                }
-            }
+    boardEvent() {
+        if (this.isOverlayVisible) { this.hideOverlay(); return; }
+        if (!this.boardController.boardFlag) {
+            this.boardController.openBoard();
         }
-
-        this.setUpGlass(this.glass1, 0);
-        this.setUpGlass(this.glass2, 1);
-        this.setUpGlass(this.glass3, 2);
-        this.setUpGlass(this.glass4, 3);
-
-        this.setUpResetBtn();
-        this.setUpGenerateBtn();
-
-        this.mySocket.subscribeColoredGlass(this, this.colorGlass);
-        this.mySocket.subscribeResetedGlasses(this, this.resetGlasses);
-        this.mySocket.subscribeAnswer(this, this.answerResult);
-    }
-
-
-
-    answerResult(data) {
-        if (data) {
-            this.showSuccess();
-        } else {
-            this.showError();
+        else {
+            this.boardController.closeBoard();
         }
     }
 
-    showSuccess() {
-        console.log('win');
+    showFold() {
+        if (this.boardController.boardFlag) return;
+        super.showFold();
     }
 
-    showError() {
-        this.answerOverlay = true;
-        if (this.errorTitle != null) this.closeError();
 
-        this.errorGraphics = this.add.graphics();
+    showSettings() {
+        if (this.boardController.boardFlag) return;
+        super.showSettings();
+    }
 
-        this.errorGraphics.setScrollFactor(0).setDepth(5)
-        this.errorGraphics.fillStyle(0x221C3E, 1);
-        this.errorGraphics.lineStyle(4, 0xF2F0FF, 1);
+    showExitMenu() {
+        if (this.boardController.boardFlag) return;
+        super.showExitMenu();
+    }
 
-        const x = 400;
-        const y = 180;
-        const width = 600;
-        const height = 350;
-        const radius = 20;
+    showWin() {
+        this.isOverlayVisible = true
 
-        this.errorGraphics.strokeRoundedRect(x, y, width, height, radius);
-        this.errorGraphics.fillRoundedRect(x, y, width, height, radius);
-
-        this.errorTitle = this.add.text(550, 230, 'Incorrect answer', { font: "bold 40px Handlee", fill: '#FF4445' }).setScrollFactor(0).setDepth(5);
-
-        this.btnTryAgain = this.add.image(700, 350, 'try-again').setScale(1).setOrigin(0.5, 0.5).setScrollFactor(0).setDepth(5);
-
-        this.btnTryAgain.setInteractive().on('pointerdown', () => {
-            this.mySocket.emitResetGlasses();
-            this.closeError();
+        this.tweens.add({
+            targets: [this.overlayBackground, this.closeButton, this.imgKey, this.imgTitle, this.imgText],
+            alpha: 1,
+            duration: 500
         });
 
-        this.btnCancel = this.add.image(700, 450, 'cancel').setScale(1).setOrigin(0.5, 0.5).setScrollFactor(0).setDepth(5);
+        const keyObj = myMap.get('answer');
 
-        this.btnCancel.setInteractive().on('pointerdown', () => {
-            this.closeError();
-        });
-    }
+        this.imgKey.setTexture(keyObj.img);
+        this.imgTitle.setText(decrypt(keyObj.title));
+        this.imgText.setText(decrypt(keyObj.text));
 
-    closeError() {
-        this.errorTitle.destroy();
-        this.errorGraphics.clear();
-        this.errorGraphics.destroy();
-        this.btnTryAgain.destroy();
-        this.btnCancel.destroy();
-        this.answerOverlay = false;
-    }
+        this.imgTitle.setPosition(keyObj.xt, keyObj.yt);
+        this.imgText.setPosition(keyObj.x, keyObj.y);
 
-    colorGlass(data) {
-        const item = this.fillArr[data.glass][data.fill]
-        item.isColor = true;
-        item.setTintFill(data.color);
-    }
+        this.imgText.setStyle({ font: "italic 30px MyCustomFont", align: 'center' });
 
-    createFills(x) {
-        const fill1 = this.add.image(x - 1, this.cameras.main.height / 2 + 70 - 86, 'fill1').setScale(0.6).setOrigin(0.5, 0.5).setScrollFactor(0).setDepth(4);
-        const fill2 = this.add.image(x - 1, this.cameras.main.height / 2 + 36 - 86, 'fill2').setScale(0.6).setOrigin(0.5, 0.5).setScrollFactor(0).setDepth(4);
-        const fill3 = this.add.image(x - 1, this.cameras.main.height / 2 + 4 - 86, 'fill3').setScale(0.6).setOrigin(0.5, 0.5).setScrollFactor(0).setDepth(4);
-        const fill4 = this.add.image(x - 1, this.cameras.main.height / 2 - 33 - 86, 'fill4').setScale(0.6).setOrigin(0.5, 0.5).setScrollFactor(0).setDepth(4);
+        this.imgKey.setVisible(true);
+        this.imgTitle.setVisible(true);
+        this.imgText.setVisible(true);
 
-        fill1.isColor = false;
-        fill2.isColor = false;
-        fill3.isColor = false;
-        fill4.isColor = false;
+        this.imgKey.setVisible(true);
+        this.imgTitle.setVisible(true);
+        this.imgText.setVisible(true);
 
-        this.fillArr.push([fill1, fill2, fill3, fill4]);
-    }
-
-    setUpGlass(glass, number) {
-        glass.setInteractive().on('pointerdown', () => {
-            if (this.answerOverlay || this.selectedColor == Colors.WHITE) return;
-            for (let i = 0; i < this.fillArr[number].length; i++) {
-                let item = this.fillArr[number][i];
-                if (!item.isColor) {
-                    this.mySocket.emitColorGlass({ glass: number, fill: i, color: this.selectedColor });
-                    break;
-                }
-            }
-        });
-    }
-
-    setUpResetBtn() {
-        this.resetBtn.setInteractive().on('pointerdown', () => {
-            if (this.answerOverlay) return;
-            this.mySocket.emitResetGlasses();
-        });
-    }
-
-    setUpGenerateBtn() {
-        this.generateBtn.setInteractive().on('pointerdown', () => {
-            if (this.answerOverlay) return;
-            this.mySocket.emitAnswer();
-        });
-    }
-
-    createColors() {
-        this.red = this.add.image(this.cameras.main.width / 2 - 320, this.cameras.main.height - 107, 'red').setScale(0.6).setOrigin(0.5, 0.5).setScrollFactor(0).setDepth(4);
-        this.yellow = this.add.image(this.cameras.main.width / 2 - 176, this.cameras.main.height - 107, 'yellow').setScale(0.6).setOrigin(0.5, 0.5).setScrollFactor(0).setDepth(4);
-        this.green = this.add.image(this.cameras.main.width / 2 - 32, this.cameras.main.height - 107, 'green').setScale(0.6).setOrigin(0.5, 0.5).setScrollFactor(0).setDepth(4);
-        this.blue = this.add.image(this.cameras.main.width / 2 + 112, this.cameras.main.height - 107, 'blue').setScale(0.6).setOrigin(0.5, 0.5).setScrollFactor(0).setDepth(4);
-        this.purple = this.add.image(this.cameras.main.width / 2 + 256, this.cameras.main.height - 107, 'purple').setScale(0.6).setOrigin(0.5, 0.5).setScrollFactor(0).setDepth(4);
-        this.pink = this.add.image(this.cameras.main.width / 2 + 400, this.cameras.main.height - 107, 'pink').setScale(0.6).setOrigin(0.5, 0.5).setScrollFactor(0).setDepth(4);
-
-        this.colorStoke = this.add.graphics();
-        this.colorStoke.setScrollFactor(0);
-        this.colorStoke.setDepth(5);
-
-        this.setUpColor(this.red, Colors.RED);
-        this.setUpColor(this.yellow, Colors.YELLOW);
-        this.setUpColor(this.green, Colors.GREEN);
-        this.setUpColor(this.blue, Colors.BLUE);
-        this.setUpColor(this.purple, Colors.PURPLE);
-        this.setUpColor(this.pink, Colors.PINK);
-    }
-
-    setUpColor(colorItem, color) {
-        colorItem.setInteractive().on('pointerdown', () => {
-            if (this.selectedColor == color) {
-                this.selectedColor = Colors.WHITE;
-                this.colorStoke.clear();
-                this.cursorStoke.clearTint();
-            } else {
-                this.colorStoke.clear();
-                this.colorStoke.lineStyle(5, 0xDADE2A, 1);
-                this.colorStoke.strokeCircle(colorItem.x, colorItem.y, colorItem.displayWidth / 2);
-                this.selectedColor = color;
-
-                this.cursorStoke.setTintFill(color);
-
-            }
-        });
-    }
-
-    resetGlasses(data) {
-        for (let i = 0; i < data.length; i++) {
-            for (let j = 0; j < data[i].length; j++) {
-                if (data[i][j] != null) {
-                    this.fillArr[i][j].isColor = true;
-                    this.fillArr[i][j].setTintFill(data[i][j]);
-                } else {
-                    this.fillArr[i][j].isColor = false;
-                    this.fillArr[i][j].clearTint();
-                }
-            }
-        }
-    }
-
-    initCursors() {
-        this.cursorImage = this.add.image(-100, -100, 'cursorBack').setOrigin(0.2, 0.2).setScale(0.7).setDepth(6).setScrollFactor(0);
-        this.cursorPlayerImg = this.add.image(-100, -100, `char${this.player.character}`).setOrigin(-0.55, -0.6).setScale(0.8).setDepth(6).setScrollFactor(0);;
-        this.cursorStoke = this.add.image(-100, -100, 'cursorStoke').setOrigin(0.15, 0.05).setScale(0.7).setDepth(6).setScrollFactor(0);
-        this.cursorName = this.add.text(-100, -100, `${this.player.name}`, { font: "bold 12px Handlee", fill: '#FFFFFF', align: 'center' }).setOrigin(0.5, 0.5).setScrollFactor(0).setDepth(6);
-
-        this.game.canvas.style.cursor = 'none';
-
-        this.input.on('pointermove', (pointer) => {
-            this.cursorImage.setPosition(pointer.x, pointer.y);
-            this.cursorPlayerImg.setPosition(pointer.x, pointer.y);
-            this.cursorStoke.setPosition(pointer.x, pointer.y);
-            this.cursorName.setPosition(pointer.x + 25, pointer.y + 10);
-            this.sendCursorPositionToServer(pointer.x, pointer.y);
-        });
-
-        if (this.mobileFlag) {
-            this.input.on('pointerdown', (pointer) => {
-                this.cursorImage.setPosition(pointer.x, pointer.y);
-                this.cursorPlayerImg.setPosition(pointer.x, pointer.y);
-                this.cursorStoke.setPosition(pointer.x, pointer.y);
-                this.cursorName.setPosition(pointer.x + 25, pointer.y + 10);
-                this.sendCursorPositionToServer(pointer.x, pointer.y);
-            });
-        }
-    }
-
-    sendCursorPositionToServer(x, y) {
-        this.mySocket.emitCursorMove({ playerId: this.mySocket.socket.id, x: x, y: y, color: this.selectedColor, character: this.player.character, name: this.player.name });
-    }
-
-    syncWithOtherPlayers() {
-        this.mySocket.subscribePlayerClosedBoard(this, this.deleteBoardPlayer);
-
-        // Прослушивание переданных сервером данных о курсорах других игроков
-        this.mySocket.socket.on('cursorMove', (data) => {
-            if (!this.otherCursors[data.playerId]) {
-                // Создать курсор для нового игрока
-                this.otherCursors[data.playerId] = {};
-                this.otherCursors[data.playerId].cursor = this.add.image(data.x, data.y, 'cursorBack').setOrigin(0.2, 0.2).setDepth(4).setScale(0.7).setScrollFactor(0);
-                this.otherCursors[data.playerId].cursorImg = this.add.image(data.x, data.y, `char${data.character}`).setOrigin(-0.55, -0.6).setScale(0.7).setDepth(4).setScrollFactor(0);
-                this.otherCursors[data.playerId].cursorStoke = this.add.image(data.x, data.y, 'cursorStoke').setOrigin(0.15, 0.05).setScale(0.7).setDepth(4).setScrollFactor(0).setTintFill(data.color);
-                this.otherCursors[data.playerId].cursorName = this.add.text(data.x + 25, data.y + 10, `${data.name}`, { font: "bold 12px Handlee", fill: '#FFFFFF', align: 'center' }).setOrigin(0.5, 0.5).setScrollFactor(0).setDepth(4);
-                this.otherCursors[data.playerId].color = data.color;
-            } else {
-                const cursor = this.otherCursors[data.playerId].cursor;
-                const cursorImg = this.otherCursors[data.playerId].cursorImg
-                const cursorName = this.otherCursors[data.playerId].cursorName
-                const stoke = this.otherCursors[data.playerId].cursorStoke
-
-                if (this.otherCursors[data.playerId].color != data.color) {
-                    this.otherCursors[data.playerId].color = data.color;
-                    stoke.setTintFill(data.color);
-                }
-
-                this.tweens.add({
-                    targets: [cursor, cursorImg, stoke],
-                    x: data.x,
-                    y: data.y,
-                    duration: 200,
-                });
-
-                this.tweens.add({
-                    targets: [cursorName],
-                    x: data.x + 25,
-                    y: data.y + 10,
-                    duration: 200,
-                });
-            }
-        });
-    }
-
-    deleteBoardPlayer(id) {
-        if (this.otherCursors[id]) {
-            console.log(this.otherPlayers);
-            this.otherCursors[id].cursor.destroy();
-            this.otherCursors[id].cursorImg.destroy();
-            this.otherCursors[id].cursorStoke.destroy();
-            this.otherCursors[id].cursorName.destroy();
-            this.otherCursors[id].color = null;
-            delete this.otherCursors[id]
-            console.log(this.otherPlayers);
-        }
-    }
-
-    closeBoard() {
-        this.mySocket.unSubscribeBoard();
-
-        // Отключение отслеживания курсора
-        this.input.off('pointermove');
-        this.game.canvas.style.cursor = 'default';
-        this.clearOtherCursors();
-        this.clearPlayerCursor();
-
-        this.boardBack.destroy();
-
-        this.collbsBack.destroy();
-
-        this.board.destroy();
-
-        this.boardTitle.destroy();
-
-        this.boardCloseButton.destroy();
-
-        this.resetBtn.destroy();
-        this.generateBtn.destroy();
-
-
-        this.glass1.destroy();
-        this.glass2.destroy();
-        this.glass3.destroy();
-        this.glass4.destroy();
-
-        this.clearFills();
-        this.clearColors();
-    }
-
-    clearOtherCursors() {
-        // Пройтись по всем элементам объекта
-        for (let playerId in this.otherCursors) {
-            if (this.otherCursors.hasOwnProperty(playerId)) {
-                this.otherCursors[playerId].cursor.destroy();
-                this.otherCursors[playerId].cursorImg.destroy();
-                this.otherCursors[playerId].cursorStoke.destroy();
-                this.otherCursors[playerId].cursorName.destroy();
-            }
-        }
-
-        // Очистить объект
-        this.otherCursors = {};
-    }
-
-    clearPlayerCursor() {
-        this.cursorImage.destroy();
-        this.cursorPlayerImg.destroy();
-        this.cursorStoke.destroy();
-        this.cursorName.destroy();
-    }
-
-    clearFills() {
-        this.fillArr.forEach(fills => {
-            fills.forEach(fill => {
-                fill.destroy();
-            });
-        });
-
-        this.fillArr = [];
-    }
-
-    clearColors() {
-        this.red.destroy();
-        this.yellow.destroy();
-        this.green.destroy();
-        this.blue.destroy();
-        this.purple.destroy();
-        this.pink.destroy();
-
-        this.colorStoke.clear();
-        this.colorStoke.destroy();
+        this.overlayBackground.setVisible(true);
+        this.closeButton.setVisible(true);
     }
 }

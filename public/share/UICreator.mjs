@@ -50,15 +50,15 @@ export function createUILeftMobile(context, settingsImg, exitImg, foldImg, setti
     foldButton.setScrollFactor(0);
 
     settingsButton.on('pointerdown', (pointer) => {
-        settingsEvent(context);
+        settingsEvent.call(context);
     });
 
     exitButton.on('pointerdown', (pointer) => {
-        exitEvent(context);
+        exitEvent.call(context);
     });
 
     foldButton.on('pointerdown', (pointer) => {
-        foldEvent(context);
+        foldEvent.call(context);
     });
 }
 
@@ -81,14 +81,14 @@ export function createUI(self, eventSettingsBtn, eventExitBtn, eventFoldBtn) {
     const playerFold = document.getElementById('playerFold');
 
     playerFold.addEventListener('click', () => {
-        eventFoldBtn(self);
+        eventFoldBtn.call(self);
     });
 
     settingsButton.addEventListener('click', () => {
-        eventSettingsBtn(self);
+        eventSettingsBtn.call(self);
     });
     exitButton.addEventListener('click', () => {
-        eventExitBtn(self);
+        eventExitBtn.call(self);
     });
 
     uiContainer.setOrigin(0.5, 0.5);
@@ -124,7 +124,7 @@ export function createExitMenu(self, eventLeaveBtn, eventCloseBtn, isMobile) {
 
     const closeBtn = document.getElementById('close-btn');
     closeBtn.addEventListener('click', () => {
-        eventCloseBtn(self);
+        eventCloseBtn.call(self);
     });
 
 
@@ -229,12 +229,12 @@ export function createAvatarDialog(self, eventConfirmBtn, eventCloseBtn, room, i
 
     const avatarDialogJoin = document.getElementById('joinBtn');
     avatarDialogJoin.addEventListener('click', () => {
-        eventConfirmBtn(self, nameInput, nameError, imgCount);
+        eventConfirmBtn.call(self, nameInput, nameError, imgCount);
     });
 
     const avatarDialogBack = document.getElementById('backBtn');
     avatarDialogBack.addEventListener('click', () => {
-        eventCloseBtn(self);
+        eventCloseBtn.call(self);
     });
 
     if (room != null) roomCode.innerHTML = `Room number: ${room}`;

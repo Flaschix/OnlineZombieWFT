@@ -251,7 +251,7 @@ export class BaseScene extends Phaser.Scene {
             }
 
             if (this.eventZone == LABEL_ID.BOARD_KEY) {
-                this.openBoard();
+                this.boardEvent();
                 return;
             }
 
@@ -367,34 +367,34 @@ export class BaseScene extends Phaser.Scene {
         });
     }
 
-    showFold(context) {
-        if (context.isOverlayVisible) return;
-        context.player.setVelocity(0);
-        context.isOverlayVisible = true
+    showFold() {
+        if (this.isOverlayVisible) return;
+        this.player.setVelocity(0);
+        this.isOverlayVisible = true
 
-        context.tweens.add({
-            targets: [context.overlayBackground, context.foldColseBtn, context.imgKey, context.imgTitle, context.imgText, context.leftArrow, context.rightArrow],
+        this.tweens.add({
+            targets: [this.overlayBackground, this.foldColseBtn, this.imgKey, this.imgTitle, this.imgText, this.leftArrow, this.rightArrow],
             alpha: 1,
             duration: 500
         });
 
-        if (context.fold == null || context.fold.length < 1) {
+        if (this.fold == null || this.fold.length < 1) {
 
-        } else if (context.fold.length > 1) {
-            context.foldImgNumber = 0;
-            context.leftArrow.setVisible(false);
-            context.rightArrow.setVisible(true);
+        } else if (this.fold.length > 1) {
+            this.foldImgNumber = 0;
+            this.leftArrow.setVisible(false);
+            this.rightArrow.setVisible(true);
 
-            context.showImg(context.fold[0]);
+            this.showImg(this.fold[0]);
         } else {
-            context.foldImgNumber = 0;
+            this.foldImgNumber = 0;
 
-            context.showImg(context.fold[0]);
+            this.showImg(this.fold[0]);
         }
 
 
-        context.overlayBackground.setVisible(true);
-        context.foldColseBtn.setVisible(true);
+        this.overlayBackground.setVisible(true);
+        this.foldColseBtn.setVisible(true);
     }
 
     moveRightKeys() {
@@ -453,51 +453,51 @@ export class BaseScene extends Phaser.Scene {
         context.fold = arr
     }
 
-    showSettings(self) {
-        if (self.foldColseBtn.visible || self.overlayBackground.visible) return;
-        self.avatarDialog.setPosition(self.cameras.main.scrollX + 640, self.cameras.main.scrollY + 360);
-        self.avatarDialog.setVisible(true);
-        self.isOverlayVisible = true
-        self.exitContainer.setVisible(false);
-        self.player.setVelocity(0);
+    showSettings() {
+        if (this.foldColseBtn.visible || this.overlayBackground.visible) return;
+        this.avatarDialog.setPosition(this.cameras.main.scrollX + 640, this.cameras.main.scrollY + 360);
+        this.avatarDialog.setVisible(true);
+        this.isOverlayVisible = true
+        this.exitContainer.setVisible(false);
+        this.player.setVelocity(0);
     }
 
-    showExitMenu(self) {
-        if (self.foldColseBtn.visible || self.overlayBackground.visible) return;
-        self.exitContainer.setPosition(self.cameras.main.scrollX + 640, self.cameras.main.scrollY + 360);
-        self.exitContainer.setVisible(true);
-        self.isOverlayVisible = true
-        self.avatarDialog.setVisible(false);
-        self.player.setVelocity(0);
+    showExitMenu() {
+        if (this.foldColseBtn.visible || this.overlayBackground.visible) return;
+        this.exitContainer.setPosition(this.cameras.main.scrollX + 640, this.cameras.main.scrollY + 360);
+        this.exitContainer.setVisible(true);
+        this.isOverlayVisible = true
+        this.avatarDialog.setVisible(false);
+        this.player.setVelocity(0);
     }
 
     leaveGame(self) {
         window.location.reload();
     }
 
-    closeExitMenu(self) {
-        self.exitContainer.setVisible(false);
-        self.isOverlayVisible = false
+    closeExitMenu() {
+        this.exitContainer.setVisible(false);
+        this.isOverlayVisible = false
     }
 
-    enterNewSettingsInAvatarDialog(self, usernameInput, nameError, imgCount) {
+    enterNewSettingsInAvatarDialog(usernameInput, nameError, imgCount) {
         const username = usernameInput.value;
         if (username.length < 1 || username.length > 12) {
             nameError.style.visibility = "visible";
         } else {
-            self.mySocket.emitPlayerReconnect({ x: self.player.x, y: self.player.y, avatar: imgCount + 1, name: username });
-            self.player.setTexture(`character${imgCount + 1}`);
-            self.player.character = imgCount + 1;
-            self.player.nameText.setText(username);
-            self.avatarDialog.setVisible(false);
-            self.isOverlayVisible = false;
+            this.mySocket.emitPlayerReconnect({ x: this.player.x, y: this.player.y, avatar: imgCount + 1, name: username });
+            this.player.setTexture(`character${imgCount + 1}`);
+            this.player.character = imgCount + 1;
+            this.player.nameText.setText(username);
+            this.avatarDialog.setVisible(false);
+            this.isOverlayVisible = false;
             nameError.style.visibility = "hidden";
         }
     }
 
-    closeAvatarDialog(self) {
-        self.avatarDialog.setVisible(false);
-        self.isOverlayVisible = false;
+    closeAvatarDialog() {
+        this.avatarDialog.setVisible(false);
+        this.isOverlayVisible = false;
     }
 
     loadPlusTexture(name, path) {
