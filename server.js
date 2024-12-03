@@ -235,7 +235,7 @@ io.on('connection', (socket) => {
             });
 
             socket.on(`answer`, () => {
-                if (rooms[roomId].glasses[0][0] == null || rooms[roomId].glasses[0][0] == 0xB70303 && rooms[roomId].glasses[0][1] == 0x1F6FA8 && rooms[roomId].glasses[0][2] == 0xDADE2A && rooms[roomId].glasses[0][3] == 0x3BA81F
+                if (rooms[roomId].glasses[0][0] == 0xB70303 && rooms[roomId].glasses[0][1] == 0x1F6FA8 && rooms[roomId].glasses[0][2] == 0xDADE2A && rooms[roomId].glasses[0][3] == 0x3BA81F
                     && rooms[roomId].glasses[1][0] == 0x7D1FA8 && rooms[roomId].glasses[1][1] == 0xDADE2A && rooms[roomId].glasses[1][2] == 0xD828D1 && rooms[roomId].glasses[1][3] == 0x3BA81F
                     && rooms[roomId].glasses[2][0] == 0x3BA81F && rooms[roomId].glasses[2][1] == 0xB70303 && rooms[roomId].glasses[2][2] == 0x1F6FA8 && rooms[roomId].glasses[2][3] == 0x7D1FA8
                     && rooms[roomId].glasses[3][0] == 0xD828D1 && rooms[roomId].glasses[3][1] == 0xDADE2A && rooms[roomId].glasses[3][2] == 0x1F6FA8 && rooms[roomId].glasses[3][3] == 0xD828D1) {
