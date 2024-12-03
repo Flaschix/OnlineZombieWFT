@@ -242,7 +242,6 @@ export class BoardController {
     }
 
     initCursors() {
-        console.log(this.scene.player.name);
         this.cursorImage = this.scene.add.image(-100, -100, 'cursorBack').setOrigin(0.2, 0.2).setScale(0.7).setDepth(6).setScrollFactor(0);
         this.cursorPlayerImg = this.scene.add.image(-100, -100, `char${this.scene.player.character}`).setOrigin(0.5, 0.5).setScale(0.8).setDepth(6).setScrollFactor(0);;
         this.cursorStoke = this.scene.add.image(-100, -100, 'cursorStoke').setOrigin(0.15, 0.05).setScale(0.7).setDepth(6).setScrollFactor(0);
@@ -323,14 +322,12 @@ export class BoardController {
 
     deleteBoardPlayer(id) {
         if (this.otherCursors[id]) {
-            console.log(this.otherPlayers);
             this.otherCursors[id].cursor.destroy();
             this.otherCursors[id].cursorImg.destroy();
             this.otherCursors[id].cursorStoke.destroy();
             this.otherCursors[id].cursorName.destroy();
             this.otherCursors[id].color = null;
             delete this.otherCursors[id]
-            console.log(this.otherPlayers);
         }
     }
 
