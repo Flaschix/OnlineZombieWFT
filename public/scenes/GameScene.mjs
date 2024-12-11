@@ -66,7 +66,7 @@ export class GameScene extends BaseScene {
 
 
     createCollision() {
-        const bodyDoor = this.matter.add.fromVertices(888 + 134, 381.5 + 129.5, '5 0.5 9.5 250.5 258 250.5 263 0.5', {
+        const bodyDoor = this.matter.add.fromVertices(886 + 134, 381.5 + 129.5, '5 0.5 9.5 250.5 258 250.5 263 0.5', {
             label: `${LABEL_ID.DOOR_FORWARD_ID}`,
             isStatic: true,
         })
@@ -80,19 +80,19 @@ export class GameScene extends BaseScene {
         const arrBodies = [bodyDoor, box1];
 
 
-        const box2 = this.matter.add.fromVertices(177 + 70.5, 1436 + 94, '5 91 14 1 114 1 136 59 136 179 30 179', {
+        const box2 = this.matter.add.fromVertices(175 + 70.5, 1435 + 94, '5 91 14 1 114 1 136 59 136 179 30 179', {
             label: `${LABEL_ID.EMPTY_KEY}`,
             isStatic: true,
         })
         box2.form = '5 91 14 1 114 1 136 59 136 179 30 179';
 
-        const box3 = this.matter.add.fromVertices(1540 + 93.5, 1320 + 93, '62 1 5 36.5 9.5 112.5 132.5 182 179 153.5 182 84.5', {
+        const box3 = this.matter.add.fromVertices(1538 + 93.5, 1319 + 93, '62 1 5 36.5 9.5 112.5 132.5 182 179 153.5 182 84.5', {
             label: `${LABEL_ID.EMPTY_KEY}`,
             isStatic: true,
         })
         box3.form = '62 1 5 36.5 9.5 112.5 132.5 182 179 153.5 182 84.5';
 
-        const box4 = this.matter.add.fromVertices(1384 + 117.5, 385 + 146.5, '19 1 5 235 12 284 206 284 230 131 230 1', {
+        const box4 = this.matter.add.fromVertices(1382 + 117.5, 384 + 146.5, '19 1 5 235 12 284 206 284 230 131 230 1', {
             label: `${LABEL_ID.SECOND_KEY}`,
             isStatic: true,
         })
