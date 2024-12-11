@@ -1,4 +1,5 @@
 import { CST, LABEL_ID, myMap } from "../CST.mjs";
+import { EnemyWalk } from "../share/EnemyWalk.mjs";
 
 
 import { createUILeftMobile } from "../share/UICreator.mjs";
@@ -48,10 +49,33 @@ export class GameScene extends BaseScene {
         this.createFold();
 
         createAvatarDialog(this, this.enterNewSettingsInAvatarDialog, this.closeAvatarDialog, this.player.room, isMobile());
+
+        this.enemyWalkController = new EnemyWalk(this.mySocket, this);
+        this.enemyWalkController.createEnemy(1000, 1200, 'fold', this.player, this.test);
+    }
+
+    test() {
+        console.log('hu');
+    }
+
+    createInputHandlers() {
+        this.input.keyboard.on('keydown-C', () => {
+            this.enemyWalkController.moveEnemy(0, 900, 1300);
+            // this.enemyWalkController.moveEnemy(0, 800, 1400);
+        });
+
+        this.input.keyboard.on('keydown-V', () => {
+            // this.enemyWalkController.moveEnemy(0, 900, 1300);
+            this.enemyWalkController.moveEnemy(0, 800, 1400);
+        });
+
+        super.createInputHandlers();
     }
 
     update() {
         super.update();
+
+        this.enemyWalkController.update();
     }
 
     createUnWalkedObjects() {
