@@ -96,9 +96,55 @@ export class SocketWorker {
         this.socket.removeAllListeners('takeFold');
         this.socket.removeAllListeners(`newPlayer:${sceneKey}`);
         this.socket.removeAllListeners(`playerMoved:${sceneKey}`);
+        this.socket.removeAllListeners('updateHeart');
+        this.socket.removeAllListeners('takeEnemySate');
+        this.socket.removeAllListeners('enemiesUpdated');
+        this.socket.removeAllListeners('gameLose');
     }
 
     unSubscribeTakeFold() {
         this.socket.removeAllListeners('takeFold');
+    }
+
+    subscribeUpdateHeart(context, event) {
+        this.socket.on('updateHeart', (data) => {
+            event.call(context, data);
+        });
+    }
+
+    subscribeGameLose(context, event) {
+        this.socket.on('gameLose', () => {
+            event.call(context);
+        });
+    }
+
+
+    emitGetHearts() {
+        this.socket.emit('getHearts', null);
+    }
+
+    emitHitHeart() {
+        this.socket.emit('hitHeart', null);
+    }
+
+    unSubscribeHearts() {
+        this.socket.removeAllListeners('updateHeart');
+    }
+
+    emitGetEnemyState() {
+        this.socket.emit('getEnemyState', null);
+    }
+
+    subscribeTakeEnemyState(context, event) {
+        this.socket.on('takeEnemySate', (state) => {
+            event.call(context, state);
+        });
+    }
+
+    subscribeEnemyUpdate(context, event) {
+        this.socket.on('enemiesUpdated', (newState) => {
+            console.log(newState)
+            event.call(context, newState);
+        });
     }
 }

@@ -1,5 +1,6 @@
 import { CST, LABEL_ID, myMap } from "../CST.mjs";
 import { EnemyWalk } from "../share/EnemyWalk.mjs";
+import { HeartController } from "../share/HeartController.mjs";
 
 
 import { createUILeftMobile } from "../share/UICreator.mjs";
@@ -16,6 +17,19 @@ import { BaseScene } from "./BaseScene.mjs";
 export class GameScene extends BaseScene {
     constructor() {
         super(CST.SCENE.GAMESCENE);
+
+        this.enemyState = [
+            { x: 1000, y: 1200 },
+            { x: 800, y: 1200 },
+            { x: 800, y: 1400 },
+            { x: 1000, y: 1400 },
+            { x: 1000, y: 1200 },
+            { x: 800, y: 1200 },
+            { x: 800, y: 1400 },
+            { x: 1000, y: 1400 },
+            { x: 1000, y: 1200 },
+            { x: 1000, y: 1600 },
+        ]
     }
 
     preload() {
@@ -50,23 +64,54 @@ export class GameScene extends BaseScene {
 
         createAvatarDialog(this, this.enterNewSettingsInAvatarDialog, this.closeAvatarDialog, this.player.room, isMobile());
 
-        this.enemyWalkController = new EnemyWalk(this.mySocket, this);
-        this.enemyWalkController.createEnemy(1000, 1200, 'fold', this.player, this.test);
+        this.heartController = new HeartController(this, this.mySocket);
+        this.heartController.initHeart(150, 50, 'heart', 200, 50,)
+
+        this.enemyWalkController = new EnemyWalk(this.mySocket, this, this.enemyTouch, this.player);
+        this.mySocket.subscribeTakeEnemyState(this, this.createEnemiys);
+        this.mySocket.emitGetEnemyState();
+
+        this.enemyWalkController.handleVisibility();
     }
 
-    test() {
-        console.log('hu');
+    createEnemiys(state) {
+        this.enemyWalkController.createEnemy(this.enemyState[state].x, this.enemyState[state].y, 'zombie1', 3.5);
+        this.enemyWalkController.createEnemy(this.enemyState[state].x + 200, this.enemyState[state].y + 200, 'zombie1', 3.5);
+        console.log(state);
+
+        this.mySocket.subscribeEnemyUpdate(this, (newState) => {
+            this.enemyWalkController.updatePositionsFromServer([{ "enemyN": 0, "x": this.enemyState[newState].x, "y": this.enemyState[newState].y }]);
+            this.enemyWalkController.updatePositionsFromServer([{ "enemyN": 1, "x": this.enemyState[newState].x + 100, "y": this.enemyState[newState].y + 100 }]);
+        });
+    }
+
+    enemyTouch() {
+        this.heartController.hitHeart(this.hitPlayerAnims.bind(this));
+    }
+
+    hitPlayerAnims() {
+        this.tweens.add({
+            targets: this.player,
+            tint: { from: 0xFFFFFF, to: 0xFF0000 },
+            ease: 'Linear',
+            duration: 100,
+            yoyo: true,
+            repeat: 2,
+            onComplete: () => {
+                this.player.clearTint();
+            }
+        });
     }
 
     createInputHandlers() {
         this.input.keyboard.on('keydown-C', () => {
-            this.enemyWalkController.moveEnemy(0, 900, 1300);
+            this.enemyWalkController.updatePositionsFromServer([{ "enemyN": 0, "x": 800, "y": 1400 }]);
             // this.enemyWalkController.moveEnemy(0, 800, 1400);
         });
 
         this.input.keyboard.on('keydown-V', () => {
             // this.enemyWalkController.moveEnemy(0, 900, 1300);
-            this.enemyWalkController.moveEnemy(0, 800, 1400);
+            this.enemyWalkController.updatePositionsFromServer([{ "enemyN": 0, "x": 900, "y": 1300 }]);
         });
 
         super.createInputHandlers();
@@ -75,7 +120,6 @@ export class GameScene extends BaseScene {
     update() {
         super.update();
 
-        this.enemyWalkController.update();
     }
 
     createUnWalkedObjects() {

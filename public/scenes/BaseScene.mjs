@@ -128,11 +128,15 @@ export class BaseScene extends Phaser.Scene {
                     duration: 200,
                     onUpdate: function () {
                         // Обновление анимации на основе данных о движении
-                        self.playersController.updateAnimOtherPlayer(player, {
-                            ...info,
-                            velocityX: player.targetX - player.x,
-                            velocityY: player.targetY - player.y
-                        });
+                        try {
+                            if (!self.otherPlayers[playerInfo.id]) return;
+                            self.playersController.updateAnimOtherPlayer(player, {
+                                ...info,
+                                velocityX: player.targetX - player.x,
+                                velocityY: player.targetY - player.y
+                            });
+                        } catch (e) { };
+
                     },
                     onComplete: function () {
                         // Проверяем, нужно ли остановить анимацию
@@ -163,9 +167,11 @@ export class BaseScene extends Phaser.Scene {
 
     deletePlayer(context, id) {
         if (context.otherPlayers[id]) {
+            // setTimeout(() => {
             context.otherPlayers[id].nameText.destroy();
             context.otherPlayers[id].destroy();
             delete context.otherPlayers[id];
+            // }, 1000);
         }
     }
 
@@ -513,14 +519,15 @@ export class BaseScene extends Phaser.Scene {
 
         this.updatePressXVisibility();
 
+
         // Интерполяция для других игроков
-        Object.keys(this.otherPlayers).forEach((id) => {
-            let otherPlayer = this.otherPlayers[id];
-            if (otherPlayer.targetX !== undefined && otherPlayer.targetY !== undefined) {
-                otherPlayer.x += (otherPlayer.targetX - otherPlayer.x) * 0.1;
-                otherPlayer.y += (otherPlayer.targetY - otherPlayer.y) * 0.1;
-            }
-        });
+        // Object.keys(this.otherPlayers).forEach((id) => {
+        //     let otherPlayer = this.otherPlayers[id];
+        //     if (otherPlayer.targetX !== undefined && otherPlayer.targetY !== undefined) {
+        //         otherPlayer.x += (otherPlayer.targetX - otherPlayer.x) * 0.1;
+        //         otherPlayer.y += (otherPlayer.targetY - otherPlayer.y) * 0.1;
+        //     }
+        // });
     }
 
     updatePlayerPosition() {
@@ -689,6 +696,7 @@ function sceneSwitched(self, data) {
     self.avatarDialog.destroy();
     self.exitContainer.destroy();
     self.otherPlayers = {};
+    if (self.enemyWalkController) clearInterval(self.enemyWalkController.intervalId);
     let players = data.players;
     self.scene.start(data.scene, { players });
 }
