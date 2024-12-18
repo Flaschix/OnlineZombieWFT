@@ -60,6 +60,7 @@ export class GameScene6 extends BaseScene {
 
         this.matter.add.fromVertices(488 + 22, 1636.5 + 36, '0.5 16 0.5 55 20 70.5 43 55 38.5 16 20 1.5', { isStatic: true }, true);
         this.matter.add.fromVertices(358 + 125, 872 + 86.5, '4 125.5 4 78.5 1.5 63 249 1 249 44 210.5 63 169 38.5 111 65.5 111 147.5 67 171.5 29 151 29 83 9.5 74 9.5 125.5 4 125.5', { isStatic: true }, true);
+        this.matter.add.fromVertices(1316 + 94, 1578 + 81.5, '1 54 1 114.5 49.5 139 49.5 111.5 65 119 77.5 114.5 77.5 101.5 133.5 126 133.5 162 142.5 159.5 142.5 139 179 122 179 141.5 187.5 139 187.5 92 125 58.5 122.5 39 90.5 30.5 90.5 21.5 53.5 1 22 18.5 25.5 42', { isStatic: true }, true);
 
         // this.matter.add.fromVertices(, { isStatic: true }, true);
     }
@@ -74,7 +75,13 @@ export class GameScene6 extends BaseScene {
         const box1 = this.matter.add.fromVertices(822 + 162.5, 300.5 + 186.5, '1 0.5 1 372.5 324.5 372.5 324.5 0.5', {
             label: `${LABEL_ID.EMPTY_KEY}`,
             isStatic: true,
-        })
+        });
+
+        const box2 = this.matter.add.fromVertices(1497 + 28, 1322 + 23, '11.5 1 1 27 43.5 45 54.5 18', {
+            label: `${LABEL_ID.TENTH_KEY}`,
+            isStatic: true,
+            isSensor: true
+        });
 
 
         const box5 = this.matter.add.fromVertices(393 + 72.5, 1448 + 85.5, '85.5 169.5 3.5 125.5 0.5 48.5 27 33.5 20.5 26.5 67 1.5 76.5 8 71 23 144.5 58.5 144.5 139', {
@@ -83,14 +90,6 @@ export class GameScene6 extends BaseScene {
         })
 
         box5.form = '85.5 169.5 3.5 125.5 0.5 48.5 27 33.5 20.5 26.5 67 1.5 76.5 8 71 23 144.5 58.5 144.5 139';
-
-
-        const box8 = this.matter.add.fromVertices(1316 + 94, 1578 + 81.5, '1 54 1 114.5 49.5 139 49.5 111.5 65 119 77.5 114.5 77.5 101.5 133.5 126 133.5 162 142.5 159.5 142.5 139 179 122 179 141.5 187.5 139 187.5 92 125 58.5 122.5 39 90.5 30.5 90.5 21.5 53.5 1 22 18.5 25.5 42', {
-            label: `${LABEL_ID.TENTH_KEY}`,
-            isStatic: true,
-        })
-
-        box8.form = '1 54 1 114.5 49.5 139 49.5 111.5 65 119 77.5 114.5 77.5 101.5 133.5 126 133.5 162 142.5 159.5 142.5 139 179 122 179 141.5 187.5 139 187.5 92 125 58.5 122.5 39 90.5 30.5 90.5 21.5 53.5 1 22 18.5 25.5 42'
 
         const box9 = this.matter.add.fromVertices(1250 + 102.5, 984 + 91, '135.5 180.5 119.5 175 119.5 140.5 49 97 13.5 117.5 6.5 114.5 6.5 65 1 54.5 63 20 58 9.5 63 1.5 73.5 6 70.5 20 163.5 75 163.5 58.5 185.5 58.5 193 70.5 185.5 89 204.5 97 204.5 104 185.5 112 185.5 153.5', {
             label: `${LABEL_ID.EMPTY_KEY}`,
@@ -107,11 +106,9 @@ export class GameScene6 extends BaseScene {
 
         box11.form = '1 115.5 1 101 192.5 1 201.5 1 262.5 34 262.5 45.5 72 145.5 57 145.5';
 
-        const arrBodies = [bodyDoorBack, box1];
+        const arrBodies = [bodyDoorBack, box1, box2];
 
-
-
-        const arrBodiesDiff = [box11, box5, box8, box9];
+        const arrBodiesDiff = [box11, box5, box9];
 
         this.createSimpleCollision(arrBodies, arrBodiesDiff);
     }
