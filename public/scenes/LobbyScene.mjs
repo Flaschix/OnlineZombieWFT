@@ -1,5 +1,6 @@
-import { CST } from "../CST.mjs";
+import { CST, myMap } from "../CST.mjs";
 import { socket } from "../CST.mjs";
+import { SocketWorker } from "../share/SocketWorker.mjs";
 
 import { isMobile } from "../share/UICreator.mjs";
 import { createAvatarDialog } from "../share/UICreator.mjs";
@@ -48,7 +49,6 @@ export class LobbyScene extends Phaser.Scene {
         this.load.spritesheet('character5', './assets/characterMap/character5.png', { frameWidth: 48, frameHeight: 64 });
         this.load.spritesheet('character6', './assets/characterMap/character6.png', { frameWidth: 48, frameHeight: 64 });
 
-        this.load.image('answer', 'assets/keyFrame/answer.png');
         this.load.image('emptyKey', 'assets/keyFrame/emptyKey.png');
         this.load.image('paper1', 'assets/keyFrame/1.png');
         this.load.image('paper3', 'assets/keyFrame/3.png');

@@ -1,4 +1,6 @@
 import { CST, LABEL_ID } from "../CST.mjs";
+import { EnemyWalk } from "../share/EnemyWalk.mjs";
+import { HeartController } from "../share/HeartController.mjs";
 
 import { createUILeftMobile } from "../share/UICreator.mjs";
 import { createUI } from "../share/UICreator.mjs";
@@ -14,6 +16,59 @@ import { BaseScene } from "./BaseScene.mjs";
 export class GameScene3 extends BaseScene {
     constructor() {
         super(CST.SCENE.GAMESCENE3);
+
+        this.enemyState1 = [
+            { x: 675, y: 1073 },
+            { x: 996, y: 1073 },
+            { x: 1313, y: 1073 },
+            { x: 1313, y: 830 },
+            { x: 1486, y: 830 },
+            { x: 1486, y: 426 },
+            { x: 1206, y: 426 },
+            { x: 874, y: 426 },
+            { x: 498, y: 426 },
+            { x: 498, y: 651 },
+            { x: 498, y: 879 },
+            { x: 355, y: 879 },
+            { x: 355, y: 1127 },
+            { x: 355, y: 1349 },
+            { x: 477, y: 1349 },
+            { x: 477, y: 1535 },
+            { x: 477, y: 1740 },
+            { x: 695, y: 1740 },
+            { x: 924, y: 1740 },
+            { x: 924, y: 1441 },
+            { x: 924, y: 1156 },
+            { x: 675, y: 1156 },
+        ];
+
+
+        this.enemyState2 = [
+            { x: 1630, y: 339 },
+            { x: 1630, y: 665 },
+            { x: 1630, y: 926 },
+            { x: 1324, y: 926 },
+            { x: 1057, y: 926 },
+            { x: 1057, y: 573 },
+            { x: 744, y: 573 },
+            { x: 441, y: 573 },
+            { x: 441, y: 858 },
+            { x: 441, y: 1164 },
+            { x: 441, y: 1469 },
+            { x: 694, y: 1469 },
+            { x: 900, y: 1469 },
+            { x: 1098, y: 1469 },
+            { x: 1098, y: 1767 },
+            { x: 1337, y: 1767 },
+            { x: 1575, y: 1767 },
+            { x: 1575, y: 1562 },
+            { x: 1224, y: 1562 },
+            { x: 1224, y: 1276 },
+            { x: 1224, y: 978 },
+            { x: 1224, y: 654 },
+            { x: 1224, y: 339 },
+            { x: 1433, y: 339 },
+        ]
     }
 
     preload() {
@@ -46,6 +101,54 @@ export class GameScene3 extends BaseScene {
         this.createFold();
 
         createAvatarDialog(this, this.enterNewSettingsInAvatarDialog, this.closeAvatarDialog, this.player.room, isMobile());
+
+        this.heartController = new HeartController(this, this.mySocket);
+        this.heartController.initHeart(150, 50, 'heart', 200, 50, this.hitPlayerAnims.bind(this))
+
+        this.enemyWalkController = new EnemyWalk(this.mySocket, this, this.enemyTouch, this.player);
+        this.mySocket.subscribeTakeEnemyState(this, this.createEnemiys);
+        this.mySocket.emitGetEnemyState();
+
+        this.enemyWalkController.handleVisibility();
+    }
+
+    createEnemiys(enemyStates) {
+        const state1 = enemyStates[1];
+        const state2 = enemyStates[2];
+
+        this.enemyWalkController.createEnemy(this.enemyState1[state1].x, this.enemyState1[state1].y, 'zombie1', 3.5, ['zombie_walk_down_1', 'zombie_walk_right_1', 'zombie_walk_left_1', 'zombie_walk_up_1']);
+        this.enemyWalkController.createEnemy(this.enemyState2[state2].x, this.enemyState2[state2].y, 'zombie2', 3.5, ['zombie_walk_down_2', 'zombie_walk_right_2', 'zombie_walk_left_2', 'zombie_walk_up_2']);
+
+        this.mySocket.subscribeEnemyUpdate(this, (newStates) => {
+            const newState1 = newStates[1];
+            const newState2 = newStates[2];
+            this.enemyWalkController.updatePositionsFromServer([{ "enemyN": 0, "x": this.enemyState1[newState1].x, "y": this.enemyState1[newState1].y }]);
+            this.enemyWalkController.updatePositionsFromServer([{ "enemyN": 1, "x": this.enemyState2[newState2].x, "y": this.enemyState2[newState2].y }]);
+        });
+    }
+
+    enemyTouch() {
+        this.heartController.hitHeart(null);
+    }
+
+    hitPlayerAnims(socketID) {
+        let player = null;
+        if (socketID == this.mySocket.socket.id) player = this.player;
+        else if (this.otherPlayers[socketID]) player = this.otherPlayers[socketID]
+
+        if (player != null) {
+            this.tweens.add({
+                targets: player,
+                tint: { from: 0xFFFFFF, to: 0xFF0000 },
+                ease: 'Linear',
+                duration: 100,
+                yoyo: true,
+                repeat: 2,
+                onComplete: () => {
+                    player.clearTint();
+                }
+            });
+        }
     }
 
     update() {

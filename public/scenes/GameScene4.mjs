@@ -1,4 +1,5 @@
 import { CST, LABEL_ID } from "../CST.mjs";
+import { HeartController } from "../share/HeartController.mjs";
 
 import { createUILeftMobile } from "../share/UICreator.mjs";
 import { createUI } from "../share/UICreator.mjs";
@@ -46,6 +47,9 @@ export class GameScene4 extends BaseScene {
         this.createFold();
 
         createAvatarDialog(this, this.enterNewSettingsInAvatarDialog, this.closeAvatarDialog, this.player.room, isMobile());
+
+        this.heartController = new HeartController(this, this.mySocket);
+        this.heartController.initHeart(150, 50, 'heart', 200, 50, null)
     }
 
     update() {

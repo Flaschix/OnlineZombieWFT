@@ -13,13 +13,16 @@ export class EnemyWalk {
         this.player = player;
         this.hitFlag = false;
 
+        this.graphics = this.scene.add.graphics();
         this.startManualUpdate(); // Запуск ручного обновления
     }
 
-    createEnemy(x, y, sprite, scale) {
+    createEnemy(x, y, sprite, scale, animsString) {
         const enemy = this.scene.matter.add.sprite(x, y, sprite).setScale(scale);
         enemy.setStatic(true);
         enemy.setSensor(true);
+
+        enemy.animsString = animsString;
 
         this.enemies.push(enemy);
         this.moveQueue.set(enemy, []); // Инициализация очереди для врага
@@ -60,9 +63,9 @@ export class EnemyWalk {
                 enemyY2 < playerY1 ||
                 enemyY1 > playerY2);
 
-
-
-            if (isIntersecting) this.hitFlag = true;
+            if (isIntersecting) {
+                this.hitFlag = true;
+            }
         }
         queue.push({ x: targetX, y: targetY });
     }
@@ -78,6 +81,8 @@ export class EnemyWalk {
             }
 
             const target = queue[0];
+            enemy.targetX = target.x;
+            enemy.targetY = target.y;
             const speed = 200; // Пиксели в секунду
             const distanceX = target.x - enemy.x;
             const distanceY = target.y - enemy.y;
@@ -85,7 +90,6 @@ export class EnemyWalk {
             const stepX = Math.sign(distanceX) * speed * (deltaTime / 1000);
             const stepY = Math.sign(distanceY) * speed * (deltaTime / 1000);
 
-            // if (document.hidden) console.log(`dx: ${this.enemies[0].x} --- dy ${this.enemies[0].y}`);
 
             if (Math.abs(distanceX) <= Math.abs(stepX) && Math.abs(distanceY) <= Math.abs(stepY)) {
                 enemy.x = target.x;
@@ -98,15 +102,15 @@ export class EnemyWalk {
 
                 const currentAnimation = enemy.anims.currentAnim;
                 if (Math.abs(stepX) > Math.abs(stepY)) {
-                    const nextAnim = stepX > 0 ? `zombie_walk_right_1` : `zombie_walk_left_1`;
-                    if (!currentAnimation || currentAnimation.key !== nextAnim) {
-                        enemy.anims.play(nextAnim, true);
-                    }
+                    const nextAnim = stepX > 0 ? `${enemy.animsString[1]}` : `${enemy.animsString[2]}`;
+                    // if (!currentAnimation || currentAnimation.key !== nextAnim) {
+                    enemy.anims.play(nextAnim, true);
+                    // }
                 } else {
-                    const nextAnim = stepY > 0 ? `zombie_walk_down_1` : `zombie_walk_up_1`;
-                    if (!currentAnimation || currentAnimation.key !== nextAnim) {
-                        enemy.anims.play(nextAnim, true);
-                    }
+                    const nextAnim = stepY > 0 ? `${enemy.animsString[0]}` : `${enemy.animsString[3]}`;
+                    // if (!currentAnimation || currentAnimation.key !== nextAnim) {
+                    enemy.anims.play(nextAnim, true);
+                    // }
                 }
             }
         });
@@ -177,17 +181,55 @@ export class EnemyWalk {
         }
     }
 
+    checkOpenTab(enemy) {
+        const x = enemy.x;
+        const y = enemy.y;
+
+        const player = this.player; // Получаем игрока
+
+        // Определяем область игрока
+        const playerX1 = player.x - 30;
+        const playerX2 = player.x + 30;
+        const playerY1 = player.y - 70;
+        const playerY2 = player.y + 40;
+
+        // Проверяем, пересек ли враг игрока в зависимости от направления движения
+        let hasPassed = false;
+
+        if (x < enemy.targetX) { // Движение вправо
+            hasPassed = x >= playerX1;
+        } else if (x > enemy.targetX) { // Движение влево
+            hasPassed = x <= playerX2;
+        }
+
+        if (hasPassed) return 1;
+
+        if (y < enemy.targetY) { // Движение вниз
+            hasPassed = y >= playerY1;
+        } else if (y > enemy.targetY) { // Движение вверх
+            hasPassed = y <= playerY2;
+        }
+
+        if (hasPassed) return 1;
+        return 0;
+    }
+
     handleVisibility() {
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
-                console.log('hide');
                 this.lastUpdateTime = Date.now(); // Сбросить время для корректного deltaTime
 
 
             } else {
-                console.log('open');
                 if (this.hitFlag) {
-                    // this.hitFlag = false;
+                    let count = 0;
+                    this.enemies.forEach((enemy) => {
+                        count += this.checkOpenTab(enemy);
+                    });
+
+                    if (count == 0) {
+                        this.hitFlag = false;
+                    }
                 }
             }
         });

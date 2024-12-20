@@ -107,8 +107,8 @@ export class SocketWorker {
     }
 
     subscribeUpdateHeart(context, event) {
-        this.socket.on('updateHeart', (data) => {
-            event.call(context, data);
+        this.socket.on('updateHeart', (data, socketID) => {
+            event.call(context, data, socketID);
         });
     }
 
@@ -123,8 +123,8 @@ export class SocketWorker {
         this.socket.emit('getHearts', null);
     }
 
-    emitHitHeart() {
-        this.socket.emit('hitHeart', null);
+    emitHitHeart(socketID) {
+        this.socket.emit('hitHeart', socketID);
     }
 
     unSubscribeHearts() {
@@ -143,7 +143,6 @@ export class SocketWorker {
 
     subscribeEnemyUpdate(context, event) {
         this.socket.on('enemiesUpdated', (newState) => {
-            console.log(newState)
             event.call(context, newState);
         });
     }

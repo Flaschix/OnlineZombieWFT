@@ -1,7 +1,7 @@
 import { LABEL_ID, myMap } from "../CST.mjs";
 import { socket } from "../CST.mjs";
 import { SocketWorker } from "../share/SocketWorker.mjs";
-import { createUIBottom, createUITop, createUIRight, createExitMenu, isMobile, HEIGHT_PRESS_X, CAMERA_MARGIN, CAMERA_MARGIN_MOBILE, decrypt } from "../share/UICreator.mjs";
+import { createUIBottom, createUITop, createUIRight, createExitMenu, isMobile, HEIGHT_PRESS_X, decrypt } from "../share/UICreator.mjs";
 import { AnimationControl } from "../share/AnimationControl.mjs";
 import { PlayersController } from "../share/PlayerController.mjs";
 
