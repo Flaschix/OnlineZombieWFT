@@ -1,4 +1,6 @@
 import { CST, LABEL_ID } from "../CST.mjs";
+import { EnemyWalk } from "../share/EnemyWalk.mjs";
+import { HeartController } from "../share/HeartController.mjs";
 
 import { createUILeftMobile } from "../share/UICreator.mjs";
 import { createUI } from "../share/UICreator.mjs";
@@ -14,6 +16,60 @@ import { BaseScene } from "./BaseScene.mjs";
 export class GameScene5 extends BaseScene {
     constructor() {
         super(CST.SCENE.GAMESCENE5);
+
+        this.enemyState1 = [
+            { x: 293, y: 1787 },
+            { x: 489, y: 1787 },
+            { x: 489, y: 1600 },
+            { x: 850, y: 1600 },
+            { x: 850, y: 1806 },
+            { x: 1119, y: 1806 },
+            { x: 1419, y: 1806 },
+            { x: 1743, y: 1806 },
+            { x: 1743, y: 1486 },
+            { x: 1743, y: 1180 },
+            { x: 1436, y: 1180 },
+            { x: 1095, y: 1180 },
+            { x: 1095, y: 1045 },
+            { x: 810, y: 1045 },
+            { x: 810, y: 1045 },
+            { x: 293, y: 1045 },
+            { x: 293, y: 1328 },
+            { x: 293, y: 1574 },
+        ];
+
+
+        this.enemyState2 = [
+            { x: 491, y: 456 },
+            { x: 491, y: 754 },
+            { x: 491, y: 1098 },
+            { x: 830, y: 1098 },
+            { x: 830, y: 1400 },
+            { x: 1200, y: 1400 },
+            { x: 1200, y: 1162 },
+            { x: 1200, y: 809 },
+            { x: 1200, y: 456 },
+            { x: 951, y: 456 },
+            { x: 696, y: 456 },
+        ];
+
+        this.enemyState3 = [
+            { x: 1647, y: 561 },
+            { x: 1828, y: 561 },
+            { x: 1828, y: 1052 },
+            { x: 1828, y: 1203 },
+            { x: 1619, y: 1203 },
+            { x: 1369, y: 1203 },
+            { x: 1369, y: 1494 },
+            { x: 1369, y: 1798 },
+            { x: 1025, y: 1798 },
+            { x: 1025, y: 1517 },
+            { x: 1025, y: 1157 },
+            { x: 1025, y: 849 },
+            { x: 1025, y: 673 },
+            { x: 1312, y: 673 },
+            { x: 1647, y: 673 },
+        ];
     }
 
     preload() {
@@ -46,6 +102,59 @@ export class GameScene5 extends BaseScene {
         this.createFold();
 
         createAvatarDialog(this, this.enterNewSettingsInAvatarDialog, this.closeAvatarDialog, this.player.room, isMobile());
+
+        this.heartController = new HeartController(this, this.mySocket);
+        this.heartController.initHeart(150, 50, 'heart', 200, 50, this.hitPlayerAnims.bind(this))
+
+        this.enemyWalkController = new EnemyWalk(this.mySocket, this, this.enemyTouch, this.player);
+        this.mySocket.subscribeTakeEnemyState(this, this.createEnemiys);
+        this.mySocket.emitGetEnemyState();
+
+        this.enemyWalkController.handleVisibility();
+    }
+
+    createEnemiys(enemyStates) {
+        const state1 = enemyStates[3];
+        const state2 = enemyStates[4];
+        const state3 = enemyStates[5];
+
+        this.enemyWalkController.createEnemy(this.enemyState1[state1].x, this.enemyState1[state1].y, 'zombie1', 3.5, ['zombie_walk_down_1', 'zombie_walk_right_1', 'zombie_walk_left_1', 'zombie_walk_up_1']);
+        this.enemyWalkController.createEnemy(this.enemyState2[state2].x, this.enemyState2[state2].y, 'zombie2', 3.5, ['zombie_walk_down_2', 'zombie_walk_right_2', 'zombie_walk_left_2', 'zombie_walk_up_2']);
+        this.enemyWalkController.createEnemy(this.enemyState3[state3].x, this.enemyState3[state3].y, 'zombie3', 3.5, ['zombie_walk_down_3', 'zombie_walk_right_3', 'zombie_walk_left_3', 'zombie_walk_up_3']);
+
+
+        this.mySocket.subscribeEnemyUpdate(this, (newStates) => {
+            const newState1 = newStates[3];
+            const newState2 = newStates[4];
+            const newState3 = newStates[5];
+            this.enemyWalkController.updatePositionsFromServer([{ "enemyN": 0, "x": this.enemyState1[newState1].x, "y": this.enemyState1[newState1].y }]);
+            this.enemyWalkController.updatePositionsFromServer([{ "enemyN": 1, "x": this.enemyState2[newState2].x, "y": this.enemyState2[newState2].y }]);
+            this.enemyWalkController.updatePositionsFromServer([{ "enemyN": 2, "x": this.enemyState3[newState3].x, "y": this.enemyState3[newState3].y }]);
+        });
+    }
+
+    enemyTouch() {
+        this.heartController.hitHeart(null);
+    }
+
+    hitPlayerAnims(socketID) {
+        let player = null;
+        if (socketID == this.mySocket.socket.id) player = this.player;
+        else if (this.otherPlayers[socketID]) player = this.otherPlayers[socketID]
+
+        if (player != null) {
+            this.tweens.add({
+                targets: player,
+                tint: { from: 0xFFFFFF, to: 0xFF0000 },
+                ease: 'Linear',
+                duration: 100,
+                yoyo: true,
+                repeat: 2,
+                onComplete: () => {
+                    player.clearTint();
+                }
+            });
+        }
     }
 
     update() {

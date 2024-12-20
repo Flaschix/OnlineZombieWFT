@@ -689,6 +689,7 @@ function sceneSwitched(self, data) {
     self.avatarDialog.destroy();
     self.exitContainer.destroy();
     self.otherPlayers = {};
+    if (self.enemyWalkController) clearInterval(self.enemyWalkController.intervalId);
     let players = data.players;
     self.scene.start(data.scene, { players });
 }

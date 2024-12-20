@@ -9,6 +9,7 @@ import { CAMERA_MARGIN, CAMERA_MARGIN_MOBILE } from "../share/UICreator.mjs";
 
 import { createJoystick } from "../share/UICreator.mjs";
 import { createMobileXButton } from "../share/UICreator.mjs";
+import { HeartController } from "../share/HeartController.mjs";
 
 import { BaseScene } from "./BaseScene.mjs";
 
@@ -48,6 +49,9 @@ export class GameScene extends BaseScene {
         this.createFold();
 
         createAvatarDialog(this, this.enterNewSettingsInAvatarDialog, this.closeAvatarDialog, this.player.room, isMobile());
+
+        this.heartController = new HeartController(this, this.mySocket);
+        this.heartController.initHeart(150, 50, 'heart', 200, 50, null)
     }
 
     update() {

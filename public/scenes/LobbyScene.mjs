@@ -48,7 +48,6 @@ export class LobbyScene extends Phaser.Scene {
         this.load.spritesheet('character5', './assets/characterMap/character5.png', { frameWidth: 48, frameHeight: 64 });
         this.load.spritesheet('character6', './assets/characterMap/character6.png', { frameWidth: 48, frameHeight: 64 });
 
-        this.load.image('answer', 'assets/keyFrame/answer.png');
         this.load.image('emptyKey', 'assets/keyFrame/emptyKey.png');
         this.load.image('paper1', 'assets/keyFrame/1.png');
         this.load.image('paper3', 'assets/keyFrame/3.png');
@@ -61,6 +60,11 @@ export class LobbyScene extends Phaser.Scene {
         this.load.image('leftArrow', 'assets/button/leftArrow.png');
 
         this.load.image('fold', 'assets/icon/foldMobile.png')
+        this.load.image('heart', 'assets/character/heart.png');
+
+        this.load.spritesheet('zombie1', './assets/zombie/zombie1.png', { frameWidth: 16, frameHeight: 16 });
+        this.load.spritesheet('zombie2', './assets/zombie/zombie2.png', { frameWidth: 16, frameHeight: 16 });
+        this.load.spritesheet('zombie3', './assets/zombie/zombie3.png', { frameWidth: 16, frameHeight: 16 });
     }
 
     createWelcomeContainer() {
@@ -319,6 +323,38 @@ export class LobbyScene extends Phaser.Scene {
             this.anims.create({
                 key: `walk_up${i}`,
                 frames: this.anims.generateFrameNumbers(`character${i}`, { start: 6, end: 8 }),
+                frameRate: 10,
+                repeat: -1
+            });
+        }
+
+
+        this.textures.get('zombie1').setFilter(Phaser.Textures.FilterMode.NEAREST);
+        this.textures.get('zombie2').setFilter(Phaser.Textures.FilterMode.NEAREST);
+        this.textures.get('zombie3').setFilter(Phaser.Textures.FilterMode.NEAREST);
+
+        for (let i = 1; i <= 3; i++) {
+            this.anims.create({
+                key: `zombie_walk_down_${i}`,
+                frames: this.anims.generateFrameNumbers(`zombie${i}`, { start: 0, end: 7 }),
+                frameRate: 10,
+                repeat: -1
+            });
+            this.anims.create({
+                key: `zombie_walk_right_${i}`,
+                frames: this.anims.generateFrameNumbers(`zombie${i}`, { start: 8, end: 15 }),
+                frameRate: 10,
+                repeat: -1
+            });
+            this.anims.create({
+                key: `zombie_walk_up_${i}`,
+                frames: this.anims.generateFrameNumbers(`zombie${i}`, { start: 16, end: 23 }),
+                frameRate: 10,
+                repeat: -1
+            });
+            this.anims.create({
+                key: `zombie_walk_left_${i}`,
+                frames: this.anims.generateFrameNumbers(`zombie${i}`, { start: 24, end: 31 }),
                 frameRate: 10,
                 repeat: -1
             });

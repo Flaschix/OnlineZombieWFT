@@ -1,4 +1,6 @@
 import { CST, LABEL_ID, myMap } from "../CST.mjs";
+import { EnemyWalk } from "../share/EnemyWalk.mjs";
+import { HeartController } from "../share/HeartController.mjs";
 
 import { cd, createUILeftMobile, decrypt, decryptN } from "../share/UICreator.mjs";
 import { createUI } from "../share/UICreator.mjs";
@@ -18,6 +20,53 @@ export class GameScene6 extends BaseScene {
         this.cd = decryptN(cd);
 
         this.enterCodeContainer;
+
+        this.enemyState1 = [
+            { x: 1526, y: 517 },
+            { x: 1190, y: 517 },
+            { x: 861, y: 517 },
+            { x: 861, y: 432 },
+            { x: 597, y: 432 },
+            { x: 597, y: 632 },
+            { x: 388, y: 632 },
+            { x: 388, y: 791 },
+            { x: 592, y: 791 },
+            { x: 592, y: 995 },
+            { x: 592, y: 1218 },
+            { x: 386, y: 1218 },
+            { x: 386, y: 1454 },
+            { x: 386, y: 1632 },
+            { x: 656, y: 1632 },
+            { x: 856, y: 1632 },
+            { x: 856, y: 1364 },
+            { x: 856, y: 1088 },
+            { x: 856, y: 839 },
+            { x: 1119, y: 839 },
+            { x: 1304, y: 839 },
+            { x: 1304, y: 517 },
+        ];
+
+
+        this.enemyState2 = [
+            { x: 1594, y: 1556 },
+            { x: 1594, y: 1879 },
+            { x: 1300, y: 1879 },
+            { x: 1007, y: 1879 },
+            { x: 700, y: 1879 },
+            { x: 700, y: 1580 },
+            { x: 385, y: 1580 },
+            { x: 385, y: 1373 },
+            { x: 385, y: 1170 },
+            { x: 597, y: 1170 },
+            { x: 830, y: 1170 },
+            { x: 830, y: 942 },
+            { x: 830, y: 710 },
+            { x: 1166, y: 710 },
+            { x: 1166, y: 1005 },
+            { x: 1166, y: 1321 },
+            { x: 1397, y: 1321 },
+            { x: 1594, y: 1321 },
+        ];
     }
 
     preload() {
@@ -52,6 +101,54 @@ export class GameScene6 extends BaseScene {
         createAvatarDialog(this, this.enterNewSettingsInAvatarDialog, this.closeAvatarDialog, this.player.room, isMobile());
 
         this.createEnterCodeContainer();
+
+        this.heartController = new HeartController(this, this.mySocket);
+        this.heartController.initHeart(150, 50, 'heart', 200, 50, this.hitPlayerAnims.bind(this))
+
+        this.enemyWalkController = new EnemyWalk(this.mySocket, this, this.enemyTouch, this.player);
+        this.mySocket.subscribeTakeEnemyState(this, this.createEnemiys);
+        this.mySocket.emitGetEnemyState();
+
+        this.enemyWalkController.handleVisibility();
+    }
+
+    createEnemiys(enemyStates) {
+        const state1 = enemyStates[6];
+        const state2 = enemyStates[7];
+
+        this.enemyWalkController.createEnemy(this.enemyState1[state1].x, this.enemyState1[state1].y, 'zombie1', 3.5, ['zombie_walk_down_1', 'zombie_walk_right_1', 'zombie_walk_left_1', 'zombie_walk_up_1']);
+        this.enemyWalkController.createEnemy(this.enemyState2[state2].x, this.enemyState2[state2].y, 'zombie2', 3.5, ['zombie_walk_down_2', 'zombie_walk_right_2', 'zombie_walk_left_2', 'zombie_walk_up_2']);
+
+        this.mySocket.subscribeEnemyUpdate(this, (newStates) => {
+            const newState1 = newStates[6];
+            const newState2 = newStates[7];
+            this.enemyWalkController.updatePositionsFromServer([{ "enemyN": 0, "x": this.enemyState1[newState1].x, "y": this.enemyState1[newState1].y }]);
+            this.enemyWalkController.updatePositionsFromServer([{ "enemyN": 1, "x": this.enemyState2[newState2].x, "y": this.enemyState2[newState2].y }]);
+        });
+    }
+
+    enemyTouch() {
+        this.heartController.hitHeart(null);
+    }
+
+    hitPlayerAnims(socketID) {
+        let player = null;
+        if (socketID == this.mySocket.socket.id) player = this.player;
+        else if (this.otherPlayers[socketID]) player = this.otherPlayers[socketID]
+
+        if (player != null) {
+            this.tweens.add({
+                targets: player,
+                tint: { from: 0xFFFFFF, to: 0xFF0000 },
+                ease: 'Linear',
+                duration: 100,
+                yoyo: true,
+                repeat: 2,
+                onComplete: () => {
+                    player.clearTint();
+                }
+            });
+        }
     }
 
     update() {

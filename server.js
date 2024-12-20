@@ -32,6 +32,17 @@ app.use(express.static(__dirname + '/public'));
 
 const rooms = {};
 
+const enemyStates = [
+    21,
+    22,
+    24,
+    18,
+    11,
+    15,
+    22,
+    18
+];
+
 function generateRoomCode(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -58,7 +69,6 @@ io.on('connection', (socket) => {
 
         try {
             await redisClient.set(roomCode, roomId, { EX: 86400 }); // Устанавливаем срок действия 24 часа 86400
-            rooms[roomId] = { levels: {} };
             // socket.join(roomId);
             socket.emit('roomCreated', roomCode);
             console.log(`Room created with code: ${roomCode}`);
@@ -92,7 +102,7 @@ io.on('connection', (socket) => {
             }
 
             if (!rooms[roomId]) {
-                rooms[roomId] = { levels: {}, fold: [] };
+                rooms[roomId] = { levels: {}, fold: [], hearts: 3, enemyStates: [0, 0, 0, 0, 0, 0, 0, 0] };
             }
 
             if (!rooms[roomId].levels['GameScene']) {
@@ -101,6 +111,10 @@ io.on('connection', (socket) => {
 
             if (!rooms[roomId].fold) {
                 rooms[roomId].fold = [];
+            }
+
+            if (!rooms[roomId].enemyStates) {
+                rooms[roomId].enemyStates = [0, 0, 0, 0, 0, 0, 0, 0];
             }
 
             socket.join(roomId);
@@ -198,11 +212,50 @@ io.on('connection', (socket) => {
                     socket.to(`${roomId}:${socket.currentLevel}`).emit(`playerReconected:${socket.currentLevel}`, rooms[roomId].levels[socket.currentLevel][socket.id]);
                 }
             });
+
+            socket.on(`getHearts`, () => {
+                socket.emit('updateHeart', rooms[roomId].hearts);
+            });
+
+            socket.on(`hitHeart`, (socketID) => {
+                rooms[roomId].hearts -= 1;
+
+                io.to(`${roomId}`).emit('updateHeart', rooms[roomId].hearts, socketID);
+
+                if (rooms[roomId].hearts < 1) {
+                    io.to(`${roomId}`).emit('gameLose');
+                    rooms[roomId].hearts = 3;
+                    rooms[roomId].fold = [];
+                }
+            });
+
+            socket.on(`getEnemyState`, () => {
+                socket.emit('takeEnemySate', rooms[roomId].enemyStates);
+            })
+
         } catch (err) {
             console.error('Error joining room:', err);
             socket.emit('error', 'An error occurred');
         }
     });
 });
+
+function updateEnemies(roomId) {
+    const room = rooms[roomId];
+    if (!room) return;
+    if (!room.enemyStates);
+
+    for (let i = 0; i < enemyStates.length; i++) {
+        const previousState = room.enemyStates[i];
+        room.enemyStates[i] = (previousState + 1) % enemyStates[i];
+    }
+
+    io.to(roomId).emit('enemiesUpdated', room.enemyStates);
+}
+
+
+setInterval(() => {
+    Object.keys(rooms).forEach(updateEnemies);
+}, 3000);
 
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
